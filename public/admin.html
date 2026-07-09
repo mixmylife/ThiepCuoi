@@ -1312,12 +1312,23 @@
     <div id="toast"></div>
 
     <script>
-        const API = 'http://localhost:3000/api';
+        const ORIGIN = window.location.origin;
+        const API = `${ORIGIN}/api`;
         let currentData = {};
         let currentSlug = 'demo';
         let selectedTemplate = 'boho-floral-green';
         let selectedMusic = null;
         let eventsData = [];
+
+        function normalizeLocalUrl(url) {
+            if (!url) return '';
+            return String(url).replace(/^https?:\/\/localhost:3000/i, '');
+        }
+
+        function displayUrl(url) {
+            const normalized = normalizeLocalUrl(url);
+            return normalized.startsWith('/') ? `${ORIGIN}${normalized}` : normalized;
+        }
 
         // ==========================================
         // INIT
@@ -1372,10 +1383,10 @@
             currentSlug = document.getElementById('current-slug').value.trim() || 'demo';
 
             document.getElementById('header-title').textContent = `Thiệp: ${currentSlug}`;
-            document.getElementById('header-slug-url').textContent = `🔗 localhost:3000/thiep/${currentSlug}`;
-            document.getElementById('preview-url-bar').textContent = `localhost:3000/thiep/${currentSlug}`;
+            document.getElementById('header-slug-url').textContent = `🔗 ${ORIGIN}/thiep/${currentSlug}`;
+            document.getElementById('preview-url-bar').textContent = `${ORIGIN}/thiep/${currentSlug}`;
             document.getElementById('btn-view-link').href = `/thiep/${currentSlug}`;
-            document.getElementById('share-link-display').textContent = `http://localhost:3000/thiep/${currentSlug}`;
+            document.getElementById('share-link-display').textContent = `${ORIGIN}/thiep/${currentSlug}`;
             document.getElementById('thiep-slug-input').value = currentSlug;
 
             // Load config
@@ -1436,7 +1447,7 @@
             s('b-shortName', data.bride?.shortName);
             s('w-dateIso', data.weddingDate);
             s('w-dateText', data.weddingDateText);
-            s('hero-img', data.heroImage);
+            s('hero-img', normalizeLocalUrl(data.heroImage));
             s('inv-quote', data.invitation?.quote);
             s('inv-msg', data.invitation?.message);
             s('g-father', data.groom?.father);
@@ -1448,7 +1459,7 @@
             s('b-address', data.bride?.address);
             s('b-map', data.bride?.mapUrl);
             s('story-title', data.loveStory?.title);
-            s('story-img', data.loveStory?.image);
+            s('story-img', normalizeLocalUrl(data.loveStory?.image));
             s('story-p1', data.loveStory?.content?.[0]);
             s('story-p2', data.loveStory?.content?.[1]);
 
@@ -1466,13 +1477,13 @@
             // Preview QR
             if (data.banking?.groom?.qrCode) showPreview('preview-groom-qr', data.banking.groom.qrCode);
             if (data.banking?.bride?.qrCode) showPreview('preview-bride-qr', data.banking.bride.qrCode);
-            if (data.heroImage) showPreview('preview-hero', data.heroImage);
-            if (data.loveStory?.image) showPreview('preview-story', data.loveStory.image);
+            if (data.heroImage) showPreview('preview-hero', normalizeLocalUrl(data.heroImage));
+            if (data.loveStory?.image) showPreview('preview-story', normalizeLocalUrl(data.loveStory.image));
 
             // Gallery
             const gList = document.getElementById('gallery-list');
             gList.innerHTML = '';
-            (data.gallery || []).forEach(url => addGalleryItem(url));
+            (data.gallery || []).forEach(url => addGalleryItem(normalizeLocalUrl(url)));
 
             // Events
             eventsData = data.events || [];
@@ -1560,7 +1571,7 @@
             div.className = 'gallery-item';
 
             const img = document.createElement('img');
-            img.src = url || 'https://via.placeholder.com/50';
+            img.src = displayUrl(url) || 'https://via.placeholder.com/50';
             img.onerror = () => img.style.display = 'none';
 
             const input = document.createElement('input');
@@ -1569,7 +1580,7 @@
             input.value = url;
             input.placeholder = 'URL Ảnh';
             input.addEventListener('input', () => {
-                img.src = input.value;
+                img.src = displayUrl(input.value);
                 img.style.display = '';
             });
 
@@ -1592,7 +1603,7 @@
                 try {
                     const r = await fetch(`${API}/upload`, { method: 'POST', body: fd });
                     const data = await r.json();
-                    if (data.url) addGalleryItem(`http://localhost:3000${data.url}`);
+                    if (data.url) addGalleryItem(data.url);
                 } catch(e) {}
             }
         }
@@ -1609,7 +1620,7 @@
                 const r = await fetch(`${API}/upload`, { method: 'POST', body: fd });
                 const data = await r.json();
                 if (data.url) {
-                    const url = `http://localhost:3000${data.url}`;
+                    const url = data.url;
                     document.getElementById(targetId).value = url;
                     showPreview(previewId, url);
                     showToast('Upload thành công!', 'success');
@@ -1626,7 +1637,7 @@
         function showPreview(previewId, url) {
             const img = document.getElementById(previewId);
             if (img && url) {
-                img.src = url;
+                img.src = displayUrl(url);
                 img.style.display = 'block';
             }
         }
@@ -1725,40 +1736,40 @@
                 },
                 weddingDate: document.getElementById('w-dateIso').value,
                 weddingDateText: document.getElementById('w-dateText').value,
-                heroImage: document.getElementById('hero-img').value,
+                heroImage: normalizeLocalUrl(document.getElementById('hero-img').value),
                 invitation: {
                     quote: document.getElementById('inv-quote').value,
                     message: document.getElementById('inv-msg').value
                 },
                 loveStory: {
                     title: document.getElementById('story-title').value,
-                    image: document.getElementById('story-img').value,
+                    image: normalizeLocalUrl(document.getElementById('story-img').value),
                     content: [
                         document.getElementById('story-p1').value,
                         document.getElementById('story-p2').value
                     ].filter(Boolean)
                 },
                 events: collectEvents(),
-                gallery: Array.from(document.querySelectorAll('.gallery-input')).map(i => i.value).filter(Boolean),
+                gallery: Array.from(document.querySelectorAll('.gallery-input')).map(i => normalizeLocalUrl(i.value)).filter(Boolean),
                 banking: {
                     enabled: isToggleOn('toggle-banking'),
                     groom: {
                         bankName: document.getElementById('gb-name').value,
                         accountNumber: document.getElementById('gb-num').value,
                         accountName: document.getElementById('gb-user').value,
-                        qrCode: document.getElementById('gb-qr').value
+                        qrCode: normalizeLocalUrl(document.getElementById('gb-qr').value)
                     },
                     bride: {
                         bankName: document.getElementById('bb-name').value,
                         accountNumber: document.getElementById('bb-num').value,
                         accountName: document.getElementById('bb-user').value,
-                        qrCode: document.getElementById('bb-qr').value
+                        qrCode: normalizeLocalUrl(document.getElementById('bb-qr').value)
                     }
                 },
                 music: {
                     enabled: isToggleOn('toggle-music'),
                     track: selectedMusic,
-                    customUrl: document.getElementById('music-custom-url').value
+                    customUrl: normalizeLocalUrl(document.getElementById('music-custom-url').value)
                 },
                 sections,
                 dresscode: {
@@ -1954,7 +1965,7 @@
         }
 
         function copyShareLink() {
-            const url = `http://localhost:3000/thiep/${currentSlug}`;
+            const url = `${ORIGIN}/thiep/${currentSlug}`;
             navigator.clipboard.writeText(url).then(() => showToast('✅ Đã sao chép link thiệp!', 'success'));
         }
     </script>

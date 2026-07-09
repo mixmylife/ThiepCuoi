@@ -19,14 +19,14 @@
     },
     "weddingDate": "2026-07-24T11:00",
     "weddingDateText": "24 . 07 . 2026",
-    "heroImage": "http://localhost:3000/uploads/1782918316704-v921mfuw.jpg",
+    "heroImage": "/uploads/1782918316704-v921mfuw.jpg",
     "invitation": {
         "quote": "Trăm năm tình viên mãn, bạc đầu nghĩa phu thê.",
         "message": "Trân trọng kính mời bạn đến chung vui trong ngày trọng đại của chúng tôi."
     },
     "loveStory": {
         "title": "Chuyện Tình Yêu Của Chúng Tôi",
-        "image": "http://localhost:3000/uploads/1782918470002-lw1303r0.JPG",
+        "image": "/uploads/1782918470002-lw1303r0.JPG",
         "content": [
             "Có những cuộc gặp gỡ chỉ diễn ra trong chốc lát nhưng lại thay đổi cả một cuộc đời. Chúng mình gặp nhau như một sự tình cờ đẹp đẽ, bắt đầu bằng những câu chuyện giản đơn, những nụ cười ngại ngùng và dần dần trở thành người quan trọng nhất của nhau. Mỗi ngày trôi qua đều là một kỷ niệm đáng nhớ, giúp chúng mình hiểu, yêu thương và đồng hành cùng nhau nhiều hơn.",
             "Hành trình phía trước chắc chắn sẽ có những niềm vui, thử thách và cả những lúc khó khăn. Nhưng chúng mình tin rằng chỉ cần luôn nắm chặt tay nhau, lắng nghe và sẻ chia, mọi điều đều có thể vượt qua. Cảm ơn gia đình, bạn bè và những người thân yêu đã luôn bên cạnh, chứng kiến và chúc phúc cho tình yêu của chúng mình. Hy vọng rằng ngày hôm nay sẽ trở thành một kỷ niệm đẹp để cùng nhau bắt đầu một chương mới của cuộc đời."
@@ -53,14 +53,14 @@
         }
     ],
     "gallery": [
-        "http://localhost:3000/uploads/1782918604439-d1qa1ciw.JPG",
-        "http://localhost:3000/uploads/1782918604556-ciwkf9e0.JPG",
-        "http://localhost:3000/uploads/1782918604732-k7ffci1a.JPG",
-        "http://localhost:3000/uploads/1782918604815-busborzt.JPG",
-        "http://localhost:3000/uploads/1782918604944-ewroqzku.JPG",
-        "http://localhost:3000/uploads/1782918605002-m9h6o0u0.JPG",
-        "http://localhost:3000/uploads/1782918605090-jsg1p2ve.JPG",
-        "http://localhost:3000/uploads/1782918614501-hi2g9w8j.JPG"
+        "/uploads/1782918604439-d1qa1ciw.JPG",
+        "/uploads/1782918604556-ciwkf9e0.JPG",
+        "/uploads/1782918604732-k7ffci1a.JPG",
+        "/uploads/1782918604815-busborzt.JPG",
+        "/uploads/1782918604944-ewroqzku.JPG",
+        "/uploads/1782918605002-m9h6o0u0.JPG",
+        "/uploads/1782918605090-jsg1p2ve.JPG",
+        "/uploads/1782918614501-hi2g9w8j.JPG"
     ],
     "banking": {
         "enabled": true,
@@ -80,7 +80,7 @@
     "music": {
         "enabled": true,
         "track": "a-thousand-years",
-        "customUrl": "http://localhost:3000/uploads/1782883623689-98s3auf8.mp3"
+        "customUrl": "/uploads/1782883623689-98s3auf8.mp3"
     },
     "sections": {
         "hero": true,
