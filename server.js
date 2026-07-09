@@ -116,6 +116,49 @@ function updateStats(field, delta = 1) {
     stats[field] = (stats[field] || 0) + delta;
     writeJSON(STATS_FILE, stats);
 }
+
+const VIEW_FLUSH_INTERVAL_MS = Number(process.env.VIEW_FLUSH_INTERVAL_MS || 10000);
+const pendingViews = new Map();
+let pendingTotalViews = 0;
+
+function queueView(slug) {
+    const current = pendingViews.get(slug) || { count: 0, lastViewed: null };
+    current.count += 1;
+    current.lastViewed = new Date().toISOString();
+    pendingViews.set(slug, current);
+    pendingTotalViews += 1;
+}
+
+function flushPendingViews() {
+    if (!pendingViews.size && !pendingTotalViews) return;
+
+    for (const [slug, pending] of pendingViews.entries()) {
+        const cfgFile = path.join(PATHS.invitations, `${slug}.json`);
+        if (!fs.existsSync(cfgFile)) continue;
+
+        const cfg = readJSON(cfgFile, {});
+        cfg.stats = cfg.stats || {};
+        cfg.stats.views = (cfg.stats.views || 0) + pending.count;
+        cfg.stats.lastViewed = pending.lastViewed;
+        writeJSON(cfgFile, cfg);
+    }
+
+    if (pendingTotalViews) updateStats('totalViews', pendingTotalViews);
+
+    pendingViews.clear();
+    pendingTotalViews = 0;
+}
+
+function getPendingViews(slug) {
+    return pendingViews.get(slug) || { count: 0, lastViewed: null };
+}
+
+const viewFlushTimer = setInterval(flushPendingViews, VIEW_FLUSH_INTERVAL_MS);
+viewFlushTimer.unref?.();
+process.on('beforeExit', flushPendingViews);
+process.on('SIGINT', () => { flushPendingViews(); process.exit(0); });
+process.on('SIGTERM', () => { flushPendingViews(); process.exit(0); });
+
 function slugExists(slug) {
     return fs.existsSync(path.join(PATHS.invitations, `${slug}.json`));
 }
@@ -160,12 +203,7 @@ app.get('/thiep/:slug', (req, res) => {
     // Tăng view
     const cfgFile = path.join(PATHS.invitations, `${slug}.json`);
     if (fs.existsSync(cfgFile)) {
-        const cfg = readJSON(cfgFile, {});
-        cfg.stats = cfg.stats || {};
-        cfg.stats.views = (cfg.stats.views || 0) + 1;
-        cfg.stats.lastViewed = new Date().toISOString();
-        writeJSON(cfgFile, cfg);
-        updateStats('totalViews');
+        queueView(slug);
     }
 
     if (fs.existsSync(tplFile))  return res.sendFile(tplFile);
@@ -440,13 +478,14 @@ app.get('/api/stats/:slug', (req, res) => {
     const cfg    = readJSON(path.join(PATHS.invitations, `${slug}.json`), {});
     const guests = readJSON(path.join(PATHS.guests, `${slug}.json`), []);
     const gb     = readJSON(path.join(PATHS.guests, `guestbook_${slug}.json`), []);
+    const pending = getPendingViews(slug);
     res.json({
-        views:         cfg.stats?.views || 0,
+        views:         (cfg.stats?.views || 0) + pending.count,
         totalRsvp:     guests.length,
         attendingYes:  guests.filter(g => g.attendance === 'yes').length,
         attendingNo:   guests.filter(g => g.attendance === 'no').length,
         guestbookCount:gb.filter(g => g.approved).length,
-        lastViewed:    cfg.stats?.lastViewed || null,
+        lastViewed:    pending.lastViewed || cfg.stats?.lastViewed || null,
         template:      cfg.template || 'boho-floral-green',
     });
 });
@@ -457,7 +496,7 @@ app.get('/api/platform-stats', (req, res) => {
     const invitations = fs.existsSync(PATHS.invitations)
         ? fs.readdirSync(PATHS.invitations).filter(f => f.endsWith('.json')).length
         : 0;
-    res.json({ ...stats, totalInvitations: invitations });
+    res.json({ ...stats, totalViews: (stats.totalViews || 0) + pendingTotalViews, totalInvitations: invitations });
 });
 
 // ==========================================
