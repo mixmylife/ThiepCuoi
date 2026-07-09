@@ -499,6 +499,8 @@
             } else if (d.gallery && d.gallery.length === 1) {
                 gImg = bImg = d.gallery[0];
             }
+            document.getElementById('groom-img').decoding = 'async';
+            document.getElementById('bride-img').decoding = 'async';
             document.getElementById('groom-img').src = gImg;
             document.getElementById('bride-img').src = bImg;
 
@@ -613,7 +615,7 @@
             // Chuyện tình yêu
             if (d.loveStory && d.loveStory.title && d.loveStory.content && d.loveStory.content.length) {
                 document.getElementById('story-box').innerHTML = `
-                    ${d.loveStory.image ? `<img src="${d.loveStory.image}" alt="Story">` : ''}
+                    ${d.loveStory.image ? `<img src="${d.loveStory.image}" alt="Story" loading="lazy" decoding="async">` : ''}
                     <h3>${d.loveStory.title}</h3>
                     ${d.loveStory.content.map(p => `<p>${p}</p>`).join('')}
                 `;
@@ -624,7 +626,7 @@
             // Album
             if (d.gallery && d.gallery.length) {
                 window.galleryImages = d.gallery;
-                document.getElementById('gallery-wrap').innerHTML = d.gallery.map((u, i) => `<div class="gallery-item" onclick="openLightbox(${i})"><img src="${u}" loading="lazy"></div>`).join('');
+                document.getElementById('gallery-wrap').innerHTML = d.gallery.map((u, i) => `<div class="gallery-item" onclick="openLightbox(${i})"><img src="${u}" loading="lazy" decoding="async" alt="Album ${i + 1}"></div>`).join('');
             } else {
                 document.getElementById('sec-gallery').style.display = 'none';
             }

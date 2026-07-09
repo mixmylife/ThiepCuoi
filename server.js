@@ -33,6 +33,7 @@ const multer     = require('multer');
 const QRCode     = require('qrcode');
 const bcrypt     = require('bcryptjs');
 const jwt        = require('jsonwebtoken');
+const sharp      = require('sharp');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -73,8 +74,19 @@ if (!fs.existsSync(USERS_FILE)) {
 app.use(cors());
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true }));
-app.use('/uploads', express.static(PATHS.uploads));
-app.use(express.static(PATHS.public));
+const staticCache = {
+    maxAge: '30d',
+    immutable: true,
+    etag: true,
+    lastModified: true,
+    setHeaders: (res, filePath) => {
+        if (/\.(?:ttf|otf|woff2?|eot)$/i.test(filePath)) {
+            res.setHeader('Access-Control-Allow-Origin', '*');
+        }
+    },
+};
+app.use('/uploads', express.static(PATHS.uploads, staticCache));
+app.use(express.static(PATHS.public, staticCache));
 
 // Multer
 const storage = multer.diskStorage({
@@ -95,6 +107,43 @@ const upload = multer({
         }
     }
 });
+
+async function optimizeUploadedImage(file) {
+    if (!file?.mimetype?.startsWith('image/')) return;
+    if (/image\/(?:gif|svg\+xml)/i.test(file.mimetype)) return;
+
+    const ext = path.extname(file.path).toLowerCase();
+    const tmpPath = `${file.path}.tmp`;
+    const pipeline = sharp(file.path, { failOn: 'none' })
+        .rotate()
+        .resize({
+            width: 1920,
+            height: 1920,
+            fit: 'inside',
+            withoutEnlargement: true,
+        });
+
+    if (['.jpg', '.jpeg'].includes(ext)) {
+        await pipeline.jpeg({ quality: 78, mozjpeg: true }).toFile(tmpPath);
+    } else if (ext === '.png') {
+        await pipeline.png({ compressionLevel: 9, palette: true }).toFile(tmpPath);
+    } else if (ext === '.webp') {
+        await pipeline.webp({ quality: 78 }).toFile(tmpPath);
+    } else if (ext === '.avif') {
+        await pipeline.avif({ quality: 60 }).toFile(tmpPath);
+    } else {
+        return;
+    }
+
+    const original = fs.statSync(file.path).size;
+    const optimized = fs.statSync(tmpPath).size;
+    if (optimized > 0 && optimized < original) {
+        fs.renameSync(tmpPath, file.path);
+        file.size = optimized;
+    } else {
+        fs.rmSync(tmpPath, { force: true });
+    }
+}
 
 // ==========================================
 // HELPERS
@@ -430,13 +479,19 @@ app.delete('/api/guestbook/:slug/:id', (req, res) => {
 // ==========================================
 // API — UPLOAD
 // ==========================================
-app.post('/api/upload', upload.single('image'), (req, res) => {
+app.post('/api/upload', upload.single('image'), async (req, res) => {
     if (!req.file) return res.status(400).json({ error: 'Không có file!' });
+    try { await optimizeUploadedImage(req.file); }
+    catch (e) { console.warn('[optimizeUploadedImage]', req.file.filename, e.message); }
     res.json({ success: true, url: `/uploads/${req.file.filename}` });
 });
 
-app.post('/api/upload-multiple', upload.array('images', 20), (req, res) => {
+app.post('/api/upload-multiple', upload.array('images', 20), async (req, res) => {
     if (!req.files?.length) return res.status(400).json({ error: 'Không có file!' });
+    await Promise.all(req.files.map(async file => {
+        try { await optimizeUploadedImage(file); }
+        catch (e) { console.warn('[optimizeUploadedImage]', file.filename, e.message); }
+    }));
     res.json({ success: true, urls: req.files.map(f => `/uploads/${f.filename}`) });
 });
 
