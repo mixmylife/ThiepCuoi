@@ -37,7 +37,6 @@ const jwt        = require('jsonwebtoken');
 const app  = express();
 const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || 'thiepcuoiviet_super_secret_key_2026';
-const PRIMARY_INVITATION_SLUG = process.env.PRIMARY_INVITATION_SLUG || 'huy-hihi-duyen';
 
 // ==========================================
 // PATHS
@@ -75,8 +74,7 @@ app.use(cors());
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(PATHS.uploads));
-app.use('/templates/song-long-do', express.static(path.join(PATHS.templates, 'song-long-do')));
-app.use('/images', express.static(path.join(PATHS.public, 'images')));
+app.use(express.static(PATHS.public));
 
 // Multer
 const storage = multer.diskStorage({
@@ -113,16 +111,6 @@ function writeJSON(filePath, data) {
 function getTemplate(slug) {
     return readJSON(path.join(PATHS.invitations, `${slug}.json`))?.template || 'boho-floral-green';
 }
-function normalizePublicUrls(value) {
-    if (Array.isArray(value)) return value.map(normalizePublicUrls);
-    if (value && typeof value === 'object') {
-        return Object.fromEntries(Object.entries(value).map(([key, val]) => [key, normalizePublicUrls(val)]));
-    }
-    if (typeof value === 'string') {
-        return value.replace(/^https?:\/\/localhost(?::3000)?\/uploads\//, '/uploads/');
-    }
-    return value;
-}
 function updateStats(field, delta = 1) {
     const stats = readJSON(STATS_FILE, {});
     stats[field] = (stats[field] || 0) + delta;
@@ -148,23 +136,23 @@ function verifyToken(req, res, next) {
 // ==========================================
 // WEB ROUTES
 // ==========================================
-app.get('/', (req, res) => res.redirect(302, `/thiep/${PRIMARY_INVITATION_SLUG}`));
-app.get('/tao-thiep', (req, res) => res.redirect(302, `/thiep/${PRIMARY_INVITATION_SLUG}`));
-app.get('/admin', (req, res) => res.redirect(302, `/thiep/${PRIMARY_INVITATION_SLUG}`));
-app.get('/login', (req, res) => res.redirect(302, `/thiep/${PRIMARY_INVITATION_SLUG}`));
-app.get('/register', (req, res) => res.redirect(302, `/thiep/${PRIMARY_INVITATION_SLUG}`));
-app.get('/dashboard', (req, res) => res.redirect(302, `/thiep/${PRIMARY_INVITATION_SLUG}`));
+app.get('/', (req, res) => res.sendFile(path.join(PATHS.public, 'landing.html')));
+app.get('/tao-thiep', (req, res) => res.sendFile(path.join(PATHS.public, 'tao-thiep.html')));
+app.get('/admin', (req, res) => res.sendFile(path.join(PATHS.public, 'admin.html')));
+app.get('/login', (req, res) => res.sendFile(path.join(PATHS.public, 'login.html')));
+app.get('/register', (req, res) => res.sendFile(path.join(PATHS.public, 'register.html')));
+app.get('/dashboard', (req, res) => res.sendFile(path.join(PATHS.public, 'dashboard.html')));
 
 // Preview template (không load data, dùng data mẫu)
 app.get('/preview/:template', (req, res) => {
-    res.redirect(302, `/thiep/${PRIMARY_INVITATION_SLUG}`);
+    const tplFile = path.join(PATHS.templates, req.params.template, 'index.html');
+    if (fs.existsSync(tplFile)) return res.sendFile(tplFile);
+    res.redirect('/thiep/demo');
 });
 
 // Xem thiệp theo slug
 app.get('/thiep/:slug', (req, res) => {
     const slug     = req.params.slug;
-    if (slug !== PRIMARY_INVITATION_SLUG) return res.redirect(302, `/thiep/${PRIMARY_INVITATION_SLUG}`);
-
     const template = getTemplate(slug);
     const tplFile  = path.join(PATHS.templates, template, 'index.html');
     const fallback = path.join(PATHS.templates, 'boho-floral-green', 'index.html');
@@ -203,15 +191,15 @@ app.post('/api/auth/register', async (req, res) => {
     try {
         const { fullName, email, password } = req.body;
         if (!email || !password) return res.status(400).json({ error: 'Thiếu email hoặc mật khẩu' });
-        
+
         const users = readJSON(USERS_FILE, []);
         if (users.find(u => u.email === email)) return res.status(400).json({ error: 'Email đã tồn tại' });
-        
+
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = { id: Date.now().toString(), fullName, email, password: hashedPassword, createdAt: new Date().toISOString() };
         users.push(newUser);
         writeJSON(USERS_FILE, users);
-        
+
         const token = jwt.sign({ id: newUser.id, email: newUser.email }, JWT_SECRET, { expiresIn: '7d' });
         res.json({ success: true, token, user: { id: newUser.id, fullName, email } });
     } catch (e) { res.status(500).json({ error: e.message }); }
@@ -223,10 +211,10 @@ app.post('/api/auth/login', async (req, res) => {
         const users = readJSON(USERS_FILE, []);
         const user = users.find(u => u.email === email);
         if (!user) return res.status(400).json({ error: 'Tài khoản không tồn tại' });
-        
+
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return res.status(400).json({ error: 'Mật khẩu không đúng' });
-        
+
         const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: '30d' });
         res.json({ success: true, token, user: { id: user.id, fullName: user.fullName, email } });
     } catch (e) { res.status(500).json({ error: e.message }); }
@@ -243,19 +231,17 @@ app.get('/api/auth/me', verifyToken, (req, res) => {
 // API — WEDDING CONFIG
 // ==========================================
 app.get('/api/wedding-config/:slug', (req, res) => {
-    if (req.params.slug !== PRIMARY_INVITATION_SLUG) return res.status(404).json({ error: 'Khong tim thay thiep' });
-
     const file = path.join(PATHS.invitations, `${req.params.slug}.json`);
     const data = readJSON(file);
-    if (data) return res.json(normalizePublicUrls(data));
+    if (data) return res.json(data);
     res.status(404).json({ error: 'Không tìm thấy thiệp' });
 });
 
 // Fallback: get default config (for backward compat)
 app.get('/api/wedding-config', (req, res) => {
-    const file = path.join(PATHS.invitations, `${PRIMARY_INVITATION_SLUG}.json`);
+    const file = path.join(PATHS.invitations, 'demo.json');
     const data = readJSON(file);
-    if (data) return res.json(normalizePublicUrls(data));
+    if (data) return res.json(data);
     res.status(404).json({ error: 'No config' });
 });
 
@@ -273,14 +259,14 @@ app.post('/api/wedding-config/:slug', verifyToken, (req, res) => {
         }
     }
 
-    const payload = { 
-        ...existingData, 
-        ...req.body, 
-        slug, 
+    const payload = {
+        ...existingData,
+        ...req.body,
+        slug,
         userId: req.user.id, // Gắn ID của user hiện tại
-        updatedAt: new Date().toISOString() 
+        updatedAt: new Date().toISOString()
     };
-    
+
     if (isNew && !payload.createdAt) payload.createdAt = payload.updatedAt;
 
     try {
@@ -480,15 +466,15 @@ app.get('/api/platform-stats', (req, res) => {
 app.get('/api/templates', (req, res) => {
     res.json([
         { id:'song-long-do',     name:'Song Long Đỏ (Truyền Thống)', style:'Đỏ vàng kim, truyền thống', tier:'pro', color:'#8b0000',
-          thumb:'https://images.unsplash.com/photo-1543880492-3c8cfaec859e?q=80&w=400' },
+            thumb:'https://images.unsplash.com/photo-1543880492-3c8cfaec859e?q=80&w=400' },
         { id:'boho-floral-green', name:'Boho Floral Green', style:'Tự nhiên, vintage',    tier:'free', color:'#5d7b6f',
-          thumb:'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=400' },
+            thumb:'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=400' },
         { id:'luxury-gold',      name:'Luxury Gold',        style:'Sang trọng, đẳng cấp', tier:'free', color:'#d4af37',
-          thumb:'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=400' },
+            thumb:'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=400' },
         { id:'minimalist-white', name:'Minimalist White',   style:'Tối giản, tinh tế',    tier:'free', color:'#2d6a4f',
-          thumb:'https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=400' },
+            thumb:'https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=400' },
         { id:'romantic-pink',    name:'Romantic Blossom',   style:'Lãng mạn, ngọt ngào',  tier:'free', color:'#d63384',
-          thumb:'https://images.unsplash.com/photo-1606402179428-a57976d71fa4?q=80&w=400' },
+            thumb:'https://images.unsplash.com/photo-1606402179428-a57976d71fa4?q=80&w=400' },
     ]);
 });
 
@@ -497,7 +483,7 @@ app.get('/api/templates', (req, res) => {
 // ==========================================
 app.use((req, res) => {
     if (req.path.startsWith('/api/')) return res.status(404).json({ error: 'Endpoint không tồn tại' });
-    res.redirect(302, `/thiep/${PRIMARY_INVITATION_SLUG}`);
+    res.status(404).sendFile(path.join(PATHS.public, 'landing.html'));
 });
 
 // ==========================================
