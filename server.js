@@ -37,6 +37,7 @@ const jwt        = require('jsonwebtoken');
 const app  = express();
 const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || 'thiepcuoiviet_super_secret_key_2026';
+const PRIMARY_INVITATION_SLUG = process.env.PRIMARY_INVITATION_SLUG || 'huy-hihi-duyen';
 
 // ==========================================
 // PATHS
@@ -74,7 +75,8 @@ app.use(cors());
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(PATHS.uploads));
-app.use(express.static(PATHS.public));
+app.use('/templates/song-long-do', express.static(path.join(PATHS.templates, 'song-long-do')));
+app.use('/images', express.static(path.join(PATHS.public, 'images')));
 
 // Multer
 const storage = multer.diskStorage({
@@ -111,6 +113,16 @@ function writeJSON(filePath, data) {
 function getTemplate(slug) {
     return readJSON(path.join(PATHS.invitations, `${slug}.json`))?.template || 'boho-floral-green';
 }
+function normalizePublicUrls(value) {
+    if (Array.isArray(value)) return value.map(normalizePublicUrls);
+    if (value && typeof value === 'object') {
+        return Object.fromEntries(Object.entries(value).map(([key, val]) => [key, normalizePublicUrls(val)]));
+    }
+    if (typeof value === 'string') {
+        return value.replace(/^https?:\/\/localhost(?::3000)?\/uploads\//, '/uploads/');
+    }
+    return value;
+}
 function updateStats(field, delta = 1) {
     const stats = readJSON(STATS_FILE, {});
     stats[field] = (stats[field] || 0) + delta;
@@ -136,23 +148,23 @@ function verifyToken(req, res, next) {
 // ==========================================
 // WEB ROUTES
 // ==========================================
-app.get('/', (req, res) => res.sendFile(path.join(PATHS.public, 'landing.html')));
-app.get('/tao-thiep', (req, res) => res.sendFile(path.join(PATHS.public, 'tao-thiep.html')));
-app.get('/admin', (req, res) => res.sendFile(path.join(PATHS.public, 'admin.html')));
-app.get('/login', (req, res) => res.sendFile(path.join(PATHS.public, 'login.html')));
-app.get('/register', (req, res) => res.sendFile(path.join(PATHS.public, 'register.html')));
-app.get('/dashboard', (req, res) => res.sendFile(path.join(PATHS.public, 'dashboard.html')));
+app.get('/', (req, res) => res.redirect(302, `/thiep/${PRIMARY_INVITATION_SLUG}`));
+app.get('/tao-thiep', (req, res) => res.redirect(302, `/thiep/${PRIMARY_INVITATION_SLUG}`));
+app.get('/admin', (req, res) => res.redirect(302, `/thiep/${PRIMARY_INVITATION_SLUG}`));
+app.get('/login', (req, res) => res.redirect(302, `/thiep/${PRIMARY_INVITATION_SLUG}`));
+app.get('/register', (req, res) => res.redirect(302, `/thiep/${PRIMARY_INVITATION_SLUG}`));
+app.get('/dashboard', (req, res) => res.redirect(302, `/thiep/${PRIMARY_INVITATION_SLUG}`));
 
 // Preview template (không load data, dùng data mẫu)
 app.get('/preview/:template', (req, res) => {
-    const tplFile = path.join(PATHS.templates, req.params.template, 'index.html');
-    if (fs.existsSync(tplFile)) return res.sendFile(tplFile);
-    res.redirect('/thiep/demo');
+    res.redirect(302, `/thiep/${PRIMARY_INVITATION_SLUG}`);
 });
 
 // Xem thiệp theo slug
 app.get('/thiep/:slug', (req, res) => {
     const slug     = req.params.slug;
+    if (slug !== PRIMARY_INVITATION_SLUG) return res.redirect(302, `/thiep/${PRIMARY_INVITATION_SLUG}`);
+
     const template = getTemplate(slug);
     const tplFile  = path.join(PATHS.templates, template, 'index.html');
     const fallback = path.join(PATHS.templates, 'boho-floral-green', 'index.html');
@@ -231,17 +243,19 @@ app.get('/api/auth/me', verifyToken, (req, res) => {
 // API — WEDDING CONFIG
 // ==========================================
 app.get('/api/wedding-config/:slug', (req, res) => {
+    if (req.params.slug !== PRIMARY_INVITATION_SLUG) return res.status(404).json({ error: 'Khong tim thay thiep' });
+
     const file = path.join(PATHS.invitations, `${req.params.slug}.json`);
     const data = readJSON(file);
-    if (data) return res.json(data);
+    if (data) return res.json(normalizePublicUrls(data));
     res.status(404).json({ error: 'Không tìm thấy thiệp' });
 });
 
 // Fallback: get default config (for backward compat)
 app.get('/api/wedding-config', (req, res) => {
-    const file = path.join(PATHS.invitations, 'demo.json');
+    const file = path.join(PATHS.invitations, `${PRIMARY_INVITATION_SLUG}.json`);
     const data = readJSON(file);
-    if (data) return res.json(data);
+    if (data) return res.json(normalizePublicUrls(data));
     res.status(404).json({ error: 'No config' });
 });
 
@@ -483,7 +497,7 @@ app.get('/api/templates', (req, res) => {
 // ==========================================
 app.use((req, res) => {
     if (req.path.startsWith('/api/')) return res.status(404).json({ error: 'Endpoint không tồn tại' });
-    res.status(404).sendFile(path.join(PATHS.public, 'landing.html'));
+    res.redirect(302, `/thiep/${PRIMARY_INVITATION_SLUG}`);
 });
 
 // ==========================================
