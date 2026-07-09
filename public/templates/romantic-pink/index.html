@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">Thiệp Mời Đám Cưới</title>
+<meta property="og:title" id="og-title" content="Thiệp Mời Đám Cưới">
+<meta property="og:image" id="og-image" content="">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Nunito:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{--rose:#d63384;--rose-light:#f9e0ec;--rose2:#f7c5d9;--bg:#fff8fb;--white:#ffffff;--text:#3d1c2e;--muted:#987b8a;--border:#f3d0e0}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+
+/* HERO */
+.hero{min-height:100vh;position:relative;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,#fff0f5,#fce8f3,#f9dff0)}
+.hero-petals{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.petal{position:absolute;font-size:clamp(1rem,3vw,2rem);animation:falling linear infinite;opacity:.4}
+@keyframes falling{0%{transform:translateY(-60px) rotate(0deg);opacity:.6}100%{transform:translateY(110vh) rotate(360deg);opacity:0}}
+.hero-img{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.15}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(255,240,245,.3),rgba(249,224,236,.5))}
+.hero-content{position:relative;z-index:2;text-align:center;padding:120px 20px 80px}
+.hero-tag{display:inline-flex;align-items:center;gap:10px;color:var(--rose);font-size:.82rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:28px}
+.couple-names{font-family:'Great Vibes',cursive;font-size:clamp(4.5rem,12vw,9rem);color:var(--rose);line-height:1.1;text-shadow:0 4px 20px rgba(214,51,132,.2)}
+.and{display:block;font-family:'Cormorant Garamond',serif;font-size:clamp(1.2rem,3vw,2rem);color:var(--muted);margin:8px 0;font-style:italic}
+.wedding-date{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,2vw,1.4rem);color:var(--rose);letter-spacing:5px;margin:22px 0 38px;font-style:italic}
+.petal-divider{font-size:1.5rem;opacity:.5;margin-bottom:30px}
+.btn-rose{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--rose),#c2185b);color:white;padding:14px 36px;border-radius:50px;font-size:.88rem;font-weight:600;letter-spacing:1px;text-decoration:none;box-shadow:0 8px 25px rgba(214,51,132,.3);transition:all .3s}
+.btn-rose:hover{transform:translateY(-3px);box-shadow:0 14px 35px rgba(214,51,132,.4)}
+
+/* SECTIONS */
+section{padding:90px 5%}
+.container{max-width:1000px;margin:0 auto}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3rem);color:var(--text);text-align:center;margin-bottom:10px;font-style:italic}
+.section-flowers{text-align:center;font-size:1.5rem;margin-bottom:40px;opacity:.6}
+
+/* INVITATION */
+.invitation{background:white}
+.inv-card{max-width:680px;margin:0 auto;text-align:center;background:linear-gradient(135deg,#fff8fb,#fff0f8);border:1px solid var(--border);border-radius:24px;padding:60px 50px;position:relative;overflow:hidden}
+.inv-corner{position:absolute;font-size:3rem;opacity:.15}
+.inv-corner.tl{top:-5px;left:-5px}
+.inv-corner.tr{top:-5px;right:-5px;transform:scaleX(-1)}
+.inv-corner.bl{bottom:-5px;left:-5px;transform:scaleY(-1)}
+.inv-corner.br{bottom:-5px;right:-5px;transform:scale(-1,-1)}
+.inv-quote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.2rem;color:var(--rose);margin-bottom:16px;line-height:1.7}
+.inv-msg{color:var(--muted);font-size:.93rem;line-height:1.9;margin-bottom:35px}
+.parents-row{display:flex;gap:20px;justify-content:center;margin-top:30px;padding-top:30px;border-top:1px dashed var(--rose2)}
+.parent-box{background:white;border:1px solid var(--border);border-radius:16px;padding:20px 25px;text-align:center;flex:1;max-width:220px}
+.parent-box-title{font-size:.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--rose);margin-bottom:12px}
+.parent-box-name{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--text);line-height:1.7}
+@media(max-width:500px){.parents-row{flex-direction:column;align-items:center}}
+
+/* COUNTDOWN */
+.countdown{background:linear-gradient(135deg,var(--rose-light),#fff0f8)}
+.count-row{display:flex;gap:20px;justify-content:center;flex-wrap:wrap}
+.time-box{background:white;border-radius:20px;padding:28px 30px;text-align:center;min-width:130px;border:1px solid var(--border);box-shadow:0 4px 20px rgba(214,51,132,.06)}
+.time-num{font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,6vw,4.5rem);color:var(--rose);display:block;line-height:1}
+.time-label{font-size:.68rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-top:10px}
+
+/* EVENTS */
+.events{background:white}
+.ev-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;max-width:800px;margin:0 auto}
+.ev-card{background:var(--bg);border-radius:20px;padding:30px;border:1px solid var(--border);text-align:center;transition:transform .3s,box-shadow .3s}
+.ev-card:hover{transform:translateY(-4px);box-shadow:0 12px 35px rgba(214,51,132,.1)}
+.ev-icon{font-size:2.2rem;margin-bottom:14px}
+.ev-type{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--text);margin-bottom:14px}
+.ev-info{color:var(--muted);font-size:.88rem;line-height:1.8}
+.ev-info span{display:flex;align-items:center;justify-content:center;gap:8px}
+.ev-info i{color:var(--rose);width:14px}
+.btn-map-rose{display:inline-flex;align-items:center;gap:6px;margin-top:14px;background:var(--rose-light);color:var(--rose);padding:8px 18px;border-radius:50px;font-size:.78rem;font-weight:600;text-decoration:none;transition:all .2s}
+.btn-map-rose:hover{background:var(--rose);color:white}
+
+/* GALLERY */
+.gallery{background:var(--bg)}
+.photo-grid-pink{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:900px;margin:0 auto}
+@media(max-width:600px){.photo-grid-pink{grid-template-columns:repeat(2,1fr)}}
+.photo-item-pink{overflow:hidden;border-radius:14px;aspect-ratio:1}
+.photo-item-pink img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.photo-item-pink:hover img{transform:scale(1.06)}
+
+/* RSVP */
+.rsvp{background:white}
+.rsvp-box{background:var(--bg);border:1px solid var(--border);border-radius:24px;padding:50px 40px;max-width:520px;margin:0 auto;text-align:center}
+@media(max-width:480px){.rsvp-box{padding:36px 24px}}
+.rsvp-form{text-align:left}
+.fg{margin-bottom:15px;position:relative}
+.fg i{position:absolute;top:13px;left:14px;color:var(--rose);font-size:.9rem}
+.fg input,.fg select,.fg textarea{width:100%;padding:12px 14px 12px 40px;border:1.5px solid var(--border);border-radius:12px;font-family:'Nunito',sans-serif;font-size:.9rem;background:white;transition:border-color .3s;outline:none}
+.fg input:focus,.fg textarea:focus{border-color:var(--rose)}
+.fg select{background:white}
+.fg textarea{resize:none}
+.btn-rsvp{display:block;width:100%;padding:14px;background:linear-gradient(135deg,var(--rose),#c2185b);color:white;border:none;border-radius:50px;font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s;box-shadow:0 6px 20px rgba(214,51,132,.25)}
+.btn-rsvp:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(214,51,132,.35)}
+
+/* FOOTER */
+footer{background:linear-gradient(135deg,#fff0f5,#fce8f3);text-align:center;padding:80px 20px;border-top:1px solid var(--border)}
+.footer-names{font-family:'Great Vibes',cursive;font-size:4.5rem;color:var(--rose);line-height:1}
+.footer-sub{font-size:.8rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:18px}
+
+/* DRESS CODE & GUESTBOOK */
+.dress-colors{display:flex;justify-content:center;gap:15px;margin-bottom:20px}
+.dress-swatch{width:60px;height:60px;border-radius:50%;border:2px solid var(--rose);box-shadow:0 4px 15px rgba(214,51,132,.15)}
+.dress-note{text-align:center;color:var(--muted);font-style:italic}
+.gb-entries{max-height:400px;overflow-y:auto;margin-top:30px;text-align:left;padding-right:8px}
+.gb-entries::-webkit-scrollbar{width:4px}
+.gb-entries::-webkit-scrollbar-thumb{background:var(--rose);border-radius:2px}
+.gb-entry{background:var(--bg);padding:15px 20px;border-radius:12px;border:1px solid rgba(214,51,132,.1);margin-bottom:12px}
+.gb-entry-name{color:var(--rose);font-family:'Nunito',sans-serif;font-size:0.95rem;margin-bottom:6px;font-weight:700}
+.gb-entry-msg{color:var(--text);font-size:0.9rem;line-height:1.5}
+.gb-emoji{font-size:1.2rem;margin-right:8px}
+.emoji-row{display:flex;gap:8px;margin-bottom:15px;justify-content:center}
+.emoji-btn{background:white;border:1px solid var(--border);border-radius:8px;width:38px;height:38px;cursor:pointer;font-size:1.1rem;transition:all .2s}
+.emoji-btn.sel{border-color:var(--rose);background:var(--rose-light)}
+
+/* MUSIC */
+#music-player{position:fixed;bottom:25px;right:25px;z-index:999;display:none}
+.music-btn-rose{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--rose),#c2185b);color:white;border:none;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(214,51,132,.35);transition:all .3s}
+.music-btn-rose:hover{transform:scale(1.1)}
+
+/* FADE */
+.fade-in{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.fade-in.visible{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<div id="music-player">
+  <button class="music-btn-rose" onclick="toggleMusic()"><i class="fa-solid fa-music"></i></button>
+  <audio id="bg-audio" loop></audio>
+</div>
+
+<section class="hero" id="home">
+  <div class="hero-petals" id="petals"></div>
+  <div class="hero-img" id="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-tag">🌸 Save the Date 🌸</div>
+    <h1 class="couple-names"><span id="hero-groom">Chú Rể</span><span class="and">&</span><span id="hero-bride">Cô Dâu</span></h1>
+    <p class="wedding-date" id="hero-date"></p>
+    <div class="petal-divider">🌺 · 💕 · 🌺</div>
+    <a href="#invitation" class="btn-rose"><i class="fa-solid fa-envelope-open-heart"></i> Xem Lời Mời</a>
+  </div>
+</section>
+
+<section class="invitation" id="invitation">
+  <div class="container fade-in">
+    <h2 class="section-title">Trân Trọng Kính Mời</h2>
+    <div class="section-flowers">🌸 🌺 🌸</div>
+    <div class="inv-card">
+      <span class="inv-corner tl">🌸</span><span class="inv-corner tr">🌸</span>
+      <span class="inv-corner bl">🌸</span><span class="inv-corner br">🌸</span>
+      <div class="inv-quote" id="inv-quote"></div>
+      <div class="inv-msg" id="inv-msg"></div>
+      <div class="parents-row">
+        <div class="family-side">
+          <div class="family-role">Nhà Trai</div>
+          <div class="family-name" id="gf">Ông: ...</div>
+          <div class="family-name" id="gm">Bà: ...</div>
+          <div id="g-address-display" style="font-size:0.8rem;color:var(--muted);margin-top:10px;display:none;"></div>
+          <a id="g-map-link" href="#" target="_blank" class="btn-map-rose" style="display:none;font-size:0.75rem;padding:6px 14px;margin:10px auto 0;width:fit-content"><i class="fa-solid fa-map-location-dot"></i> Bản đồ</a>
+        </div>
+        <div class="parents-divider"></div>
+        <div class="family-side">
+          <div class="family-role">Nhà Gái</div>
+          <div class="family-name" id="bf">Ông: ...</div>
+          <div class="family-name" id="bm">Bà: ...</div>
+          <div id="b-address-display" style="font-size:0.8rem;color:var(--muted);margin-top:10px;display:none;"></div>
+          <a id="b-map-link" href="#" target="_blank" class="btn-map-rose" style="display:none;font-size:0.75rem;padding:6px 14px;margin:10px auto 0;width:fit-content"><i class="fa-solid fa-map-location-dot"></i> Bản đồ</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="countdown fade-in" id="sec-countdown">
+  <div class="container">
+    <h2 class="section-title">Đếm Ngược Hạnh Phúc</h2>
+    <div class="section-flowers">💕 💍 💕</div>
+    <div class="count-row" id="countdown">
+      <div class="time-box"><span class="time-num" id="days">00</span><div class="time-label">Ngày</div></div>
+      <div class="time-box"><span class="time-num" id="hours">00</span><div class="time-label">Giờ</div></div>
+      <div class="time-box"><span class="time-num" id="minutes">00</span><div class="time-label">Phút</div></div>
+      <div class="time-box"><span class="time-num" id="seconds">00</span><div class="time-label">Giây</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="events fade-in" id="sec-events">
+  <div class="container">
+    <h2 class="section-title">Chương Trình</h2>
+    <div class="section-flowers">🎊 🎉 🎊</div>
+    <div class="ev-cards" id="events-wrap"></div>
+  </div>
+</section>
+
+<section class="gallery" id="sec-gallery">
+  <div class="container fade-in">
+    <h2 class="section-title">Khoảnh Khắc Đẹp</h2>
+    <div class="section-flowers">📸 🌸 📸</div>
+    <div class="photo-grid-pink" id="gallery-wrap"></div>
+  </div>
+</section>
+
+<section class="rsvp fade-in" id="sec-rsvp">
+  <div class="container">
+    <h2 class="section-title">Xác Nhận Tham Dự</h2>
+    <div class="section-flowers">💌 💕 💌</div>
+    <div class="rsvp-box">
+      <form class="rsvp-form" id="rsvp-form">
+        <div class="fg"><i class="fa-regular fa-user"></i><input type="text" id="rsvp-name" placeholder="Tên của bạn" required></div>
+        <div class="fg"><i class="fa-solid fa-phone"></i><input type="tel" id="rsvp-phone" placeholder="Số điện thoại"></div>
+        <div class="fg"><i class="fa-regular fa-calendar-heart"></i>
+          <select id="rsvp-att" required>
+            <option value="" disabled selected>Bạn sẽ đến chứ?</option>
+            <option value="yes">Mình sẽ đến! 🎉</option>
+            <option value="no">Tiếc quá, mình bận 😢</option>
+          </select>
+        </div>
+        <div class="fg"><i class="fa-regular fa-heart"></i><textarea id="rsvp-msg" rows="3" placeholder="Lời chúc yêu thương..."></textarea></div>
+        <button type="submit" class="btn-rsvp">💌 Gửi Xác Nhận</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section class="dresscode fade-in" id="sec-dresscode" style="display:none; padding:80px 5%; background:var(--bg)">
+  <div class="container">
+    <h2 class="section-title" id="dc-title">Trang Phục</h2>
+    <div class="section-flowers">👗 🌸 👔</div>
+    <div class="dress-colors" id="dc-colors"></div>
+    <div class="dress-note" id="dc-note"></div>
+  </div>
+</section>
+
+<section class="guestbook fade-in" id="sec-guestbook" style="display:none; padding:80px 5%; background:white">
+  <div class="container">
+    <h2 class="section-title">Sổ Lưu Bút</h2>
+    <div class="section-flowers">📝 💕 📝</div>
+    <div class="rsvp-box">
+      <div class="fg"><i class="fa-regular fa-user"></i><input type="text" id="gb-name" placeholder="Tên của bạn"></div>
+      <div class="fg"><i class="fa-regular fa-comment-dots"></i><textarea id="gb-msg" rows="3" placeholder="Gửi gắm yêu thương..."></textarea></div>
+      <div class="emoji-row" id="emoji-row"></div>
+      <button class="btn-rsvp" onclick="sendGuestbook()">💌 Gửi Lời Chúc</button>
+      <div class="gb-entries" id="gb-entries"></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-names" id="footer-names">Cô Dâu & Chú Rể</div>
+  <div style="font-size:1.5rem;margin:15px 0;opacity:.5">🌸 💕 🌸</div>
+  <div class="footer-sub">Made with ❤️ by ThiepCuoiViet</div>
+</footer>
+
+<script>
+(function(){
+  // Falling petals
+  const petalContainer=document.getElementById('petals');
+  const petals=['🌸','🌺','💮','🌷','🌹'];
+  for(let i=0;i<18;i++){
+    const p=document.createElement('span');
+    p.className='petal';p.textContent=petals[Math.floor(Math.random()*petals.length)];
+    p.style.cssText=`left:${Math.random()*100}%;top:-60px;animation-duration:${4+Math.random()*6}s;animation-delay:${Math.random()*5}s;font-size:${1+Math.random()*1.5}rem`;
+    petalContainer?.appendChild(p);
+  }
+
+  const API = '/api';
+  const slug=location.pathname.split('/').pop()||'demo';
+  const MUSIC_MAP={canon:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3','a-thousand-years':'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',perfect:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3','wedding-march':'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3'};
+
+  fetch(`${API}/wedding-config/${slug}`).then(r=>r.json()).then(d=>{
+    const gn=d.groom?.shortName||d.groom?.name||'Chú Rể';
+    const bn=d.bride?.shortName||d.bride?.name||'Cô Dâu';
+    document.getElementById('page-title').innerText=`Thiệp Mời | ${gn} & ${bn}`;
+    if(d.heroImage){document.getElementById('hero-bg').style.backgroundImage=`url('${d.heroImage}')`;document.getElementById('og-image').content=d.heroImage;}
+    document.getElementById('hero-groom').innerText=d.groom?.name||'Chú Rể';
+    document.getElementById('hero-bride').innerText=d.bride?.name||'Cô Dâu';
+    document.getElementById('hero-date').innerText=d.weddingDateText||'';
+    document.getElementById('footer-names').innerText=`${gn} & ${bn}`;
+    document.getElementById('inv-quote').innerText=d.invitation?.quote?`"${d.invitation.quote}"`:'';
+    document.getElementById('inv-msg').innerText=d.invitation?.message||'';
+    document.getElementById('gf').innerText=`Ông: ${d.groom?.father||''}`;document.getElementById('gm').innerText=`Bà: ${d.groom?.mother||''}`;
+    if(d.groom?.address) { document.getElementById('g-address-display').innerText=d.groom.address; document.getElementById('g-address-display').style.display='block'; }
+    if(d.groom?.mapUrl) { document.getElementById('g-map-link').href=d.groom.mapUrl; document.getElementById('g-map-link').style.display='flex'; }
+    document.getElementById('bf').innerText=`Ông: ${d.bride?.father||''}`;document.getElementById('bm').innerText=`Bà: ${d.bride?.mother||''}`;
+    if(d.bride?.address) { document.getElementById('b-address-display').innerText=d.bride.address; document.getElementById('b-address-display').style.display='block'; }
+    if(d.bride?.mapUrl) { document.getElementById('b-map-link').href=d.bride.mapUrl; document.getElementById('b-map-link').style.display='flex'; }
+    const ew=document.getElementById('events-wrap');
+    (d.events||[]).forEach(ev=>{ew.innerHTML+=`<div class="ev-card"><div class="ev-icon"><i class="fa-solid ${ev.icon||'fa-heart'}" style="color:var(--rose)"></i></div><div class="ev-type">${ev.type}</div><div class="ev-info"><span><i class="fa-regular fa-clock"></i>${ev.time||''} · ${ev.date||''}</span><span><i class="fa-solid fa-location-dot"></i>${ev.locationName||''}</span><span style="padding-left:22px">${ev.address||''}</span></div>${ev.mapUrl?`<a href="${ev.mapUrl}" target="_blank" class="btn-map-rose"><i class="fa-solid fa-map"></i>Chỉ Đường</a>`:''}</div>`;});
+    const gw=document.getElementById('gallery-wrap');
+    (d.gallery||[]).forEach(u=>{gw.innerHTML+=`<div class="photo-item-pink"><img src="${u}" loading="lazy" alt="Gallery"></div>`;});
+    if(d.music?.enabled){const url=d.music.customUrl||(MUSIC_MAP[d.music.track]||'');if(url){document.getElementById('bg-audio').src=url;document.getElementById('music-player').style.display='block';document.addEventListener('click',()=>document.getElementById('bg-audio').play().catch(()=>{}),{once:true});}}
+    if(d.weddingDate){const t=new Date(d.weddingDate).getTime();setInterval(()=>{const dist=t-Date.now();if(dist<0)return;const p=n=>String(Math.floor(n)).padStart(2,'0');document.getElementById('days').innerText=p(dist/86400000);document.getElementById('hours').innerText=p((dist%86400000)/3600000);document.getElementById('minutes').innerText=p((dist%3600000)/60000);document.getElementById('seconds').innerText=p((dist%60000)/1000);},1000);}
+    const sec=d.sections||{};['countdown','events','gallery','rsvp'].forEach(k=>{const el=document.getElementById('sec-'+k);if(el&&sec[k]===false)el.style.display='none';});
+    
+    // Dresscode
+    if(d.sections?.dresscode) {
+        document.getElementById('sec-dresscode').style.display='block';
+        if(d.dresscode?.title) document.getElementById('dc-title').innerText=d.dresscode.title;
+        if(d.dresscode?.note) document.getElementById('dc-note').innerText=d.dresscode.note;
+        let cHtml='';
+        if(d.dresscode?.color1) cHtml+=`<div class="dress-swatch" style="background:${d.dresscode.color1}"></div>`;
+        if(d.dresscode?.color2) cHtml+=`<div class="dress-swatch" style="background:${d.dresscode.color2}"></div>`;
+        document.getElementById('dc-colors').innerHTML=cHtml;
+    }
+    
+    // Guestbook
+    if(d.sections?.guestbook) {
+        document.getElementById('sec-guestbook').style.display='block';
+        renderEmojis();
+        loadGuestbook();
+    }
+
+    const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:.1});
+    document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  }).catch(()=>{});
+
+  window.toggleMusic=function(){const au=document.getElementById('bg-audio');au.paused?au.play():au.pause();};
+
+  let selectedEmoji='🌸';
+  function renderEmojis(){
+      const r=document.getElementById('emoji-row');r.innerHTML='';
+      ['🌸','💕','✨','💌','🌷'].forEach(e=>{
+          const b=document.createElement('button');b.className='emoji-btn'+(e===selectedEmoji?' sel':'');b.innerText=e;
+          b.onclick=()=>{selectedEmoji=e;renderEmojis();};
+          r.appendChild(b);
+      });
+  }
+  function loadGuestbook(){
+      fetch(`${API}/guestbook/${slug}`).then(r=>r.json()).then(entries=>{
+          const el=document.getElementById('gb-entries');
+          if(!entries.length) { el.innerHTML='<div style="color:var(--muted);text-align:center;font-size:0.9rem">Chưa có lời chúc nào.</div>'; return; }
+          el.innerHTML = entries.map(e=>`<div class="gb-entry"><div class="gb-entry-name"><span class="gb-emoji">${e.emoji}</span>${e.name}</div><div class="gb-entry-msg">${e.message}</div></div>`).join('');
+      });
+  }
+  window.sendGuestbook=function(){
+      fetch(`${API}/guestbook/${slug}`,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({name:document.getElementById('gb-name').value,message:document.getElementById('gb-msg').value,emoji:selectedEmoji})})
+      .then(()=>{document.getElementById('gb-name').value='';document.getElementById('gb-msg').value='';loadGuestbook();});
+  };
+
+  document.getElementById('rsvp-form')?.addEventListener('submit',e=>{
+    e.preventDefault();const btn=e.target.querySelector('button');btn.disabled=true;
+    fetch(`${API}/rsvp/${slug}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:document.getElementById('rsvp-name').value,phone:document.getElementById('rsvp-phone').value,attendance:document.getElementById('rsvp-att').value,message:document.getElementById('rsvp-msg').value})})
+    .then(r=>r.json()).then(()=>{document.getElementById('rsvp-form').innerHTML=`<div style="text-align:center;padding:40px"><div style="font-size:3rem;margin-bottom:15px">🎉</div><div style="color:var(--rose);font-size:1.1rem;font-weight:600">Cảm ơn bạn rất nhiều!</div><div style="color:var(--muted);margin-top:8px;font-size:.9rem">Chúng tôi rất vui được đón tiếp bạn!</div></div>`;}).catch(()=>{btn.disabled=false;});
+  });
+})();
+</script>
+</body>
+</html>

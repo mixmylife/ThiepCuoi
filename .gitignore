@@ -1,0 +1,9 @@
+node_modules/
+uploads/
+data/guests/
+*.log
+.env
+.DS_Store
+Thumbs.db
+scratchpad_*.md
+*.txt

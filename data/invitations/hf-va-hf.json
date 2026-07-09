@@ -1,0 +1,62 @@
+{
+    "slug": "hf-va-hf",
+    "template": "romantic-pink",
+    "groom": {
+        "name": "hf",
+        "shortName": "hf",
+        "father": "",
+        "mother": ""
+    },
+    "bride": {
+        "name": "hf",
+        "shortName": "hf",
+        "father": "",
+        "mother": ""
+    },
+    "weddingDate": "2026-09-24T15:38",
+    "weddingDateText": "24 . 09 . 2026",
+    "heroImage": "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2070",
+    "invitation": {
+        "quote": "Trăm năm tình viên mãn, bạc đầu nghĩa phu thê.",
+        "message": "Trân trọng kính mời bạn đến chung vui trong ngày trọng đại của chúng tôi."
+    },
+    "loveStory": {
+        "title": "Chuyện Tình Yêu Của Chúng Tôi",
+        "image": "",
+        "content": []
+    },
+    "events": [],
+    "gallery": [],
+    "banking": {
+        "enabled": false,
+        "groom": {},
+        "bride": {}
+    },
+    "music": {
+        "enabled": false,
+        "track": "canon",
+        "customUrl": ""
+    },
+    "sections": {
+        "hero": true,
+        "invitation": true,
+        "story": true,
+        "countdown": true,
+        "events": false,
+        "gallery": false,
+        "banking": false,
+        "rsvp": true,
+        "guestbook": false,
+        "dresscode": false
+    },
+    "dresscode": {
+        "enabled": false
+    },
+    "stats": {
+        "views": 1,
+        "lastViewed": "2026-06-24T15:39:44.175Z"
+    },
+    "createdAt": "2026-06-24T15:39:35.372Z",
+    "userId": "1782312915006",
+    "updatedAt": "2026-06-24T15:39:35.376Z"
+}

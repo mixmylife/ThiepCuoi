@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thiệp Cưới Huy Duyên</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/templates/song-long-do/style.css">
+</head>
+
+<body>
+    <div id="particles-container"></div>
+    <audio id="bg-audio" loop></audio>
+    <div id="music-toggle" class="music-toggle">
+        <i class="fa-solid fa-music"></i>
+    </div>
+
+    <!-- TRANG BÌA (COVER PAGE) -->
+    <div id="cover-page" class="cover-page">
+        <div class="door door-left" id="door-left"></div>
+        <div class="door door-right" id="door-right"></div>
+
+        <div class="happiness-bg">
+            <div class="hy-char" style="left:30%; animation-delay:1s; font-size:12px; color:#FFE066">囍</div>
+            <div class="hy-char" style="left:87%; animation-delay:2s; font-size:14px; color:#FFD700">囍</div>
+            <div class="hy-char" style="left:15%; animation-delay:0.5s; font-size:24px; color:#FFE066">囍</div>
+            <div class="hy-char" style="left:8%; animation-delay:2.5s; font-size:20px; color:#FF6B6B">囍</div>
+            <div class="hy-char" style="left:82%; animation-delay:1.5s; font-size:16px; color:#FFE066">囍</div>
+            <div class="hy-char" style="left:36%; animation-delay:3s; font-size:18px; color:#FFC107">囍</div>
+            <div class="hy-char" style="left:60%; animation-delay:0.8s; font-size:15px; color:#FFE066">囍</div>
+        </div>
+
+        <div class="cover-main-wrapper">
+            <div class="seal-container">
+                <span
+                    style="color:var(--red-dark); font-size:32px; font-weight:900; font-family:sans-serif; line-height:1; position:relative; top:2px;">囍</span>
+            </div>
+            <div class="cover-card">
+                <div class="cover-card-bg">
+                    <img src="/images/dragon.png" class="dragon-left" alt="" />
+                    <img src="/images/phoenix.png" class="dragon-right" alt="" />
+                </div>
+                <div class="cover-card-content">
+                    <h1 class="cover-title-names">
+                        <span class="cover-name-text" id="cover-groom-name">Chú Rể</span>
+                        <span class="cover-and">&</span>
+                        <span class="cover-name-text" id="cover-bride-name">Cô Dâu</span>
+                    </h1>
+
+                    <div class="cover-divider">
+                        <div class="line-left"></div>
+                        <span class="floral-icon">❦</span>
+                        <div class="line-right"></div>
+                    </div>
+
+                    <div class="cover-date-display" id="cover-date-text">Ngày tháng năm</div>
+
+                    <div class="cover-invitation-text">
+                        <p class="invite-p">Kính mời</p>
+                        <div class="guest-name-box">
+                            <h2 id="guest-name-display">Quý Khách</h2>
+                        </div>
+                        <p class="invite-p">đến dự buổi tiệc chung vui cùng gia đình</p>
+                    </div>
+
+                    <button id="btn-open-card" class="btn-open-lux">
+                        <span>Mở thiệp</span>
+                        <div class="btn-shine"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NỘI DUNG CHÍNH (MAIN CONTENT) -->
+    <div id="main-content" class="main-content" style="display:none; opacity: 0; transform: translateY(50px);">
+
+        <div class="floating-controls">
+            <button id="music-player" class="music-toggle rotating" style="display:none" onclick="toggleMusic()">
+                <i class="fa-solid fa-music"></i>
+            </button>
+        </div>
+
+        <!-- HERO SECTION (TÊN VÀ LỜI MỜI) -->
+        <section class="section hero-section" id="sec-hero">
+            <div class="hero-bg" id="hero-bg"></div>
+            <div class="hero-overlay"></div>
+            <div id="sparkles-container"></div>
+            <div class="hero-box">
+                <h1 class="wedding-title">Lễ Cưới Của Chúng Tôi</h1>
+                <p id="hero-quote" class="hero-quote">"Trăm năm tình viên mãn, bạc đầu nghĩa phu thê."</p>
+                <div class="hero-message" id="hero-message">Trân trọng kính mời bạn đến chung vui trong ngày trọng đại
+                    của chúng tôi.</div>
+            </div>
+        </section>
+
+        <!-- THÔNG TIN LỄ CƯỚI (2 CỘT ẢNH DÂU RỂ) -->
+        <section class="section couple-section fade-in" id="sec-invitation">
+            <div class="container">
+                <h2 class="section-title">Thông Tin Gia Đình</h2>
+                <div class="decor-line"></div>
+
+                <div class="couple-grid">
+                    <!-- Nhà Trai -->
+                    <div class="couple-card">
+                        <div class="couple-img-wrap" id="groom-img-wrap">
+                            <img id="groom-img" src="" alt="Chú rể">
+                        </div>
+                        <div class="couple-role">Nhà Trai</div>
+                        <h3 id="groom-name" class="cursive-name couple-name">Tên Chú Rể</h3>
+                        <div class="couple-parents">
+                            <div>Ông: <b id="g-father"></b></div>
+                            <div>Bà: <b id="g-mother"></b></div>
+                        </div>
+                        <div class="couple-address" id="g-address-display" style="display:none"></div>
+                        <a id="g-map-link" href="#" target="_blank" class="btn-map btn-small"
+                            style="display:none;margin-top:10px;"><i class="fa-solid fa-map-location-dot"></i> Chỉ
+                            Đường</a>
+                    </div>
+
+                    <div class="couple-divider">
+                        <div class="heart-icon"><i class="fa-solid fa-heart"></i></div>
+                    </div>
+
+                    <!-- Nhà Gái -->
+                    <div class="couple-card">
+                        <div class="couple-img-wrap" id="bride-img-wrap">
+                            <img id="bride-img" src="" alt="Cô Dâu">
+                        </div>
+                        <div class="couple-role">Nhà Gái</div>
+                        <h3 id="bride-name" class="cursive-name couple-name">Tên Cô Dâu</h3>
+                        <div class="couple-parents">
+                            <div>Ông: <b id="b-father"></b></div>
+                            <div>Bà: <b id="b-mother"></b></div>
+                        </div>
+                        <div class="couple-address" id="b-address-display" style="display:none"></div>
+                        <a id="b-map-link" href="#" target="_blank" class="btn-map btn-small"
+                            style="display:none;margin-top:10px;"><i class="fa-solid fa-map-location-dot"></i> Chỉ
+                            Đường</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ĐẾM NGƯỢC -->
+        <section class="section countdown-section fade-in" id="sec-countdown"
+            style="background:var(--red); color:white; padding:80px 20px;">
+            <div class="container">
+                <h2 class="section-title" style="color:var(--gold)">Đếm Ngược Thời Gian</h2>
+                <div class="decor-line" style="background:var(--gold)"></div>
+                <div class="countdown-grid">
+                    <div class="cd-item">
+                        <div class="cd-num" id="days">00</div>
+                        <div class="cd-label">Ngày</div>
+                    </div>
+                    <div class="cd-item">
+                        <div class="cd-num" id="hours">00</div>
+                        <div class="cd-label">Giờ</div>
+                    </div>
+                    <div class="cd-item">
+                        <div class="cd-num" id="minutes">00</div>
+                        <div class="cd-label">Phút</div>
+                    </div>
+                    <div class="cd-item">
+                        <div class="cd-num" id="seconds">00</div>
+                        <div class="cd-label">Giây</div>
+                    </div>
+                </div>
+
+                <!-- LỊCH -->
+                <div class="calendar-card fade-in" id="calendar-card" style="display:none">
+                    <div class="cal-date-row">
+                        <span id="cal-dayofweek">CHỦ NHẬT</span>
+                        <div class="cal-date-huge" id="cal-date-num">01</div>
+                        <span id="cal-month">THÁNG 02</span>
+                    </div>
+                    <div class="cal-year" id="cal-year-num">2026</div>
+                    <div class="cal-lunar">(Ngày vui hạnh phúc)</div>
+                    <div class="cal-event-time" style="display:none;">KHAI TIỆC <br><strong
+                            id="cal-time-bottom">10:30</strong></div>
+
+                    <div class="cal-grid-wrap">
+                        <div class="cal-month-title" id="cal-month-title">Tháng 2 / 2026</div>
+                        <div class="cal-grid" id="cal-grid">
+                            <div class="cal-header">T2</div>
+                            <div class="cal-header">T3</div>
+                            <div class="cal-header">T4</div>
+                            <div class="cal-header">T5</div>
+                            <div class="cal-header">T6</div>
+                            <div class="cal-header">T7</div>
+                            <div class="cal-header">CN</div>
+                            <!-- JS goes here -->
+                        </div>
+                    </div>
+                    <a href="#" class="cal-add-btn">Thêm vào lịch</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- SỰ KIỆN LỄ CƯỚI -->
+        <section class="section events-section fade-in" id="sec-events">
+            <div class="container">
+                <h2 class="section-title">Sự Kiện Lễ Cưới</h2>
+                <div class="decor-line"></div>
+                <div id="events-wrap" class="events-wrap">
+                    <!-- JS sẽ điền các sự kiện vào đây -->
+                </div>
+            </div>
+        </section>
+
+        <!-- CHUYỆN TÌNH YÊU -->
+        <section class="section story-section fade-in" id="sec-story">
+            <div class="container">
+                <h2 class="section-title">Chuyện Tình Yêu</h2>
+                <div class="decor-line"></div>
+                <div class="story-box" id="story-box">
+                    <!-- JS điền -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ALBUM ẢNH -->
+        <section class="section gallery-section fade-in" id="sec-gallery">
+            <div class="container">
+                <h2 class="section-title">Album Kỷ Niệm</h2>
+                <div class="decor-line"></div>
+                <div class="gallery-grid" id="gallery-wrap">
+                    <!-- JS điền -->
+                </div>
+            </div>
+        </section>
+
+        <!-- MỪNG CƯỚI -->
+        <section class="section banking-section fade-in" id="sec-banking"
+            style="background: #f5ece3; padding: 80px 0; border-top: 2px solid #e5d5c5; border-bottom: 2px solid #e5d5c5;">
+            <div class="container">
+                <h2 class="section-title" style="color:var(--red); font-family:var(--font-heading)">PHONG BAO MỪNG CƯỚI
+                </h2>
+                <div class="decor-line" style="background:var(--red)"></div>
+
+                <div class="envelope-wrap" id="envelope-wrap"
+                    style="text-align:center; margin-top:40px; position:relative;">
+                    <!-- Bìa Phong Bao -->
+                    <div id="envelope-cover" style="display:inline-block; cursor:pointer; transition: transform 0.3s;"
+                        onclick="openEnvelope()" onmouseover="this.style.transform='scale(1.05)'"
+                        onmouseout="this.style.transform='scale(1)'">
+                        <div
+                            style="background: linear-gradient(135deg, #c31d1d, #8b0000); width: 260px; height: 350px; border-radius: 12px; position: relative; box-shadow: 0 15px 30px rgba(0,0,0,0.25); border: 2px solid #e3a652; margin:0 auto; overflow: hidden;">
+                            <!-- Góc mạ vàng -->
+                            <div
+                                style="position:absolute; top:15px; left:15px; width:25px; height:25px; border-top:4px solid #e3a652; border-left:4px solid #e3a652;">
+                            </div>
+                            <div
+                                style="position:absolute; top:15px; right:15px; width:25px; height:25px; border-top:4px solid #e3a652; border-right:4px solid #e3a652;">
+                            </div>
+                            <div
+                                style="position:absolute; bottom:15px; left:15px; width:25px; height:25px; border-bottom:4px solid #e3a652; border-left:4px solid #e3a652;">
+                            </div>
+                            <div
+                                style="position:absolute; bottom:15px; right:15px; width:25px; height:25px; border-bottom:4px solid #e3a652; border-right:4px solid #e3a652;">
+                            </div>
+                            <!-- Chữ Hỷ -->
+                            <div
+                                style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); width:90px; height:90px; border-radius:50%; background:#e3a652; display:flex; align-items:center; justify-content:center; border:4px solid #fff; box-shadow: 0 0 15px rgba(227, 166, 82, 0.5);">
+                                <span
+                                    style="color:#c31d1d; font-size:3.5rem; font-weight:900; font-family:sans-serif; line-height:1;">囍</span>
+                            </div>
+                            <!-- Đồng tiền xu -->
+                            <div style="position:absolute; top:40px; right:30px; font-size:1.5rem; opacity:0.8">🪙</div>
+                            <div style="position:absolute; bottom:60px; left:20px; font-size:1.2rem; opacity:0.8">🪙
+                            </div>
+                        </div>
+                        <p
+                            style="margin-top:25px; color:var(--text); font-style:italic; font-size: 1.1rem; opacity: 0.8;">
+                            Nhấn để mở</p>
+                    </div>
+
+                    <!-- Nội Dung Phong Bao -->
+                    <div id="envelope-content" style="display:none; animation: fadeIn 0.8s ease;">
+                        <div class="banking-grid" id="banking-wrap">
+                            <!-- JS điền -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DRESS CODE -->
+        <section class="section dresscode-section fade-in" id="sec-dresscode" style="display:none">
+            <div class="container">
+                <h2 class="section-title" id="dc-title">Trang Phục Dự Tiệc</h2>
+                <div class="decor-line"></div>
+                <p id="dc-note" style="text-align:center; color: var(--text-muted); margin-bottom: 20px;">Quý khách vui
+                    lòng mặc trang phục lịch sự.</p>
+                <div class="dresscode-colors" id="dc-colors" style="display:flex;justify-content:center;gap:20px;">
+                    <!-- JS điền màu -->
+                </div>
+            </div>
+        </section>
+
+        <!-- LỜI CHÚC & RSVP -->
+        <section class="section rsvp-section fade-in" id="sec-rsvp">
+            <div class="container">
+                <h2 class="section-title">Xác Nhận Tham Dự</h2>
+                <div class="decor-line"></div>
+                <p
+                    style="text-align:center; color: var(--gold-light); margin-bottom: 30px; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">
+                    Sự hiện diện của bạn là niềm vinh
+                    hạnh cho gia đình chúng tôi.</p>
+                <form id="rsvp-form" class="rsvp-form">
+                    <input type="text" id="rsvp-name" placeholder="Tên của bạn *" required>
+                    <input type="tel" id="rsvp-phone" placeholder="Số điện thoại *" required>
+                    <select id="rsvp-att" required>
+                        <option value="">Bạn sẽ tham dự chứ?</option>
+                        <option value="yes">Vâng, tôi sẽ đến</option>
+                        <option value="no">Rất tiếc, tôi không thể đến</option>
+                    </select>
+
+                    <div style="position:relative; margin-bottom: 15px;">
+                        <textarea id="rsvp-msg" placeholder="Hãy gửi lời nhắn riêng tư đến chúng tôi"
+                            rows="4"></textarea>
+                        <button type="button" class="btn-emoji" onclick="toggleEmoji('rsvp')"
+                            style="position:absolute; top:10px; right:10px; background:none; border:none; font-size:1.3rem; color:var(--gold); cursor:pointer;"><i
+                                class="fa-regular fa-face-smile"></i></button>
+                        <div id="emoji-picker-rsvp" class="emoji-picker"
+                            style="display:none; position:absolute; top:40px; right:0; background:#fff; border:1px solid #ddd; border-radius:8px; padding:10px; z-index:100; width: 220px; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
+                            <span class="emo" onclick="addEmoji('rsvp', '❤️')">❤️</span> <span class="emo"
+                                onclick="addEmoji('rsvp', '🥰')">🥰</span> <span class="emo"
+                                onclick="addEmoji('rsvp', '🎉')">🎉</span> <span class="emo"
+                                onclick="addEmoji('rsvp', '🎊')">🎊</span> <span class="emo"
+                                onclick="addEmoji('rsvp', '💍')">💍</span> <span class="emo"
+                                onclick="addEmoji('rsvp', '👰')">👰</span> <span class="emo"
+                                onclick="addEmoji('rsvp', '🤵')">🤵</span> <span class="emo"
+                                onclick="addEmoji('rsvp', '🥂')">🥂</span> <span class="emo"
+                                onclick="addEmoji('rsvp', '🕊️')">🕊️</span> <span class="emo"
+                                onclick="addEmoji('rsvp', '✨')">✨</span> <span class="emo"
+                                onclick="addEmoji('rsvp', '💐')">💐</span> <span class="emo"
+                                onclick="addEmoji('rsvp', '😘')">😘</span>
+                        </div>
+                    </div>
+
+                    <div class="voice-recorder-wrap"
+                        style="display:flex; align-items:center; gap:10px; margin-bottom:15px; flex-wrap: wrap; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; border: 1px dashed var(--gold);">
+                        <button type="button" id="btn-record" class="btn-voice"
+                            style="background:none; border:1px solid var(--gold); color:var(--gold); padding:5px 15px; border-radius:20px; cursor:pointer;"><i
+                                class="fa-solid fa-microphone"></i> Ghi âm</button>
+                        <button type="button" id="btn-stop-record" class="btn-voice"
+                            style="display:none; background:none; border:1px solid red; color:red; padding:5px 15px; border-radius:20px; cursor:pointer;"><i
+                                class="fa-solid fa-stop"></i> Dừng</button>
+                        <span id="record-timer"
+                            style="display:none; color:var(--text); font-weight:bold; width:45px;">00:00</span>
+                        <!-- <button type="button" id="btn-play-record" class="btn-voice" style="display:none; background:none; border:1px solid #28a745; color:#28a745; padding:5px 15px; border-radius:20px; cursor:pointer;"><i class="fa-solid fa-play"></i> Nghe lại</button> -->
+                        <!-- <button type="button" id="btn-delete-record" class="btn-voice" style="display:none; background:none; border:none; color:red; cursor:pointer; font-size:1.2rem;"><i class="fa-solid fa-trash"></i></button> -->
+                        <span id="record-success-msg" style="display:none; color:#28a745; font-weight:bold;"><i
+                                class="fa-solid fa-circle-check"></i> Đã ghi âm thành công!</span>
+                        <span id="record-status"
+                            style="font-size:0.85em; color:var(--text-muted); margin-left:auto;">Tối đa 60s</span>
+                        <audio id="audio-playback" style="display:none;"></audio>
+                    </div>
+
+                    <button type="submit" class="btn-gold btn-block">Xác Nhận Tham Dự</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- SỔ LƯU BÚT -->
+        <section class="section guestbook-section fade-in" id="sec-guestbook" style="display:none">
+            <div class="container">
+                <h2 class="section-title">Sổ Lưu Bút</h2>
+                <div class="decor-line"></div>
+                <div class="guestbook-wrap">
+                    <form id="gb-form" class="gb-form">
+                        <input type="text" id="gb-name" placeholder="Tên của bạn *" required>
+                        <div style="position:relative; margin-bottom: 15px;">
+                            <textarea id="gb-msg" placeholder="Gửi gắm lời yêu thương..." rows="3" required></textarea>
+                            <button type="button" class="btn-emoji" onclick="toggleEmoji('gb')"
+                                style="position:absolute; top:10px; right:10px; background:none; border:none; font-size:1.3rem; color:var(--gold); cursor:pointer;"><i
+                                    class="fa-regular fa-face-smile"></i></button>
+                            <div id="emoji-picker-gb" class="emoji-picker"
+                                style="display:none; position:absolute; top:40px; right:0; background:#fff; border:1px solid #ddd; border-radius:8px; padding:10px; z-index:100; width: 220px; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
+                                <span class="emo" onclick="addEmoji('gb', '❤️')">❤️</span> <span class="emo"
+                                    onclick="addEmoji('gb', '🥰')">🥰</span> <span class="emo"
+                                    onclick="addEmoji('gb', '🎉')">🎉</span> <span class="emo"
+                                    onclick="addEmoji('gb', '🎊')">🎊</span> <span class="emo"
+                                    onclick="addEmoji('gb', '💍')">💍</span> <span class="emo"
+                                    onclick="addEmoji('gb', '👰')">👰</span> <span class="emo"
+                                    onclick="addEmoji('gb', '🤵')">🤵</span> <span class="emo"
+                                    onclick="addEmoji('gb', '🥂')">🥂</span> <span class="emo"
+                                    onclick="addEmoji('gb', '🕊️')">🕊️</span> <span class="emo"
+                                    onclick="addEmoji('gb', '✨')">✨</span> <span class="emo"
+                                    onclick="addEmoji('gb', '💐')">💐</span> <span class="emo"
+                                    onclick="addEmoji('gb', '😘')">😘</span>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-gold">Gửi Lời Chúc</button>
+                    </form>
+                    <div id="gb-list" class="gb-list">
+                        <!-- JS điền -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer" style="background-color: var(--red); padding: 60px 20px; text-align: center;">
+            <h2 id="footer-names"
+                style="font-family: 'Great Vibes', cursive; font-size: 3.2rem; color: var(--gold); margin: 0 0 15px 0; font-weight: normal; text-shadow: none;">
+                Phùng Huy &amp; Mỹ Duyên</h2>
+            <p style="font-family: 'Lora', serif; font-style: italic; font-size: 1.1rem; color: #ffffff; margin: 0;">Cảm
+                ơn bạn đã là một phần trong câu chuyện của chúng tôi!</p>
+            <p
+                style="margin-top: 25px; font-size: 0.8rem; color: rgba(255, 255, 255, 0.6); font-family: 'Inter', sans-serif;">
+                Made with ❤️ by HuyDuyen ^^</p>
+        </footer>
+    </div>
+
+    <script>
+        const slug = window.location.pathname.split('/').pop();
+        const API = '/api';
+
+        // Trích xuất ID video YouTube nếu là dạng link YouTube (dùng cho Nhạc tùy chỉnh)
+        function getYouTubeID(url) {
+            var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            var match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+
+        fetch(`${API}/wedding-config/${slug}`).then(r => r.json()).then(data => {
+            // Fix hardcoded localhost URLs for public links
+            const dStr = JSON.stringify(data).replace(/http:\/\/localhost:3000/g, '');
+            const d = JSON.parse(dStr);
+
+            // Lấy tên khách mời từ URL (nếu có)
+            const urlParams = new URLSearchParams(window.location.search);
+            const guest = urlParams.get('guest');
+            if (guest) {
+                document.getElementById('guest-name-display').innerText = guest;
+            }
+
+            // Setup Trang Bìa
+            document.getElementById('cover-groom-name').innerText = d.groom?.shortName || d.groom?.name || 'Chú Rể';
+            document.getElementById('cover-bride-name').innerText = d.bride?.shortName || d.bride?.name || 'Cô Dâu';
+            document.getElementById('cover-date-text').innerText = d.weddingDateText || '';
+            document.getElementById('footer-names').innerText = (d.groom?.shortName || d.groom?.name || 'Chú Rể') + ' & ' + (d.bride?.shortName || d.bride?.name || 'Cô Dâu');
+
+            // Setup Hero
+            const bg = d.heroImage || 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1920';
+            document.getElementById('hero-bg').style.backgroundImage = `url(${bg})`;
+            document.getElementById('hero-quote').innerText = d.invitation?.quote || '';
+            document.getElementById('hero-message').innerText = d.invitation?.message || '';
+
+            // Setup Thông tin Couple
+            document.getElementById('groom-name').innerText = d.groom?.name || '';
+            document.getElementById('g-father').innerText = d.groom?.father || '...';
+            document.getElementById('g-mother').innerText = d.groom?.mother || '...';
+
+            document.getElementById('bride-name').innerText = d.bride?.name || '';
+            document.getElementById('b-father').innerText = d.bride?.father || '...';
+            document.getElementById('b-mother').innerText = d.bride?.mother || '...';
+
+            // Cài đặt Ảnh Cô Dâu Chú Rể (Có fallback)
+            const groomImg = document.getElementById('groom-img');
+            if (d.groom?.image) { groomImg.src = d.groom.image; } else { document.getElementById('groom-img-wrap').style.display = 'none'; }
+
+            const brideImg = document.getElementById('bride-img');
+            if (d.bride?.image) { brideImg.src = d.bride.image; } else { document.getElementById('bride-img-wrap').style.display = 'none'; }
+
+            // Địa chỉ & Map Couple
+            if (d.groom?.address) {
+                const ga = document.getElementById('g-address-display');
+                ga.innerText = d.groom.address; ga.style.display = 'block';
+            }
+            if (d.groom?.mapUrl) {
+                const gm = document.getElementById('g-map-link');
+                gm.href = d.groom.mapUrl; gm.style.display = 'inline-block';
+            }
+
+            if (d.bride?.address) {
+                const ba = document.getElementById('b-address-display');
+                ba.innerText = d.bride.address; ba.style.display = 'block';
+            }
+            if (d.bride?.mapUrl) {
+                const bm = document.getElementById('b-map-link');
+                bm.href = d.bride.mapUrl; bm.style.display = 'inline-block';
+            }
+
+            // Cố gắng tìm ảnh Dâu Rể từ Gallery
+            let gImg = bg;
+            let bImg = bg;
+            if (d.gallery && d.gallery.length >= 2) {
+                gImg = d.gallery[0];
+                bImg = d.gallery[1];
+            } else if (d.gallery && d.gallery.length === 1) {
+                gImg = bImg = d.gallery[0];
+            }
+            document.getElementById('groom-img').src = gImg;
+            document.getElementById('bride-img').src = bImg;
+
+            // Setup Nhạc
+            if (d.music && d.music.enabled) {
+                let mUrl = d.music.customUrl;
+                if (!mUrl && d.music.track) {
+                    const tracks = {
+                        'a-thousand-years': 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', // Placeholder
+                        'perfect': 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
+                        'beautiful-in-white': 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'
+                    };
+                    mUrl = tracks[d.music.track];
+                }
+                if (mUrl) {
+                    const ytId = getYouTubeID(mUrl);
+                    if (ytId) {
+                        // Nếu là YouTube, nhúng iframe ẩn thay cho audio (tạo iframe on demand)
+                        window.youtubeMusicId = ytId;
+                    } else {
+                        document.getElementById('bg-audio').src = mUrl;
+                    }
+                    document.getElementById('music-player').style.display = 'flex';
+                }
+            }
+
+            // Setup Countdown & Calendar
+            if (d.weddingDate) {
+                const targetTime = new Date(d.weddingDate).getTime();
+                setInterval(() => {
+                    const now = new Date().getTime();
+                    const distance = targetTime - now;
+                    if (distance < 0) return;
+                    document.getElementById('days').innerText = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+                    document.getElementById('hours').innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+                    document.getElementById('minutes').innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+                    document.getElementById('seconds').innerText = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
+                }, 1000);
+
+                // Render Calendar
+                const dObj = new Date(d.weddingDate);
+                const wYear = dObj.getFullYear();
+                const wMonth = dObj.getMonth();
+                const wDate = dObj.getDate();
+                const wDay = dObj.getDay(); // 0 (Sun) - 6 (Sat)
+
+                const timeStr = dObj.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+                document.getElementById('cal-time-bottom').innerText = timeStr;
+
+                const daysOfWeek = ['CHỦ NHẬT', 'THỨ HAI', 'THỨ BA', 'THỨ TƯ', 'THỨ NĂM', 'THỨ SÁU', 'THỨ BẢY'];
+                document.getElementById('cal-dayofweek').innerText = daysOfWeek[wDay];
+                document.getElementById('cal-date-num').innerText = wDate.toString().padStart(2, '0');
+                document.getElementById('cal-month').innerText = 'THÁNG ' + (wMonth + 1).toString().padStart(2, '0');
+                document.getElementById('cal-year-num').innerText = wYear;
+                document.getElementById('cal-month-title').innerText = 'Tháng ' + (wMonth + 1) + ' / ' + wYear;
+
+                // Calendar Grid Logic
+                const gridEl = document.getElementById('cal-grid');
+                // Calculate first day of month and total days
+                const firstDay = new Date(wYear, wMonth, 1).getDay(); // 0 is Sunday
+                const totalDays = new Date(wYear, wMonth + 1, 0).getDate();
+
+                // Adjust for Monday start (T2 is first column)
+                let emptyCells = firstDay === 0 ? 6 : firstDay - 1;
+
+                let htmlStr = '';
+                for (let i = 0; i < emptyCells; i++) {
+                    htmlStr += `<div></div>`;
+                }
+                for (let i = 1; i <= totalDays; i++) {
+                    if (i === wDate) {
+                        htmlStr += `<div class="cal-day active"><i class="fa-solid fa-heart" style="position:absolute; font-size:2.2rem; top:50%; left:50%; transform:translate(-50%, -50%); color:var(--red); z-index:-1; opacity:1"></i><span style="position:relative; z-index:2; color:#fff">${i}</span></div>`;
+                    } else if (i === 21 || i === 23) {
+                        htmlStr += `<div class="cal-day" style="position:relative; z-index:1;"><i class="fa-regular fa-heart" style="position:absolute; font-size:2.2rem; top:50%; left:50%; transform:translate(-50%, -50%); color:var(--red); z-index:-1; opacity:0.8"></i><span style="position:relative; z-index:2; color:var(--red); font-weight:bold;">${i}</span></div>`;
+                    } else {
+                        htmlStr += `<div class="cal-day">${i}</div>`;
+                    }
+                }
+                gridEl.innerHTML += htmlStr;
+
+                // Set Google Calendar Link
+                try {
+                    const startStr = dObj.toISOString().replace(/-|:|\.\d+/g, "");
+                    const endStr = new Date(dObj.getTime() + 4 * 60 * 60 * 1000).toISOString().replace(/-|:|\.\d+/g, "");
+                    const gCalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=L%E1%BB%85+C%C6%B0%E1%BB%9Bi+${encodeURIComponent(d.groom?.shortName || d.groom?.name)}+&+${encodeURIComponent(d.bride?.shortName || d.bride?.name)}&dates=${startStr}/${endStr}&details=Tr%C3%A2n+tr%E1%BB%8Dng+k%C3%ADnh+m%E1%BB%9Di+b%E1%BA%A1n+%C4%91%E1%BA%BFn+chung+vui+c%C3%B9ng+gia+%C4%91%C3%ACnh+ch%C3%BAng+t%C3%B4i.`;
+                    const btn = document.querySelector('.cal-add-btn');
+                    btn.href = gCalUrl;
+                    btn.target = "_blank";
+                } catch (e) { }
+
+                document.getElementById('calendar-card').style.display = 'block';
+            }
+
+            // Setup Sự Kiện (Bao gồm Map)
+            const evWrap = document.getElementById('events-wrap');
+            if (d.events && d.events.length) {
+                evWrap.innerHTML = d.events.map(ev => `
+                    <div class="event-card">
+                        <div class="event-icon"><i class="fa-solid ${ev.icon || 'fa-church'}"></i></div>
+                        <h3 class="event-type">${ev.type}</h3>
+                        <div class="event-detail"><i class="fa-regular fa-clock"></i> ${ev.time || ''}</div>
+                        <div class="event-detail"><i class="fa-regular fa-calendar"></i> ${ev.date || ''}</div>
+                        <div class="event-detail"><i class="fa-solid fa-location-dot"></i> <b>${ev.locationName || ''}</b></div>
+                        <div class="event-detail" style="margin-left: 20px; font-size: 0.9em; margin-bottom: 15px;">${ev.address || ''}</div>
+                        ${ev.mapUrl ? `<a href="${ev.mapUrl}" target="_blank" class="btn-map"><i class="fa-solid fa-map-location-dot"></i> Xem Bản Đồ</a>` : ''}
+                    </div>
+                `).join('');
+            } else {
+                document.getElementById('sec-events').style.display = 'none';
+            }
+
+            // Chuyện tình yêu
+            if (d.loveStory && d.loveStory.title && d.loveStory.content && d.loveStory.content.length) {
+                document.getElementById('story-box').innerHTML = `
+                    ${d.loveStory.image ? `<img src="${d.loveStory.image}" alt="Story">` : ''}
+                    <h3>${d.loveStory.title}</h3>
+                    ${d.loveStory.content.map(p => `<p>${p}</p>`).join('')}
+                `;
+            } else {
+                document.getElementById('sec-story').style.display = 'none';
+            }
+
+            // Album
+            if (d.gallery && d.gallery.length) {
+                window.galleryImages = d.gallery;
+                document.getElementById('gallery-wrap').innerHTML = d.gallery.map((u, i) => `<div class="gallery-item" onclick="openLightbox(${i})"><img src="${u}" loading="lazy"></div>`).join('');
+            } else {
+                document.getElementById('sec-gallery').style.display = 'none';
+            }
+
+            // Mừng Cưới
+            if (d.banking && d.banking.enabled) {
+                const bw = document.getElementById('banking-wrap');
+                let h = '';
+                ['groom', 'bride'].forEach(side => {
+                    const b = d.banking[side];
+                    if (b && b.accountNumber) {
+                        h += `
+                        <div class="banking-card">
+                            <h3 class="cursive-name" style="color:var(--red); font-size:2.2rem; margin-bottom:15px; font-family:'Great Vibes', cursive;">${side === 'groom' ? 'Đến Chú Rể' : 'Đến Cô Dâu'}</h3>
+                            ${b.qrCode ? `<img src="${b.qrCode}" class="qr-img">` : ''}
+                            <div class="bank-info">
+                                <div><b>Ngân hàng:</b> ${b.bankName}</div>
+                                <div><b>STK:</b> ${b.accountNumber}</div>
+                                <div><b>Tên TK:</b> ${b.accountName}</div>
+                            </div>
+                        </div>`;
+                    }
+                });
+                if (h) bw.innerHTML = h;
+                else document.getElementById('sec-banking').style.display = 'none';
+            } else {
+                document.getElementById('sec-banking').style.display = 'none';
+            }
+
+            // Dress Code
+            if (d.dresscode && d.dresscode.enabled) {
+                document.getElementById('sec-dresscode').style.display = 'block';
+                document.getElementById('dc-title').innerText = d.dresscode.title || 'Trang Phục Dự Tiệc';
+                document.getElementById('dc-note').innerText = d.dresscode.note || 'Quý khách vui lòng mặc trang phục lịch sự.';
+                const dcc = document.getElementById('dc-colors');
+                dcc.innerHTML = '';
+                if (d.dresscode.color1) dcc.innerHTML += `<div class="color-circle" style="background:${d.dresscode.color1}"></div>`;
+                if (d.dresscode.color2) dcc.innerHTML += `<div class="color-circle" style="background:${d.dresscode.color2}"></div>`;
+            }
+
+            // Tắt mở section
+            const s = d.sections || {};
+            ['hero', 'invitation', 'story', 'countdown', 'events', 'gallery', 'banking', 'rsvp', 'guestbook', 'dresscode'].forEach(k => {
+                const el = document.getElementById('sec-' + k);
+                if (el) {
+                    if (s[k] === false) el.style.display = 'none';
+                    else if (s[k] === true) el.style.display = '';
+                }
+            });
+
+        });
+
+        // =======================
+        // UX LOGIC
+        // =======================
+
+        let autoScrollInterval;
+        let isMusicPlaying = false;
+
+        document.getElementById('btn-open-card').addEventListener('click', () => {
+            const cover = document.getElementById('cover-page');
+            const main = document.getElementById('main-content');
+
+            // Xử lý nhạc
+            const musicToggleBtn = document.getElementById('music-toggle');
+            if (musicToggleBtn) {
+                musicToggleBtn.classList.add('visible');
+                musicToggleBtn.classList.add('spinning');
+            }
+
+            if (!isMusicPlaying) {
+                if (window.youtubeMusicId) {
+                    const iframe = document.createElement('iframe');
+                    iframe.src = `https://www.youtube.com/embed/${window.youtubeMusicId}?autoplay=1&loop=1&playlist=${window.youtubeMusicId}`;
+                    iframe.allow = "autoplay";
+                    iframe.style.display = "none";
+                    iframe.id = "yt-audio";
+                    document.body.appendChild(iframe);
+                    isMusicPlaying = true;
+                } else {
+                    const au = document.getElementById('bg-audio');
+                    if (au && au.src) {
+                        au.play().catch(() => { });
+                        isMusicPlaying = true;
+                    }
+                }
+            }
+
+            // Sự kiện nút bật/tắt nhạc
+            if (musicToggleBtn && !musicToggleBtn.hasAttribute('data-bound')) {
+                musicToggleBtn.setAttribute('data-bound', 'true');
+                musicToggleBtn.addEventListener('click', () => {
+                    if (isMusicPlaying) {
+                        // Tắt nhạc
+                        const yt = document.getElementById('yt-audio');
+                        if (yt) yt.remove();
+                        const au = document.getElementById('bg-audio');
+                        if (au) au.pause();
+                        isMusicPlaying = false;
+                        musicToggleBtn.classList.remove('spinning');
+                        musicToggleBtn.classList.add('paused');
+                    } else {
+                        // Bật nhạc
+                        if (window.youtubeMusicId) {
+                            const iframe = document.createElement('iframe');
+                            iframe.src = `https://www.youtube.com/embed/${window.youtubeMusicId}?autoplay=1&loop=1&playlist=${window.youtubeMusicId}`;
+                            iframe.allow = "autoplay";
+                            iframe.style.display = "none";
+                            iframe.id = "yt-audio";
+                            document.body.appendChild(iframe);
+                        } else {
+                            const au = document.getElementById('bg-audio');
+                            if (au && au.src) au.play().catch(() => { });
+                        }
+                        isMusicPlaying = true;
+                        musicToggleBtn.classList.add('spinning');
+                        musicToggleBtn.classList.remove('paused');
+                    }
+                });
+            }
+
+            // Hiệu ứng mở bìa (Mở cửa cung đình)
+            const coverWrapper = document.querySelector('.cover-main-wrapper');
+            const doorLeft = document.getElementById('door-left');
+            const doorRight = document.getElementById('door-right');
+
+            if (coverWrapper) {
+                coverWrapper.style.transition = 'all 0.6s ease';
+                coverWrapper.style.opacity = '0';
+                coverWrapper.style.transform = 'scale(1.2)';
+
+                const dragonLeft = document.querySelector('.dragon-left');
+                const dragonRight = document.querySelector('.dragon-right');
+                if (dragonLeft) dragonLeft.style.transform = 'scaleX(-1) rotate(-15deg) translate(-100px, -100px) scale(2)';
+                if (dragonRight) dragonRight.style.transform = 'rotate(-10deg) translate(100px, 100px) scale(2)';
+            }
+
+            setTimeout(() => {
+                if (doorLeft) doorLeft.style.transform = 'translateX(-100%)';
+                if (doorRight) doorRight.style.transform = 'translateX(100%)';
+            }, 300);
+
+            setTimeout(() => {
+                cover.style.display = 'none';
+                main.style.display = 'block';
+                // Trigger reflow
+                void main.offsetWidth;
+                main.style.opacity = '1';
+                main.style.transform = 'translateY(0)';
+
+                // Khởi động auto scroll
+                startAutoScroll();
+            }, 1200);
+        });
+
+        function toggleMusic() {
+            if (window.youtubeMusicId) {
+                const iframe = document.getElementById('yt-audio');
+                if (iframe) {
+                    iframe.remove();
+                    isMusicPlaying = false;
+                    document.getElementById('music-player').classList.remove('rotating');
+                } else {
+                    const newIframe = document.createElement('iframe');
+                    newIframe.src = `https://www.youtube.com/embed/${window.youtubeMusicId}?autoplay=1&loop=1&playlist=${window.youtubeMusicId}`;
+                    newIframe.allow = "autoplay";
+                    newIframe.style.display = "none";
+                    newIframe.id = "yt-audio";
+                    document.body.appendChild(newIframe);
+                    isMusicPlaying = true;
+                    document.getElementById('music-player').classList.add('rotating');
+                }
+                return;
+            }
+
+            const au = document.getElementById('bg-audio');
+            if (au.paused) {
+                au.play();
+                document.getElementById('music-player').classList.add('rotating');
+            } else {
+                au.pause();
+                document.getElementById('music-player').classList.remove('rotating');
+            }
+        }
+
+        // Tự động cuộn chậm mượt mà
+        function startAutoScroll() {
+            let autoScrollReq;
+            const step = () => {
+                window.scrollBy(0, 1.5); // Nhanh hơn một chút (khoảng 90px/s)
+                autoScrollReq = requestAnimationFrame(step);
+            };
+            autoScrollReq = requestAnimationFrame(step);
+
+            // Nếu người dùng chạm hoặc scroll tay, tắt auto scroll
+            const stopScroll = () => cancelAnimationFrame(autoScrollReq);
+            window.addEventListener('wheel', stopScroll, { once: true });
+            window.addEventListener('touchstart', stopScroll, { once: true });
+        }
+
+        // Observer cho các phần tử fade-in
+        const obs = new IntersectionObserver((entries) => {
+            entries.forEach((e, idx) => {
+                if (e.isIntersecting) {
+                    setTimeout(() => {
+                        e.target.classList.add('visible');
+                    }, idx * 100); // Staggered reveal
+                    obs.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        // Cuộn Parallax
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            const heroBg = document.getElementById('hero-bg');
+            if (heroBg) heroBg.style.transform = `translateY(${scrollY * 0.4}px) scale(1.1)`;
+        });
+
+        // Cần đợi một chút để DOM load sau khi Mở Thiệp
+        setTimeout(() => {
+            document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+        }, 1000);
+
+        // Guestbook
+        function loadGuestbook() {
+            fetch(`${API}/guestbook/${slug}`)
+                .then(r => r.json())
+                .then(data => {
+                    const list = document.getElementById('gb-list');
+                    if (!list) return;
+                    list.innerHTML = data.map(item => `
+                    <div class="gb-item">
+                        <div class="gb-header">
+                            <span class="gb-name"><i class="fa-solid fa-user"></i> ${item.name}</span>
+                            <span class="gb-date">${new Date(item.createdAt).toLocaleDateString('vi-VN')}</span>
+                        </div>
+                        <div class="gb-content">${item.message}</div>
+                    </div>
+                `).join('');
+                });
+        }
+
+        document.getElementById('gb-form')?.addEventListener('submit', e => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            btn.disabled = true;
+            btn.innerText = 'Đang gửi...';
+            const data = {
+                name: document.getElementById('gb-name').value,
+                message: document.getElementById('gb-msg').value
+            };
+            fetch(`${API}/guestbook/${slug}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            }).then(() => {
+                document.getElementById('gb-name').value = '';
+                document.getElementById('gb-msg').value = '';
+                loadGuestbook();
+                btn.disabled = false;
+                btn.innerText = 'Gửi Lời Chúc';
+            }).catch(() => {
+                btn.disabled = false;
+                btn.innerText = 'Gửi Lời Chúc';
+            });
+        });
+
+        function createPetals() {
+            const container = document.getElementById('sparkles-container');
+            if (!container) return;
+            setInterval(() => {
+                const petal = document.createElement('div');
+                petal.className = 'petal';
+                petal.style.left = Math.random() * 100 + 'vw';
+                petal.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                const size = Math.random() * 10 + 8;
+                petal.style.width = size + 'px';
+                petal.style.height = size + 'px';
+                if (Math.random() > 0.7) {
+                    petal.style.background = 'var(--gold)';
+                    petal.style.boxShadow = '0 0 10px rgba(212, 175, 55, 0.5)';
+                }
+                container.appendChild(petal);
+                setTimeout(() => petal.remove(), 10000);
+            }, 400);
+        }
+        createPetals();
+
+        loadGuestbook();
+
+        // Submit form
+        document.getElementById('rsvp-form')?.addEventListener('submit', async e => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            btn.disabled = true;
+            btn.innerText = 'Đang gửi...';
+
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+                document.getElementById('btn-stop-record').click();
+            }
+
+            // Wait until audio is processed
+            if (audioChunks && audioChunks.length > 0 && !window.audioBase64) {
+                let attempts = 0;
+                while (!window.audioBase64 && attempts < 30) {
+                    await new Promise(r => setTimeout(r, 100));
+                    attempts++;
+                }
+            }
+
+            const data = {
+                name: document.getElementById('rsvp-name').value,
+                phone: document.getElementById('rsvp-phone').value,
+                attendance: document.getElementById('rsvp-att').value,
+                message: document.getElementById('rsvp-msg').value,
+                voiceMessage: window.audioBase64 || null
+            };
+
+            fetch(`${API}/rsvp/${slug}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+                .then(r => r.json())
+                .then(() => {
+                    e.target.innerHTML = `<div style="text-align:center;padding:30px">
+                    <i class="fa-solid fa-circle-check" style="color:var(--gold);font-size:3rem;margin-bottom:15px"></i>
+                    <h3 style="color:var(--dark);font-family:'Playfair Display'">Cảm ơn bạn rất nhiều!</h3>
+                    <p style="color:var(--text-muted)">Gia đình đã nhận được lời chúc của bạn.</p>
+                </div>`;
+                })
+                .catch(() => {
+                    alert('Có lỗi xảy ra, vui lòng thử lại.');
+                    btn.disabled = false;
+                    btn.innerText = 'Xác Nhận Tham Dự';
+                });
+        });
+
+        // Close Envelope when clicking outside
+        document.addEventListener('click', function (e) {
+            const envelopeContent = document.getElementById('envelope-content');
+            const envelopeCover = document.getElementById('envelope-cover');
+            if (envelopeContent && envelopeContent.style.display === 'block') {
+                if (!envelopeContent.contains(e.target) && !envelopeCover.contains(e.target)) {
+                    envelopeContent.style.display = 'none';
+                    envelopeCover.style.display = 'inline-block';
+                    envelopeCover.classList.remove('envelope-flip');
+                }
+            }
+        });
+
+        // Envelope Open Animation
+        window.openEnvelope = function () {
+            const cover = document.getElementById('envelope-cover');
+            const content = document.getElementById('envelope-content');
+            cover.classList.add('envelope-flip');
+            setTimeout(() => {
+                cover.style.display = 'none'; // REMOVE GAP
+                content.style.display = 'block';
+                content.classList.add('envelope-content-show');
+            }, 400); // Wait for half of the flip animation
+        };
+
+        // Fireflies / Particles Effect
+        function createFireflies() {
+            const container = document.getElementById('particles-container');
+            if (!container) return;
+            const particleCount = 30;
+            for (let i = 0; i < particleCount; i++) {
+                let particle = document.createElement('div');
+                particle.classList.add('firefly');
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.top = Math.random() * 100 + 'vh';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                particle.style.animationDelay = (Math.random() * 5) + 's';
+                container.appendChild(particle);
+            }
+        }
+        createFireflies();
+
+        // Lightbox Logic
+        window.currentImageIndex = 0;
+        function openLightbox(index) {
+            window.currentImageIndex = index;
+            document.getElementById('lb-img').src = window.galleryImages[index];
+            document.getElementById('lightbox').style.display = 'flex';
+        }
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+        }
+        function changeImage(dir) {
+            window.currentImageIndex += dir;
+            if (window.currentImageIndex < 0) window.currentImageIndex = window.galleryImages.length - 1;
+            if (window.currentImageIndex >= window.galleryImages.length) window.currentImageIndex = 0;
+            document.getElementById('lb-img').src = window.galleryImages[window.currentImageIndex];
+        }
+
+        // =======================
+        // EMOJI & VOICE LOGIC
+        // =======================
+        window.toggleEmoji = function (type) {
+            const picker = document.getElementById('emoji-picker-' + type);
+            picker.style.display = picker.style.display === 'none' ? 'block' : 'none';
+        };
+        window.addEmoji = function (type, emoji) {
+            const input = document.getElementById(type + '-msg');
+            input.value += emoji;
+            document.getElementById('emoji-picker-' + type).style.display = 'none';
+        };
+
+        // Đóng Emoji khi click ra ngoài
+        document.addEventListener('click', function (e) {
+            if (!e.target.closest('.emoji-picker') && !e.target.closest('.btn-emoji')) {
+                document.querySelectorAll('.emoji-picker').forEach(el => el.style.display = 'none');
+            }
+        });
+
+        // Voice Recording Logic
+        let mediaRecorder;
+        let audioChunks = [];
+        window.audioBase64 = null;
+        let recordInterval;
+        let recordSeconds = 0;
+
+        const btnRecord = document.getElementById('btn-record');
+        const btnStopRecord = document.getElementById('btn-stop-record');
+        const recordTimer = document.getElementById('record-timer');
+        const btnPlayRecord = document.getElementById('btn-play-record');
+        const btnDeleteRecord = document.getElementById('btn-delete-record');
+        const audioPlayback = document.getElementById('audio-playback');
+
+        if (btnRecord) {
+            btnRecord.addEventListener('click', async () => {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaRecorder = new MediaRecorder(stream);
+                    mediaRecorder.start();
+                    audioChunks = [];
+
+                    mediaRecorder.addEventListener('dataavailable', event => {
+                        audioChunks.push(event.data);
+                    });
+
+                    mediaRecorder.addEventListener('stop', async () => {
+                        const mimeType = mediaRecorder.mimeType || 'audio/webm';
+                        const audioBlob = new Blob(audioChunks, { type: mimeType });
+                        const audioUrl = URL.createObjectURL(audioBlob);
+                        audioPlayback.src = audioUrl;
+
+                        const base64data = await new Promise((resolve) => {
+                            const reader = new FileReader();
+                            reader.readAsDataURL(audioBlob);
+                            reader.onloadend = () => resolve(reader.result);
+                        });
+                        window.audioBase64 = base64data;
+
+                        stream.getTracks().forEach(track => track.stop());
+                        clearInterval(recordInterval);
+                        if (recordTimer) recordTimer.style.display = 'none';
+                        if (btnStopRecord) btnStopRecord.style.display = 'none';
+                        if (btnPlayRecord) btnPlayRecord.style.display = 'inline-block';
+                        if (btnDeleteRecord) btnDeleteRecord.style.display = 'inline-block';
+                        const recordSuccessMsg = document.getElementById('record-success-msg');
+                        if (recordSuccessMsg) recordSuccessMsg.style.display = 'inline-block';
+                    });
+
+                    if (btnRecord) btnRecord.style.display = 'none';
+                    if (btnStopRecord) btnStopRecord.style.display = 'inline-block';
+                    if (recordTimer) recordTimer.style.display = 'inline-block';
+                    recordSeconds = 0;
+                    if (recordTimer) recordTimer.innerText = '00:00';
+
+                    recordInterval = setInterval(() => {
+                        recordSeconds++;
+                        const m = String(Math.floor(recordSeconds / 60)).padStart(2, '0');
+                        const s = String(recordSeconds % 60).padStart(2, '0');
+                        if (recordTimer) recordTimer.innerText = `${m}:${s}`;
+                        if (recordSeconds >= 60) {
+                            mediaRecorder.stop();
+                        }
+                    }, 1000);
+
+                } catch (err) {
+                    alert('Không thể truy cập Microphone. Vui lòng cấp quyền ghi âm!');
+                }
+            });
+
+            if (btnStopRecord) {
+                btnStopRecord.addEventListener('click', () => {
+                    if (mediaRecorder && mediaRecorder.state === 'recording') {
+                        mediaRecorder.stop();
+                    }
+                });
+            }
+
+            if (btnPlayRecord) {
+                btnPlayRecord.addEventListener('click', () => {
+                    audioPlayback.play();
+                });
+            }
+
+            if (btnDeleteRecord) {
+                btnDeleteRecord.addEventListener('click', () => {
+                    window.audioBase64 = null;
+                    audioChunks = [];
+                    audioPlayback.src = '';
+                    if (btnPlayRecord) btnPlayRecord.style.display = 'none';
+                    if (btnDeleteRecord) btnDeleteRecord.style.display = 'none';
+                    if (btnRecord) btnRecord.style.display = 'inline-block';
+                    const recordSuccessMsg = document.getElementById('record-success-msg');
+                    if (recordSuccessMsg) recordSuccessMsg.style.display = 'none';
+                });
+            }
+        }
+    </script>
+
+    <!-- LIGHTBOX HTML -->
+    <div id="lightbox" class="lightbox">
+        <span class="lb-close" onclick="closeLightbox()">&times;</span>
+        <img class="lb-content" id="lb-img">
+        <a class="lb-prev" onclick="changeImage(-1)">&#10094;</a>
+        <a class="lb-next" onclick="changeImage(1)">&#10095;</a>
+    </div>
+</body>
+
+</html>

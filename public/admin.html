@@ -1,0 +1,1962 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin CMS 2.0 — ThiepCuoiViet Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #5d7b6f;
+            --primary-dark: #3a4d45;
+            --primary-light: #edf2f0;
+            --accent: #c9a66b;
+            --red: #e74c3c;
+            --green: #27ae60;
+            --blue: #3498db;
+            --bg: #f0f2f5;
+            --white: #ffffff;
+            --sidebar-w: 260px;
+            --header-h: 64px;
+            --border: #e4e7ec;
+            --text: #1a1a2e;
+            --text-light: #6b7280;
+            --shadow: 0 2px 12px rgba(0,0,0,0.06);
+            --shadow-md: 0 8px 30px rgba(0,0,0,0.1);
+            --radius: 12px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* ====== SIDEBAR ====== */
+        .sidebar {
+            width: var(--sidebar-w);
+            background: var(--white);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-logo {
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.8rem;
+            color: var(--primary);
+            display: block;
+            line-height: 1;
+        }
+
+        .sidebar-logo-sub {
+            font-size: 0.7rem;
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        /* Slug selector */
+        .slug-selector {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            background: var(--primary-light);
+        }
+
+        .slug-selector label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .slug-input-wrap {
+            display: flex;
+            gap: 6px;
+        }
+
+        .slug-input {
+            flex: 1;
+            padding: 8px 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            background: white;
+            color: var(--text);
+        }
+
+        .slug-input:focus { outline: none; border-color: var(--primary); }
+
+        .btn-slug-load {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .btn-slug-load:hover { background: var(--primary-dark); }
+
+        /* Nav */
+        .sidebar-nav { flex: 1; overflow-y: auto; padding: 10px 0; }
+
+        .nav-section-title {
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 12px 20px 6px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            cursor: pointer;
+            color: var(--text-light);
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+            position: relative;
+        }
+
+        .nav-item:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .nav-item.active {
+            background: var(--primary-light);
+            color: var(--primary);
+            border-left-color: var(--primary);
+            font-weight: 600;
+        }
+
+        .nav-item i { width: 18px; font-size: 0.95rem; }
+
+        .nav-badge {
+            margin-left: auto;
+            background: var(--red);
+            color: white;
+            font-size: 0.68rem;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 10px;
+        }
+
+        .nav-toggle {
+            margin-left: auto;
+            width: 36px;
+            height: 20px;
+            background: #d1d5db;
+            border-radius: 10px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.2s;
+            border: none;
+            flex-shrink: 0;
+        }
+
+        .nav-toggle::after {
+            content: '';
+            position: absolute;
+            top: 2px; left: 2px;
+            width: 16px; height: 16px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .nav-toggle.on {
+            background: var(--primary);
+        }
+
+        .nav-toggle.on::after { transform: translateX(16px); }
+
+        /* Sidebar Footer */
+        .sidebar-footer { padding: 15px; border-top: 1px solid var(--border); }
+
+        .btn-view-thiep {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 10px;
+            background: var(--primary-light);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-view-thiep:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* ====== MAIN AREA ====== */
+        .main-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Top Header */
+        .top-header {
+            height: var(--header-h);
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            flex-shrink: 0;
+        }
+
+        .header-left h1 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .header-left span {
+            font-size: 0.82rem;
+            color: var(--text-light);
+        }
+
+        .header-actions { display: flex; align-items: center; gap: 10px; }
+
+        .btn-save {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-save:hover { background: var(--primary-dark); }
+
+        .btn-save.saving {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        /* ====== CONTENT AREA (2 column) ====== */
+        .content-area {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Form Panel */
+        .form-panel {
+            width: 480px;
+            flex-shrink: 0;
+            overflow-y: auto;
+            padding: 25px;
+            border-right: 1px solid var(--border);
+            background: var(--bg);
+        }
+
+        /* Preview Panel */
+        .preview-panel {
+            flex: 1;
+            overflow: hidden;
+            background: #1a1a2e;
+            position: relative;
+        }
+
+        .preview-header {
+            background: #16213e;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .preview-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .preview-dots span {
+            width: 12px; height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background: #ff5f57; }
+        .dot-yellow { background: #febc2e; }
+        .dot-green { background: #28c840; }
+
+        .preview-url {
+            flex: 1;
+            background: rgba(255,255,255,0.1);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.6);
+            font-family: monospace;
+        }
+
+        .preview-device-btns {
+            display: flex;
+            gap: 5px;
+        }
+
+        .preview-device-btn {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: rgba(255,255,255,0.6);
+            padding: 4px 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+
+        .preview-device-btn.active, .preview-device-btn:hover {
+            background: rgba(255,255,255,0.15);
+            color: white;
+        }
+
+        .preview-frame-wrap {
+            flex: 1;
+            height: calc(100% - 44px);
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 20px;
+            overflow: auto;
+        }
+
+        #preview-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 8px;
+            transition: width 0.3s ease;
+            background: white;
+        }
+
+        #preview-iframe.mobile {
+            width: 390px;
+            height: 844px;
+            border-radius: 40px;
+            box-shadow: 0 0 0 12px #1a1a2e, 0 0 0 14px rgba(255,255,255,0.1);
+        }
+
+        /* ====== PANELS ====== */
+        .panel { display: none; }
+        .panel.active { display: block; }
+
+        /* Cards */
+        .card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .card-title {
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-light);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-title i { color: var(--primary); }
+
+        /* Form groups */
+        .form-group { margin-bottom: 14px; }
+
+        .form-group label {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 6px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text);
+            background: var(--white);
+            transition: all 0.2s;
+            box-sizing: border-box;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(93, 123, 111, 0.12);
+        }
+
+        textarea.form-control { resize: vertical; min-height: 80px; }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .grid-2 .full { grid-column: span 2; }
+
+        /* Upload button */
+        .upload-btn-wrap {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .btn-upload {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--primary-light);
+            color: var(--primary);
+            border: 1px dashed var(--primary);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-upload:hover { background: var(--primary); color: white; }
+
+        .upload-preview {
+            width: 40px; height: 40px;
+            border-radius: 6px;
+            object-fit: cover;
+            border: 1px solid var(--border);
+            display: none;
+        }
+
+        /* Gallery list */
+        .gallery-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+
+        .gallery-item {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .gallery-item img {
+            width: 50px; height: 50px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .btn-add { 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+            padding: 9px;
+            background: var(--primary-light);
+            color: var(--primary);
+            border: 1.5px dashed var(--primary);
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-add:hover { background: var(--primary); color: white; }
+
+        .btn-remove {
+            background: #fee2e2;
+            color: var(--red);
+            border: none;
+            width: 30px; height: 30px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-remove:hover { background: var(--red); color: white; }
+
+        /* Template picker */
+        .template-picker {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .template-option {
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .template-option.selected {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(93,123,111,0.15);
+        }
+
+        .template-option:hover { border-color: var(--primary); }
+
+        .template-thumb {
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .template-label {
+            padding: 8px 10px;
+            background: white;
+            font-size: 0.78rem;
+            font-weight: 600;
+            text-align: center;
+            color: var(--text);
+        }
+
+        .template-label .tier {
+            font-size: 0.68rem;
+            color: var(--text-light);
+            font-weight: 400;
+        }
+
+        /* Toggle switch */
+        .toggle-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .toggle-wrap:last-child { border-bottom: none; }
+
+        .toggle-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .toggle-label i { color: var(--primary); width: 16px; }
+
+        .toggle {
+            width: 40px;
+            height: 22px;
+            background: #d1d5db;
+            border-radius: 11px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.2s;
+            border: none;
+            flex-shrink: 0;
+        }
+
+        .toggle::after {
+            content: '';
+            position: absolute;
+            top: 3px; left: 3px;
+            width: 16px; height: 16px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .toggle.on { background: var(--primary); }
+        .toggle.on::after { transform: translateX(18px); }
+
+        /* Music selector */
+        .music-list { display: flex; flex-direction: column; gap: 6px; }
+
+        .music-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .music-item.selected {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .music-item:hover { border-color: var(--primary); }
+
+        .music-icon { font-size: 1.2rem; }
+
+        .music-name { flex: 1; font-size: 0.85rem; font-weight: 500; }
+
+        .music-play {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 4px;
+            transition: color 0.2s;
+        }
+
+        .music-play:hover { color: var(--primary); }
+
+        /* Statistics */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+        .stat-box {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 18px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .stat-box .stat-icon {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+
+        .stat-box .stat-num {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
+        }
+
+        .stat-box .stat-label {
+            font-size: 0.78rem;
+            color: var(--text-light);
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        /* RSVP Table */
+        .rsvp-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .rsvp-table th, .rsvp-table td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .rsvp-table th {
+            background: var(--bg);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-light);
+        }
+
+        .rsvp-table tr:hover td { background: #fafafa; }
+
+        .rsvp-table .status-yes { color: var(--green); font-weight: 600; }
+        .rsvp-table .status-no { color: var(--red); font-weight: 600; }
+
+        /* Guestbook entries */
+        .gb-list { display: flex; flex-direction: column; gap: 10px; }
+
+        .gb-entry {
+            background: var(--bg);
+            border-radius: 10px;
+            padding: 12px 15px;
+            position: relative;
+            border: 1px solid var(--border);
+        }
+
+        .gb-entry-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .gb-emoji { font-size: 1.2rem; }
+
+        .gb-name { font-weight: 700; font-size: 0.88rem; }
+
+        .gb-time { font-size: 0.75rem; color: var(--text-light); margin-left: auto; }
+
+        .gb-message { font-size: 0.85rem; color: var(--text-light); line-height: 1.5; }
+
+        .btn-delete-gb {
+            position: absolute;
+            top: 8px; right: 8px;
+            background: transparent;
+            border: none;
+            color: #d1d5db;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: color 0.2s;
+        }
+
+        .btn-delete-gb:hover { color: var(--red); }
+
+        /* Event blocks */
+        .event-block {
+            background: var(--bg);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .event-block-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Toast */
+        #toast {
+            position: fixed;
+            bottom: 25px; right: 25px;
+            background: #1a1a2e;
+            color: white;
+            padding: 14px 22px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: none;
+            z-index: 9999;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+            animation: slideInRight 0.3s ease;
+            max-width: 350px;
+        }
+
+        #toast.success { border-left: 4px solid var(--green); }
+        #toast.error { border-left: 4px solid var(--red); }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Color picker row */
+        .color-note {
+            font-size: 0.78rem;
+            color: var(--text-light);
+            padding: 8px 10px;
+            background: var(--bg);
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        /* Checkbox group */
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-size: 0.88rem;
+            padding: 8px 0;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            width: 16px; height: 16px;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        input[type="color"] {
+            width: 40px;
+            height: 32px;
+            padding: 2px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <span class="sidebar-logo">ThiepCuoiViet</span>
+            <span class="sidebar-logo-sub">Admin CMS 2.0</span>
+        </div>
+
+        <!-- Slug Selector -->
+        <div class="slug-selector">
+            <label>📎 Đường Dẫn Thiệp (Slug)</label>
+            <div class="slug-input-wrap">
+                <input type="text" class="slug-input" id="current-slug" value="demo" placeholder="huy-va-duyen">
+                <button class="btn-slug-load" onclick="loadSlug()">Tải</button>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section-title">Nội Dung Thiệp</div>
+
+            <div class="nav-item active" onclick="switchPanel('panel-general', this)">
+                <i class="fa-solid fa-heart"></i> Thông Tin Cơ Bản
+            </div>
+            <div class="nav-item" onclick="switchPanel('panel-parents', this)">
+                <i class="fa-solid fa-people-roof"></i> Gia Đình
+            </div>
+            <div class="nav-item" onclick="switchPanel('panel-story', this)">
+                <i class="fa-solid fa-book-heart"></i> Chuyện Tình Yêu
+            </div>
+            <div class="nav-item" onclick="switchPanel('panel-events', this)">
+                <i class="fa-regular fa-calendar-days"></i> Sự Kiện
+            </div>
+            <div class="nav-item" onclick="switchPanel('panel-gallery', this)">
+                <i class="fa-regular fa-images"></i> Album Ảnh
+            </div>
+
+            <div class="nav-section-title">Tính Năng</div>
+
+            <div class="nav-item" onclick="switchPanel('panel-music', this)">
+                <i class="fa-solid fa-music"></i> Nhạc Nền
+            </div>
+            <div class="nav-item" onclick="switchPanel('panel-banking', this)">
+                <i class="fa-solid fa-qrcode"></i> Mừng Cưới (QR)
+            </div>
+            <div class="nav-item" onclick="switchPanel('panel-rsvp', this)">
+                <i class="fa-solid fa-envelope-open-text"></i> Khách RSVP
+                <span class="nav-badge" id="rsvp-badge">0</span>
+            </div>
+            <div class="nav-item" onclick="switchPanel('panel-guestbook', this)">
+                <i class="fa-solid fa-pen-fancy"></i> Sổ Lưu Bút
+                <span class="nav-badge" id="gb-badge" style="background:var(--blue)">0</span>
+            </div>
+
+            <div class="nav-section-title">Hiển Thị & Thống Kê</div>
+
+            <div class="nav-item" onclick="switchPanel('panel-sections', this)">
+                <i class="fa-solid fa-toggle-on"></i> Bật/Tắt Sections
+            </div>
+            <div class="nav-item" onclick="switchPanel('panel-template', this)">
+                <i class="fa-solid fa-palette"></i> Chọn Template
+            </div>
+            <div class="nav-item" onclick="switchPanel('panel-stats', this)">
+                <i class="fa-solid fa-chart-bar"></i> Thống Kê
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a id="btn-view-link" href="/thiep/demo" target="_blank" class="btn-view-thiep">
+                <i class="fa-solid fa-eye"></i> Xem Thiệp
+            </a>
+        </div>
+    </aside>
+
+    <!-- MAIN AREA -->
+    <div class="main-area">
+
+        <!-- Top Header -->
+        <div class="top-header">
+            <div class="header-left">
+                <h1 id="header-title">Thiệp: demo</h1>
+                <span id="header-slug-url">🔗 localhost:3000/thiep/demo</span>
+            </div>
+            <div class="header-actions">
+                <button class="btn-save" onclick="saveData()" id="btn-save">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> Lưu & Publish
+                </button>
+            </div>
+        </div>
+
+        <!-- Content Area: Form + Preview -->
+        <div class="content-area">
+
+            <!-- LEFT: Form Panel -->
+            <div class="form-panel">
+
+                <!-- PANEL: THÔNG TIN CƠ BẢN -->
+                <div id="panel-general" class="panel active">
+                    <div class="card">
+                        <div class="card-title"><i class="fa-solid fa-user"></i> Cô Dâu & Chú Rể</div>
+                        <div class="grid-2">
+                            <div class="form-group"><label>Tên Chú Rể (đầy đủ)</label><input type="text" id="g-fullName" class="form-control" placeholder="Phùng Văn Huy"></div>
+                            <div class="form-group"><label>Tên Cô Dâu (đầy đủ)</label><input type="text" id="b-fullName" class="form-control" placeholder="Trương Thị Mỹ Duyên"></div>
+                            <div class="form-group"><label>Tên Ngắn (Chú Rể)</label><input type="text" id="g-shortName" class="form-control" placeholder="Huy"></div>
+                            <div class="form-group"><label>Tên Ngắn (Cô Dâu)</label><input type="text" id="b-shortName" class="form-control" placeholder="Duyên"></div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title"><i class="fa-regular fa-calendar"></i> Ngày Cưới</div>
+                        <div class="grid-2">
+                            <div class="form-group"><label>Ngày Giờ (ISO - đếm ngược)</label><input type="text" id="w-dateIso" class="form-control" placeholder="2026-07-24T09:00:00"></div>
+                            <div class="form-group"><label>Hiển Thị Trên Thiệp</label><input type="text" id="w-dateText" class="form-control" placeholder="24 . 07 . 2026"></div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title"><i class="fa-regular fa-image"></i> Ảnh Bìa (Hero)</div>
+                        <div class="form-group">
+                            <label>URL Ảnh Bìa</label>
+                            <div class="upload-btn-wrap">
+                                <input type="text" id="hero-img" class="form-control" placeholder="https://... hoặc upload ảnh">
+                                <label class="btn-upload" for="upload-hero">
+                                    <i class="fa-solid fa-upload"></i> Upload
+                                </label>
+                                <input type="file" id="upload-hero" accept="image/png, image/jpeg, image/jpg, image/gif, image/*" style="display:none" onchange="uploadImage(this, 'hero-img', 'preview-hero')">
+                            </div>
+                            <img id="preview-hero" class="upload-preview" style="margin-top:8px;display:none">
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title"><i class="fa-solid fa-quote-left"></i> Lời Mời</div>
+                        <div class="form-group"><label>Trích Dẫn (Quote)</label><input type="text" id="inv-quote" class="form-control" placeholder="Trăm năm tình viên mãn..."></div>
+                        <div class="form-group"><label>Nội Dung Lời Mời</label><textarea id="inv-msg" class="form-control" rows="4"></textarea></div>
+                    </div>
+                </div>
+
+                <!-- PANEL: GIA ĐÌNH -->
+                <div id="panel-parents" class="panel">
+                    <div class="card">
+                        <div class="card-title"><i class="fa-solid fa-mars"></i> Nhà Trai (Gia đình Chú Rể)</div>
+                        <div class="grid-2">
+                            <div class="form-group"><label>Tên Bố Chú Rể</label><input type="text" id="g-father" class="form-control"></div>
+                            <div class="form-group"><label>Tên Mẹ Chú Rể</label><input type="text" id="g-mother" class="form-control"></div>
+                            <div class="form-group full"><label>Địa Chỉ Nhà Trai</label><input type="text" id="g-address" class="form-control" placeholder="123 Nguyễn Văn Linh..."></div>
+                            <div class="form-group full"><label>Link Google Maps</label><input type="text" id="g-map" class="form-control" placeholder="https://maps.google.com/..."></div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title"><i class="fa-solid fa-venus"></i> Nhà Gái (Gia đình Cô Dâu)</div>
+                        <div class="grid-2">
+                            <div class="form-group"><label>Tên Bố Cô Dâu</label><input type="text" id="b-father" class="form-control"></div>
+                            <div class="form-group"><label>Tên Mẹ Cô Dâu</label><input type="text" id="b-mother" class="form-control"></div>
+                            <div class="form-group full"><label>Địa Chỉ Nhà Gái</label><input type="text" id="b-address" class="form-control" placeholder="456 Lê Lợi..."></div>
+                            <div class="form-group full"><label>Link Google Maps</label><input type="text" id="b-map" class="form-control" placeholder="https://maps.google.com/..."></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PANEL: STORY -->
+                <div id="panel-story" class="panel">
+                    <div class="card">
+                        <div class="card-title"><i class="fa-solid fa-book-heart"></i> Chuyện Tình Yêu</div>
+                        <div class="form-group"><label>Tiêu Đề</label><input type="text" id="story-title" class="form-control"></div>
+                        <div class="form-group">
+                            <label>Ảnh Kỷ Niệm</label>
+                            <div class="upload-btn-wrap">
+                                <input type="text" id="story-img" class="form-control" placeholder="URL hoặc upload">
+                                <label class="btn-upload" for="upload-story">
+                                    <i class="fa-solid fa-upload"></i>
+                                </label>
+                                <input type="file" id="upload-story" accept="image/*" style="display:none" onchange="uploadImage(this, 'story-img', 'preview-story')">
+                            </div>
+                            <img id="preview-story" class="upload-preview" style="margin-top:8px;display:none;width:100%;height:120px;object-fit:cover;border-radius:8px;">
+                        </div>
+                        <div class="form-group"><label>Đoạn Chuyện 1</label><textarea id="story-p1" class="form-control" rows="4"></textarea></div>
+                        <div class="form-group"><label>Đoạn Chuyện 2</label><textarea id="story-p2" class="form-control" rows="3"></textarea></div>
+                    </div>
+                </div>
+
+                <!-- PANEL: SỰ KIỆN -->
+                <div id="panel-events" class="panel">
+                    <div class="card">
+                        <div class="card-title"><i class="fa-regular fa-calendar"></i> Các Sự Kiện</div>
+                        <div id="events-container">
+                            <!-- Dynamic events -->
+                        </div>
+                        <button type="button" class="btn-add" onclick="addEvent()">
+                            <i class="fa-solid fa-plus"></i> Thêm Sự Kiện
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PANEL: GALLERY -->
+                <div id="panel-gallery" class="panel">
+                    <div class="card">
+                        <div class="card-title"><i class="fa-regular fa-images"></i> Album Ảnh</div>
+                        <div class="gallery-list" id="gallery-list"></div>
+                        <div style="display:flex;gap:8px;margin-top:8px;">
+                            <button type="button" class="btn-add" onclick="addGalleryItem()" style="flex:1">
+                                <i class="fa-solid fa-link"></i> Thêm URL
+                            </button>
+                            <label class="btn-add" for="upload-gallery" style="flex:1;cursor:pointer">
+                                <i class="fa-solid fa-upload"></i> Upload Ảnh
+                            </label>
+                            <input type="file" id="upload-gallery" accept="image/*" multiple style="display:none" onchange="uploadGalleryImages(this)">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PANEL: NHẠC NỀN -->
+                <div id="panel-music" class="panel">
+                    <div class="card">
+                        <div class="card-title"><i class="fa-solid fa-music"></i> Nhạc Nền Thiệp</div>
+                        <div class="toggle-wrap">
+                            <span class="toggle-label"><i class="fa-solid fa-volume-high"></i> Bật Nhạc Nền</span>
+                            <button class="toggle" id="toggle-music" onclick="toggleSwitch(this)"></button>
+                        </div>
+                        <div style="margin-top:15px;">
+                            <div class="form-group" style="margin-bottom:10px;">
+                                <label style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-light)">Chọn Bài Nhạc</label>
+                            </div>
+                            <div class="music-list" id="music-list">
+                                <!-- Loaded by JS -->
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-top:15px;">
+                            <label>Hoặc nhập URL nhạc tùy chỉnh (.mp3)</label>
+                            <div class="upload-btn-wrap">
+                                <input type="text" id="music-custom-url" class="form-control" placeholder="URL file .mp3 hoặc upload">
+                                <label class="btn-upload" for="upload-music">
+                                    <i class="fa-solid fa-upload"></i> Upload
+                                </label>
+                                <input type="file" id="upload-music" accept="audio/*" style="display:none" onchange="uploadImage(this, 'music-custom-url', null)">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PANEL: BANKING -->
+                <div id="panel-banking" class="panel">
+                    <div class="card">
+                        <div class="card-title"><i class="fa-solid fa-qrcode"></i> Mừng Cưới QR Code</div>
+                        <div class="toggle-wrap">
+                            <span class="toggle-label"><i class="fa-solid fa-toggle-on"></i> Hiển Thị Mục Mừng Cưới</span>
+                            <button class="toggle" id="toggle-banking" onclick="toggleSwitch(this)"></button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title"><i class="fa-solid fa-mars"></i> Tài Khoản Chú Rể</div>
+                        <div class="form-group"><label>Tên Ngân Hàng</label><input type="text" id="gb-name" class="form-control" placeholder="Techcombank"></div>
+                        <div class="form-group"><label>Số Tài Khoản</label><input type="text" id="gb-num" class="form-control" oninput="autoGenQR('groom')"></div>
+                        <div class="form-group"><label>Chủ Tài Khoản</label><input type="text" id="gb-user" class="form-control"></div>
+                        <div class="form-group">
+                            <label>Ảnh QR Code</label>
+                            <div class="upload-btn-wrap">
+                                <input type="text" id="gb-qr" class="form-control" placeholder="URL QR hoặc upload">
+                                <label class="btn-upload" for="upload-groom-qr"><i class="fa-solid fa-upload"></i></label>
+                                <button type="button" onclick="autoGenQR('groom')" style="padding:7px 10px;background:var(--primary-light);color:var(--primary);border:1px solid var(--primary);border-radius:6px;cursor:pointer;font-size:0.78rem;font-weight:600;white-space:nowrap"><i class="fa-solid fa-qrcode"></i> Tạo QR</button>
+                                <input type="file" id="upload-groom-qr" accept="image/*" style="display:none" onchange="uploadImage(this, 'gb-qr', 'preview-groom-qr')">
+                            </div>
+                            <img id="preview-groom-qr" class="upload-preview" style="margin-top:8px;display:none;width:120px;height:120px;">
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title"><i class="fa-solid fa-venus"></i> Tài Khoản Cô Dâu</div>
+                        <div class="form-group"><label>Tên Ngân Hàng</label><input type="text" id="bb-name" class="form-control" placeholder="Vietcombank"></div>
+                        <div class="form-group"><label>Số Tài Khoản</label><input type="text" id="bb-num" class="form-control" oninput="autoGenQR('bride')"></div>
+                        <div class="form-group"><label>Chủ Tài Khoản</label><input type="text" id="bb-user" class="form-control"></div>
+                        <div class="form-group">
+                            <label>Ảnh QR Code</label>
+                            <div class="upload-btn-wrap">
+                                <input type="text" id="bb-qr" class="form-control" placeholder="URL QR hoặc upload">
+                                <label class="btn-upload" for="upload-bride-qr"><i class="fa-solid fa-upload"></i></label>
+                                <button type="button" onclick="autoGenQR('bride')" style="padding:7px 10px;background:var(--primary-light);color:var(--primary);border:1px solid var(--primary);border-radius:6px;cursor:pointer;font-size:0.78rem;font-weight:600;white-space:nowrap"><i class="fa-solid fa-qrcode"></i> Tạo QR</button>
+                                <input type="file" id="upload-bride-qr" accept="image/*" style="display:none" onchange="uploadImage(this, 'bb-qr', 'preview-bride-qr')">
+                            </div>
+                            <img id="preview-bride-qr" class="upload-preview" style="margin-top:8px;display:none;width:120px;height:120px;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PANEL: RSVP -->
+                <div id="panel-rsvp" class="panel">
+                    <div class="card">
+                        <div class="card-title" style="display:flex;align-items:center;justify-content:space-between">
+                            <span><i class="fa-solid fa-envelope-open-text"></i> Danh Sách RSVP</span>
+                            <button onclick="exportRsvpCsv()" style="display:flex;align-items:center;gap:6px;padding:7px 14px;background:var(--green);color:white;border:none;border-radius:7px;font-size:0.82rem;font-weight:600;cursor:pointer">
+                                <i class="fa-solid fa-file-csv"></i> Xuất Excel/CSV
+                            </button>
+                        </div>
+                        <div id="rsvp-summary" style="display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap"></div>
+                        <div style="overflow-x:auto;">
+                            <table class="rsvp-table">
+                                <thead>
+                                    <tr>
+                                        <th>Tên Khách</th>
+                                        <th>Điện Thoại</th>
+                                        <th>Tham Dự</th>
+                                        <th>Lời Nhắn</th>
+                                        <th>Thời Gian</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="rsvp-tbody">
+                                    <tr><td colspan="5" style="text-align:center;color:var(--text-light);padding:30px">Chưa có khách mời nào xác nhận</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PANEL: GUESTBOOK -->
+                <div id="panel-guestbook" class="panel">
+                    <div class="card">
+                        <div class="card-title"><i class="fa-solid fa-pen-fancy"></i> Sổ Lưu Bút</div>
+                        <div class="toggle-wrap">
+                            <span class="toggle-label"><i class="fa-solid fa-book"></i> Hiển Thị Sổ Lưu Bút</span>
+                            <button class="toggle" id="toggle-guestbook" onclick="toggleSwitch(this)"></button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title"><i class="fa-solid fa-messages"></i> Lời Chúc Nhận Được</div>
+                        <div class="gb-list" id="gb-list">
+                            <div style="text-align:center;color:var(--text-light);padding:20px;font-size:0.9rem">Chưa có lời chúc nào</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PANEL: SECTIONS -->
+                <div id="panel-sections" class="panel">
+                    <div class="card">
+                        <div class="card-title"><i class="fa-solid fa-toggle-on"></i> Bật/Tắt Từng Section</div>
+                        <p style="font-size:0.82rem;color:var(--text-light);margin-bottom:15px">Chọn sections muốn hiển thị trên thiệp cưới</p>
+
+                        <div class="toggle-wrap">
+                            <span class="toggle-label"><i class="fa-solid fa-star"></i> Hero (Ảnh bìa + Tên)</span>
+                            <button class="toggle on" id="sec-hero" onclick="toggleSwitch(this)"></button>
+                        </div>
+                        <div class="toggle-wrap">
+                            <span class="toggle-label"><i class="fa-solid fa-envelope"></i> Lời Mời & Gia Đình</span>
+                            <button class="toggle on" id="sec-invitation" onclick="toggleSwitch(this)"></button>
+                        </div>
+                        <div class="toggle-wrap">
+                            <span class="toggle-label"><i class="fa-solid fa-heart"></i> Chuyện Tình Yêu</span>
+                            <button class="toggle on" id="sec-story" onclick="toggleSwitch(this)"></button>
+                        </div>
+                        <div class="toggle-wrap">
+                            <span class="toggle-label"><i class="fa-regular fa-clock"></i> Đếm Ngược Ngày Cưới</span>
+                            <button class="toggle on" id="sec-countdown" onclick="toggleSwitch(this)"></button>
+                        </div>
+                        <div class="toggle-wrap">
+                            <span class="toggle-label"><i class="fa-regular fa-calendar"></i> Lịch Trình Sự Kiện</span>
+                            <button class="toggle on" id="sec-events" onclick="toggleSwitch(this)"></button>
+                        </div>
+                        <div class="toggle-wrap">
+                            <span class="toggle-label"><i class="fa-regular fa-images"></i> Album Ảnh Gallery</span>
+                            <button class="toggle on" id="sec-gallery" onclick="toggleSwitch(this)"></button>
+                        </div>
+                        <div class="toggle-wrap">
+                            <span class="toggle-label"><i class="fa-solid fa-qrcode"></i> Mừng Cưới QR</span>
+                            <button class="toggle on" id="sec-banking" onclick="toggleSwitch(this)"></button>
+                        </div>
+                        <div class="toggle-wrap">
+                            <span class="toggle-label"><i class="fa-solid fa-envelope-open-text"></i> Xác Nhận RSVP</span>
+                            <button class="toggle on" id="sec-rsvp" onclick="toggleSwitch(this)"></button>
+                        </div>
+                        <div class="toggle-wrap">
+                            <span class="toggle-label"><i class="fa-solid fa-pen-fancy"></i> Sổ Lưu Bút</span>
+                            <button class="toggle" id="sec-guestbook" onclick="toggleSwitch(this)"></button>
+                        </div>
+                        <div class="toggle-wrap">
+                            <span class="toggle-label"><i class="fa-solid fa-shirt"></i> Dress Code</span>
+                            <button class="toggle" id="sec-dresscode" onclick="toggleSwitch(this)"></button>
+                        </div>
+                    </div>
+
+                    <div class="card" id="dresscode-settings" style="display:none">
+                        <div class="card-title"><i class="fa-solid fa-shirt"></i> Cài Đặt Dress Code</div>
+                        <div class="form-group">
+                            <label>Tiêu Đề Dress Code</label>
+                            <input type="text" id="dresscode-title" class="form-control" placeholder="Trang Phục Dự Tiệc">
+                        </div>
+                        <div class="form-group">
+                            <label>Màu Chủ Đạo</label>
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <input type="color" id="dresscode-color1" value="#5d7b6f">
+                                <input type="color" id="dresscode-color2" value="#c9a66b">
+                                <span style="font-size:0.82rem;color:var(--text-light)">Chọn 2 màu chủ đạo</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Ghi Chú Dress Code</label>
+                            <textarea id="dresscode-note" class="form-control" placeholder="Quý khách vui lòng mặc trang phục lịch sự..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PANEL: TEMPLATE -->
+                <div id="panel-template" class="panel">
+                    <div class="card">
+                        <div class="card-title"><i class="fa-solid fa-palette"></i> Chọn Template Thiệp</div>
+                        <div class="template-picker" id="template-picker">
+                            <!-- Loaded dynamically -->
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title"><i class="fa-solid fa-link"></i> URL Thiệp (Slug)</div>
+                        <div class="form-group">
+                            <label>Đường dẫn URL đẹp cho thiệp của bạn</label>
+                            <div style="display:flex;align-items:center;gap:5px;">
+                                <span style="font-size:0.85rem;color:var(--text-light);white-space:nowrap">thiep/</span>
+                                <input type="text" id="thiep-slug-input" class="form-control" placeholder="huy-va-duyen">
+                            </div>
+                        </div>
+                        <div class="color-note">💡 Ví dụ: <strong>huy-va-duyen</strong> → Link: <strong>localhost:3000/thiep/huy-va-duyen</strong></div>
+                    </div>
+                </div>
+
+                <!-- PANEL: THỐNG KÊ -->
+                <div id="panel-stats" class="panel">
+                    <div class="stats-grid" id="stats-grid">
+                        <div class="stat-box"><div class="stat-icon">👁</div><div class="stat-num" id="stat-views">—</div><div class="stat-label">Lượt Xem</div></div>
+                        <div class="stat-box"><div class="stat-icon">✉️</div><div class="stat-num" id="stat-rsvp">—</div><div class="stat-label">RSVP</div></div>
+                        <div class="stat-box"><div class="stat-icon">✅</div><div class="stat-num" id="stat-yes">—</div><div class="stat-label">Sẽ Tới</div></div>
+                        <div class="stat-box"><div class="stat-icon">💌</div><div class="stat-num" id="stat-gb">—</div><div class="stat-label">Lời Chúc</div></div>
+                    </div>
+                    <div class="card" style="margin-top:16px">
+                        <div class="card-title"><i class="fa-solid fa-share-nodes"></i> Chia Sẻ Thiệp</div>
+                        <div id="share-link-display" style="background:var(--bg);border-radius:8px;padding:12px;font-size:0.88rem;color:var(--primary);border:1px solid var(--border);word-break:break-all;cursor:pointer" onclick="copyShareLink()">
+                            http://localhost:3000/thiep/demo
+                        </div>
+                        <button onclick="copyShareLink()" style="margin-top:8px;width:100%;padding:9px;background:var(--primary-light);color:var(--primary);border:1px solid var(--primary);border-radius:8px;font-weight:600;cursor:pointer;font-size:0.88rem">
+                            <i class="fa-solid fa-copy"></i> Sao Chép Link
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT: Preview Panel -->
+            <div class="preview-panel">
+                <div class="preview-header">
+                    <div class="preview-dots">
+                        <span class="dot-red"></span>
+                        <span class="dot-yellow"></span>
+                        <span class="dot-green"></span>
+                    </div>
+                    <div class="preview-url" id="preview-url-bar">localhost:3000/thiep/demo</div>
+                    <div class="preview-device-btns">
+                        <button class="preview-device-btn active" onclick="setDevice('desktop', this)"><i class="fa-solid fa-desktop"></i></button>
+                        <button class="preview-device-btn" onclick="setDevice('mobile', this)"><i class="fa-solid fa-mobile-screen"></i></button>
+                        <button class="preview-device-btn" onclick="reloadPreview()"><i class="fa-solid fa-rotate-right"></i></button>
+                    </div>
+                </div>
+                <div class="preview-frame-wrap">
+                    <iframe id="preview-iframe" src="/thiep/demo"></iframe>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="toast"></div>
+
+    <script>
+        const API = 'http://localhost:3000/api';
+        let currentData = {};
+        let currentSlug = 'demo';
+        let selectedTemplate = 'boho-floral-green';
+        let selectedMusic = null;
+        let eventsData = [];
+
+        // ==========================================
+        // INIT
+        // ==========================================
+        const MUSIC_TRACKS = [
+            { id: 'canon', name: 'Canon in D — Pachelbel', emoji: '🎹', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
+            { id: 'a-thousand-years', name: 'A Thousand Years', emoji: '💖', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' },
+            { id: 'perfect', name: 'Perfect — Ed Sheeran', emoji: '🎸', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3' },
+            { id: 'wedding-march', name: 'Wedding March', emoji: '🎺', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3' },
+            { id: 'nguoi-thuong-oi', name: 'Người Thương Ơi', emoji: '🌹', url: '' },
+            { id: 'con-mua-ngang-qua', name: 'Cơn Mưa Ngang Qua', emoji: '🌧', url: '' },
+        ];
+
+        const TEMPLATES_CONFIG = [
+            { id: 'song-long-do', name: 'Song Long Đỏ (Truyền Thống)', tier: 'PRO', bg: 'linear-gradient(160deg, #8b0000, #5c0000, #d4af37)' },
+            { id: 'boho-floral-green', name: 'Boho Floral Green', tier: 'Miễn phí', bg: 'linear-gradient(160deg, #3a4d45, #5d7b6f, #c9a66b)' },
+            { id: 'luxury-gold', name: 'Luxury Gold', tier: 'PRO', bg: 'linear-gradient(160deg, #1a1a2e, #16213e, #d4af37)' },
+            { id: 'minimalist-white', name: 'Minimalist White', tier: 'Miễn phí', bg: 'linear-gradient(160deg, #f8f8f8, #efefef)' },
+            { id: 'romantic-pink', name: 'Romantic Pink', tier: 'PRO', bg: 'linear-gradient(160deg, #ffebf0, #ffc2d4, #ff85a1)' },
+        ];
+
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = '/login?redirect=/admin';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderMusicList();
+            renderTemplatePicker();
+
+            const params = new URLSearchParams(window.location.search);
+            const urlSlug = params.get('slug');
+            if (urlSlug) {
+                document.getElementById('current-slug').value = urlSlug;
+            }
+
+            loadSlug();
+
+            // Toggle dresscode settings visibility
+            document.getElementById('sec-dresscode').addEventListener('click', () => {
+                setTimeout(() => {
+                    const isOn = document.getElementById('sec-dresscode').classList.contains('on');
+                    document.getElementById('dresscode-settings').style.display = isOn ? 'block' : 'none';
+                }, 50);
+            });
+        });
+
+        // ==========================================
+        // SLUG LOADING
+        // ==========================================
+        function loadSlug() {
+            currentSlug = document.getElementById('current-slug').value.trim() || 'demo';
+
+            document.getElementById('header-title').textContent = `Thiệp: ${currentSlug}`;
+            document.getElementById('header-slug-url').textContent = `🔗 localhost:3000/thiep/${currentSlug}`;
+            document.getElementById('preview-url-bar').textContent = `localhost:3000/thiep/${currentSlug}`;
+            document.getElementById('btn-view-link').href = `/thiep/${currentSlug}`;
+            document.getElementById('share-link-display').textContent = `http://localhost:3000/thiep/${currentSlug}`;
+            document.getElementById('thiep-slug-input').value = currentSlug;
+
+            // Load config
+            fetch(`${API}/wedding-config/${currentSlug}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            })
+                .then(r => r.json())
+                .then(data => {
+                    currentData = data;
+                    populateForm(data);
+                    reloadPreview();
+                    loadRsvpData();
+                    loadGuestbookData();
+                    loadStats();
+                })
+                .catch(() => {
+                    // New invitation, use empty form
+                    showToast('Thiệp mới — Vui lòng điền thông tin!', 'success');
+                });
+        }
+
+        // ==========================================
+        // PANEL SWITCHING
+        // ==========================================
+        function switchPanel(panelId, el) {
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(panelId).classList.add('active');
+            if (el) el.classList.add('active');
+        }
+
+        // ==========================================
+        // TOGGLE SWITCH
+        // ==========================================
+        function toggleSwitch(btn) {
+            btn.classList.toggle('on');
+        }
+
+        function isToggleOn(id) {
+            return document.getElementById(id).classList.contains('on');
+        }
+
+        function setToggle(id, val) {
+            const btn = document.getElementById(id);
+            if (val) btn.classList.add('on');
+            else btn.classList.remove('on');
+        }
+
+        // ==========================================
+        // POPULATE FORM
+        // ==========================================
+        function populateForm(data) {
+            const s = (id, val) => { const el = document.getElementById(id); if(el) el.value = val || ''; };
+
+            s('g-fullName', data.groom?.name);
+            s('b-fullName', data.bride?.name);
+            s('g-shortName', data.groom?.shortName);
+            s('b-shortName', data.bride?.shortName);
+            s('w-dateIso', data.weddingDate);
+            s('w-dateText', data.weddingDateText);
+            s('hero-img', data.heroImage);
+            s('inv-quote', data.invitation?.quote);
+            s('inv-msg', data.invitation?.message);
+            s('g-father', data.groom?.father);
+            s('g-mother', data.groom?.mother);
+            s('g-address', data.groom?.address);
+            s('g-map', data.groom?.mapUrl);
+            s('b-father', data.bride?.father);
+            s('b-mother', data.bride?.mother);
+            s('b-address', data.bride?.address);
+            s('b-map', data.bride?.mapUrl);
+            s('story-title', data.loveStory?.title);
+            s('story-img', data.loveStory?.image);
+            s('story-p1', data.loveStory?.content?.[0]);
+            s('story-p2', data.loveStory?.content?.[1]);
+
+            // Banking
+            setToggle('toggle-banking', data.banking?.enabled);
+            s('gb-name', data.banking?.groom?.bankName);
+            s('gb-num', data.banking?.groom?.accountNumber);
+            s('gb-user', data.banking?.groom?.accountName);
+            s('gb-qr', data.banking?.groom?.qrCode);
+            s('bb-name', data.banking?.bride?.bankName);
+            s('bb-num', data.banking?.bride?.accountNumber);
+            s('bb-user', data.banking?.bride?.accountName);
+            s('bb-qr', data.banking?.bride?.qrCode);
+
+            // Preview QR
+            if (data.banking?.groom?.qrCode) showPreview('preview-groom-qr', data.banking.groom.qrCode);
+            if (data.banking?.bride?.qrCode) showPreview('preview-bride-qr', data.banking.bride.qrCode);
+            if (data.heroImage) showPreview('preview-hero', data.heroImage);
+            if (data.loveStory?.image) showPreview('preview-story', data.loveStory.image);
+
+            // Gallery
+            const gList = document.getElementById('gallery-list');
+            gList.innerHTML = '';
+            (data.gallery || []).forEach(url => addGalleryItem(url));
+
+            // Events
+            eventsData = data.events || [];
+            renderEvents();
+
+            // Sections toggles
+            const sec = data.sections || {};
+            const defaults = { hero: true, invitation: true, story: true, countdown: true, events: true, gallery: true, banking: true, rsvp: true, guestbook: false, dresscode: false };
+            Object.keys(defaults).forEach(k => setToggle(`sec-${k}`, sec[k] !== undefined ? sec[k] : defaults[k]));
+
+            // Guestbook toggle
+            setToggle('toggle-guestbook', sec.guestbook || false);
+
+            // Music
+            const music = data.music || {};
+            setToggle('toggle-music', music.enabled || false);
+            selectedMusic = music.track || null;
+            s('music-custom-url', music.customUrl);
+            renderMusicList();
+
+            // Template
+            selectedTemplate = data.template || 'boho-floral-green';
+            renderTemplatePicker();
+
+            // Slug
+            s('thiep-slug-input', data.slug || currentSlug);
+        }
+
+        // ==========================================
+        // EVENTS
+        // ==========================================
+        function renderEvents() {
+            const container = document.getElementById('events-container');
+            container.innerHTML = '';
+            eventsData.forEach((event, i) => {
+                const div = document.createElement('div');
+                div.className = 'event-block';
+                div.innerHTML = `
+                    <div class="event-block-title">
+                        <i class="fa-regular fa-calendar"></i> Sự Kiện ${i+1}
+                        <button type="button" class="btn-remove" style="margin-left:auto" onclick="removeEvent(${i})"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                    <div class="grid-2">
+                        <div class="form-group"><label>Tên Sự Kiện</label><input type="text" class="form-control evt-type" value="${event.type || ''}"></div>
+                        <div class="form-group"><label>Icon FontAwesome</label><input type="text" class="form-control evt-icon" value="${event.icon || 'fa-church'}"></div>
+                        <div class="form-group"><label>Thời Gian</label><input type="text" class="form-control evt-time" value="${event.time || ''}"></div>
+                        <div class="form-group"><label>Ngày</label><input type="text" class="form-control evt-date" value="${event.date || ''}"></div>
+                        <div class="form-group"><label>Tên Địa Điểm</label><input type="text" class="form-control evt-locName" value="${event.locationName || ''}"></div>
+                        <div class="form-group"><label>Địa Chỉ</label><input type="text" class="form-control evt-addr" value="${event.address || ''}"></div>
+                        <div class="form-group full"><label>Link Google Maps</label><input type="text" class="form-control evt-map" value="${event.mapUrl || ''}"></div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function addEvent() {
+            eventsData.push({ type: 'Lễ Cưới', icon: 'fa-church', time: '09:00 SA', date: '', locationName: '', address: '', mapUrl: '' });
+            renderEvents();
+        }
+
+        function removeEvent(i) {
+            eventsData.splice(i, 1);
+            renderEvents();
+        }
+
+        function collectEvents() {
+            const blocks = document.querySelectorAll('.event-block');
+            return Array.from(blocks).map(b => ({
+                type: b.querySelector('.evt-type').value,
+                icon: b.querySelector('.evt-icon').value,
+                time: b.querySelector('.evt-time').value,
+                date: b.querySelector('.evt-date').value,
+                locationName: b.querySelector('.evt-locName').value,
+                address: b.querySelector('.evt-addr').value,
+                mapUrl: b.querySelector('.evt-map').value
+            }));
+        }
+
+        // ==========================================
+        // GALLERY
+        // ==========================================
+        function addGalleryItem(url = '') {
+            const div = document.createElement('div');
+            div.className = 'gallery-item';
+
+            const img = document.createElement('img');
+            img.src = url || 'https://via.placeholder.com/50';
+            img.onerror = () => img.style.display = 'none';
+
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'form-control gallery-input';
+            input.value = url;
+            input.placeholder = 'URL Ảnh';
+            input.addEventListener('input', () => {
+                img.src = input.value;
+                img.style.display = '';
+            });
+
+            const btnDel = document.createElement('button');
+            btnDel.type = 'button';
+            btnDel.className = 'btn-remove';
+            btnDel.innerHTML = '<i class="fa-solid fa-trash"></i>';
+            btnDel.onclick = () => div.remove();
+
+            div.appendChild(img);
+            div.appendChild(input);
+            div.appendChild(btnDel);
+            document.getElementById('gallery-list').appendChild(div);
+        }
+
+        async function uploadGalleryImages(input) {
+            for (const file of input.files) {
+                const fd = new FormData();
+                fd.append('image', file);
+                try {
+                    const r = await fetch(`${API}/upload`, { method: 'POST', body: fd });
+                    const data = await r.json();
+                    if (data.url) addGalleryItem(`http://localhost:3000${data.url}`);
+                } catch(e) {}
+            }
+        }
+
+        // ==========================================
+        // UPLOAD
+        // ==========================================
+        async function uploadImage(inputEl, targetId, previewId) {
+            if (!inputEl.files[0]) return;
+            const fd = new FormData();
+            fd.append('image', inputEl.files[0]);
+            showToast('Đang tải ảnh lên...', 'success');
+            try {
+                const r = await fetch(`${API}/upload`, { method: 'POST', body: fd });
+                const data = await r.json();
+                if (data.url) {
+                    const url = `http://localhost:3000${data.url}`;
+                    document.getElementById(targetId).value = url;
+                    showPreview(previewId, url);
+                    showToast('Upload thành công!', 'success');
+                } else if (data.error) {
+                    showToast('Lỗi: ' + data.error, 'error');
+                } else {
+                    showToast('Lỗi upload!', 'error');
+                }
+            } catch(e) {
+                showToast('Lỗi upload! Kích thước file có thể quá lớn.', 'error');
+            }
+        }
+
+        function showPreview(previewId, url) {
+            const img = document.getElementById(previewId);
+            if (img && url) {
+                img.src = url;
+                img.style.display = 'block';
+            }
+        }
+
+        // ==========================================
+        // MUSIC
+        // ==========================================
+        function renderMusicList() {
+            const list = document.getElementById('music-list');
+            if (!list) return;
+            list.innerHTML = '';
+            MUSIC_TRACKS.forEach(track => {
+                const div = document.createElement('div');
+                div.className = 'music-item' + (selectedMusic === track.id ? ' selected' : '');
+                div.innerHTML = `
+                    <span class="music-icon">${track.emoji}</span>
+                    <span class="music-name">${track.name}</span>
+                    <button class="music-play" onclick="event.stopPropagation(); playTrackPreview('${track.url}')">
+                        <i class="fa-solid fa-play"></i>
+                    </button>
+                `;
+                div.onclick = () => {
+                    selectedMusic = track.id;
+                    document.querySelectorAll('.music-item').forEach(m => m.classList.remove('selected'));
+                    div.classList.add('selected');
+                };
+                list.appendChild(div);
+            });
+        }
+
+        let previewAudio = null;
+        function playTrackPreview(url) {
+            if (!url) return;
+            if (previewAudio) { previewAudio.pause(); previewAudio = null; return; }
+            previewAudio = new Audio(url);
+            previewAudio.play();
+            previewAudio.onended = () => previewAudio = null;
+        }
+
+        // ==========================================
+        // TEMPLATE PICKER
+        // ==========================================
+        function renderTemplatePicker() {
+            const picker = document.getElementById('template-picker');
+            if (!picker) return;
+            picker.innerHTML = '';
+            TEMPLATES_CONFIG.forEach(t => {
+                const div = document.createElement('div');
+                div.className = 'template-option' + (selectedTemplate === t.id ? ' selected' : '');
+                div.innerHTML = `
+                    <div class="template-thumb" style="background:${t.bg}"></div>
+                    <div class="template-label">${t.name}<br><span class="tier">${t.tier}</span></div>
+                `;
+                div.onclick = () => {
+                    selectedTemplate = t.id;
+                    document.querySelectorAll('.template-option').forEach(o => o.classList.remove('selected'));
+                    div.classList.add('selected');
+                };
+                picker.appendChild(div);
+            });
+        }
+
+        // ==========================================
+        // SAVE DATA
+        // ==========================================
+        function saveData() {
+            const btn = document.getElementById('btn-save');
+            btn.classList.add('saving');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang lưu...';
+
+            // Sections state
+            const sections = {};
+            ['hero','invitation','story','countdown','events','gallery','banking','rsvp','guestbook','dresscode'].forEach(k => {
+                sections[k] = isToggleOn(`sec-${k}`);
+            });
+
+            const payload = {
+                ...currentData,
+                slug: document.getElementById('thiep-slug-input').value || currentSlug,
+                template: selectedTemplate,
+                groom: {
+                    name: document.getElementById('g-fullName').value,
+                    shortName: document.getElementById('g-shortName').value,
+                    father: document.getElementById('g-father').value,
+                    mother: document.getElementById('g-mother').value,
+                    address: document.getElementById('g-address').value,
+                    mapUrl: document.getElementById('g-map').value
+                },
+                bride: {
+                    name: document.getElementById('b-fullName').value,
+                    shortName: document.getElementById('b-shortName').value,
+                    father: document.getElementById('b-father').value,
+                    mother: document.getElementById('b-mother').value,
+                    address: document.getElementById('b-address').value,
+                    mapUrl: document.getElementById('b-map').value
+                },
+                weddingDate: document.getElementById('w-dateIso').value,
+                weddingDateText: document.getElementById('w-dateText').value,
+                heroImage: document.getElementById('hero-img').value,
+                invitation: {
+                    quote: document.getElementById('inv-quote').value,
+                    message: document.getElementById('inv-msg').value
+                },
+                loveStory: {
+                    title: document.getElementById('story-title').value,
+                    image: document.getElementById('story-img').value,
+                    content: [
+                        document.getElementById('story-p1').value,
+                        document.getElementById('story-p2').value
+                    ].filter(Boolean)
+                },
+                events: collectEvents(),
+                gallery: Array.from(document.querySelectorAll('.gallery-input')).map(i => i.value).filter(Boolean),
+                banking: {
+                    enabled: isToggleOn('toggle-banking'),
+                    groom: {
+                        bankName: document.getElementById('gb-name').value,
+                        accountNumber: document.getElementById('gb-num').value,
+                        accountName: document.getElementById('gb-user').value,
+                        qrCode: document.getElementById('gb-qr').value
+                    },
+                    bride: {
+                        bankName: document.getElementById('bb-name').value,
+                        accountNumber: document.getElementById('bb-num').value,
+                        accountName: document.getElementById('bb-user').value,
+                        qrCode: document.getElementById('bb-qr').value
+                    }
+                },
+                music: {
+                    enabled: isToggleOn('toggle-music'),
+                    track: selectedMusic,
+                    customUrl: document.getElementById('music-custom-url').value
+                },
+                sections,
+                dresscode: {
+                    enabled: isToggleOn('sec-dresscode'),
+                    title: document.getElementById('dresscode-title')?.value || '',
+                    color1: document.getElementById('dresscode-color1')?.value || '',
+                    color2: document.getElementById('dresscode-color2')?.value || '',
+                    note: document.getElementById('dresscode-note')?.value || ''
+                }
+            };
+
+            fetch(`${API}/wedding-config/${currentSlug}`, {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(r => r.json())
+            .then(data => {
+                if(data.error) throw new Error(data.error);
+                showToast('✅ Đã lưu và publish thành công!', 'success');
+                currentData = payload;
+                setTimeout(reloadPreview, 500);
+            })
+            .catch(e => showToast(`❌ Lỗi: ${e.message}`, 'error'))
+            .finally(() => {
+                btn.classList.remove('saving');
+                btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Lưu & Publish';
+            });
+        }
+
+        // ==========================================
+        // PREVIEW
+        // ==========================================
+        function reloadPreview() {
+            const iframe = document.getElementById('preview-iframe');
+            iframe.src = `/thiep/${currentSlug}?t=${Date.now()}`;
+        }
+
+        function setDevice(device, btn) {
+            const iframe = document.getElementById('preview-iframe');
+            document.querySelectorAll('.preview-device-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            if (device === 'mobile') {
+                iframe.classList.add('mobile');
+            } else {
+                iframe.classList.remove('mobile');
+            }
+        }
+
+        // ==========================================
+        // RSVP & GUESTBOOK DATA
+        // ==========================================
+        function loadRsvpData() {
+            fetch(`${API}/rsvp/${currentSlug}`)
+                .then(r => r.json())
+                .then(guests => {
+                    document.getElementById('rsvp-badge').textContent = guests.length;
+                    const tbody = document.getElementById('rsvp-tbody');
+                    // Summary
+                    const yes = guests.filter(g => g.attendance === 'yes').length;
+                    const no  = guests.filter(g => g.attendance === 'no').length;
+                    const summary = document.getElementById('rsvp-summary');
+                    if (summary) summary.innerHTML = guests.length ? `
+                        <div style="background:#ecfdf5;border:1px solid #bbf7d0;border-radius:8px;padding:8px 16px;font-size:0.85rem;font-weight:600;color:#16a34a">✅ Sẽ đến: ${yes}</div>
+                        <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:8px 16px;font-size:0.85rem;font-weight:600;color:#dc2626">❌ Không đến: ${no}</div>
+                        <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:8px 16px;font-size:0.85rem;font-weight:600;color:#2563eb">📊 Tổng: ${guests.length}</div>
+                    ` : '';
+                    if (guests.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-light);padding:30px">Chưa có khách mời nào xác nhận</td></tr>';
+                        return;
+                    }
+                    tbody.innerHTML = guests.map(g => `
+                        <tr>
+                            <td><strong>${g.name}</strong></td>
+                            <td style="font-size:0.85rem;color:var(--text-light)">${g.phone || '—'}</td>
+                            <td class="${g.attendance === 'yes' ? 'status-yes' : 'status-no'}">${g.attendance === 'yes' ? '✅ Sẽ đến' : '❌ Không đến'}</td>
+                            <td style="max-width:200px;color:var(--text-light);font-size:0.85rem">
+                                <div>${g.message || '—'}</div>
+                                ${(() => {
+                                    if (!g.voiceMessage) return '';
+                                    const m = g.voiceMessage.match(/^data:audio\/([a-zA-Z0-9\-]+);base64,/);
+                                    let ext = m ? m[1] : 'webm';
+                                    if (ext === 'mp4') ext = 'm4a';
+                                    if (ext === 'mpeg') ext = 'mp3';
+                                    const safeName = (g.name || 'Khach').replace(/[^a-zA-Z0-9_]/g, '');
+                                    const safePhone = (g.phone || 'VoDanh').replace(/[^0-9]/g, '');
+                                    return `
+                                    <div style="margin-top:5px;">
+                                        <audio controls src="${g.voiceMessage}" style="height:30px; width:150px;"></audio>
+                                        <div style="margin-top:3px; text-align:center;">
+                                            <a href="${g.voiceMessage}" download="${safeName}_${safePhone}.${ext}" style="color:var(--primary); text-decoration:none; font-weight:bold; font-size:0.8rem; display:inline-block; padding:3px 8px; border:1px solid var(--border); border-radius:4px;">
+                                                <i class="fa-solid fa-download"></i> Tải về
+                                            </a>
+                                        </div>
+                                    </div>
+                                    `;
+                                })()}
+                            </td>
+                            <td style="font-size:0.8rem;color:var(--text-light)">${new Date(g.createdAt).toLocaleString('vi-VN')}</td>
+                        </tr>
+                    `).join('');
+                })
+                .catch(() => {});
+        }
+
+        // Export RSVP
+        function exportRsvpCsv() {
+            window.open(`${API}/rsvp/${currentSlug}/export`, '_blank');
+        }
+
+        // Auto generate QR code from bank account number using VietQR
+        async function autoGenQR(side) {
+            const accNum = document.getElementById(side === 'groom' ? 'gb-num' : 'bb-num').value.trim();
+            const bankName = document.getElementById(side === 'groom' ? 'gb-name' : 'bb-name').value.trim();
+            const accName = document.getElementById(side === 'groom' ? 'gb-user' : 'bb-user').value.trim();
+            
+            if (!accNum || !bankName) { showToast('Vui lòng nhập Tên Ngân Hàng và Số Tài Khoản!', 'error'); return; }
+            try {
+                // Sử dụng VietQR API để tạo mã QR ngân hàng chuẩn
+                // Định dạng: https://img.vietqr.io/image/<BANK_ID>-<ACCOUNT_NO>-compact.png
+                const bankId = encodeURIComponent(bankName.replace(/\s+/g, '')); // Xóa khoảng trắng để khớp với mã ngân hàng (vd: vietcombank)
+                let vietQrUrl = `https://img.vietqr.io/image/${bankId}-${accNum}-compact.png`;
+                if (accName) {
+                    vietQrUrl += `?accountName=${encodeURIComponent(accName)}`;
+                }
+                
+                const qrInputId = side === 'groom' ? 'gb-qr' : 'bb-qr';
+                const previewId = side === 'groom' ? 'preview-groom-qr' : 'preview-bride-qr';
+                document.getElementById(qrInputId).value = vietQrUrl;
+                const img = document.getElementById(previewId);
+                img.src = vietQrUrl; 
+                img.style.display = 'block';
+                showToast('Đã tạo QR code chuẩn VietQR!', 'success');
+            } catch(e) { showToast('Lỗi tạo QR!', 'error'); }
+        }
+
+        function loadGuestbookData() {
+            fetch(`${API}/guestbook/${currentSlug}`)
+                .then(r => r.json())
+                .then(entries => {
+                    document.getElementById('gb-badge').textContent = entries.length;
+                    const list = document.getElementById('gb-list');
+                    if (entries.length === 0) {
+                        list.innerHTML = '<div style="text-align:center;color:var(--text-light);padding:20px;font-size:0.9rem">Chưa có lời chúc nào</div>';
+                        return;
+                    }
+                    list.innerHTML = entries.map(e => `
+                        <div class="gb-entry">
+                            <button class="btn-delete-gb" onclick="deleteGbEntry(${e.id})"><i class="fa-solid fa-xmark"></i></button>
+                            <div class="gb-entry-header">
+                                <span class="gb-emoji">${e.emoji || '💕'}</span>
+                                <span class="gb-name">${e.name}</span>
+                                <span class="gb-time">${new Date(e.createdAt).toLocaleDateString('vi-VN')}</span>
+                            </div>
+                            <div class="gb-message">${e.message}</div>
+                        </div>
+                    `).join('');
+                })
+                .catch(() => {});
+        }
+
+        function deleteGbEntry(id) {
+            if (!confirm('Xóa lời chúc này?')) return;
+            fetch(`${API}/guestbook/${currentSlug}/${id}`, { method: 'DELETE' })
+                .then(() => loadGuestbookData())
+                .catch(() => showToast('Lỗi xóa!', 'error'));
+        }
+
+        function loadStats() {
+            fetch(`${API}/stats/${currentSlug}`)
+                .then(r => r.json())
+                .then(s => {
+                    document.getElementById('stat-views').textContent = s.views.toLocaleString('vi-VN');
+                    document.getElementById('stat-rsvp').textContent = s.totalRsvp;
+                    document.getElementById('stat-yes').textContent = s.attendingYes;
+                    document.getElementById('stat-gb').textContent = s.guestbookCount;
+                })
+                .catch(() => {});
+        }
+
+        // ==========================================
+        // UTILITIES
+        // ==========================================
+        function showToast(msg, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.className = type;
+            toast.style.display = 'block';
+            setTimeout(() => toast.style.display = 'none', 3500);
+        }
+
+        function copyShareLink() {
+            const url = `http://localhost:3000/thiep/${currentSlug}`;
+            navigator.clipboard.writeText(url).then(() => showToast('✅ Đã sao chép link thiệp!', 'success'));
+        }
+    </script>
+</body>
+</html>

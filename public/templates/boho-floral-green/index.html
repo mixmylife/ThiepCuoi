@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">Thiệp Mời Đám Cưới</title>
+<meta name="description" id="page-desc" content="Thiệp mời đám cưới online">
+<meta property="og:title" id="og-title" content="Thiệp Mời Đám Cưới">
+<meta property="og:description" id="og-desc" content="Trân trọng kính mời bạn đến dự đám cưới">
+<meta property="og:image" id="og-image" content="">
+<meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="/assets/css/styles.css">
+<style>
+/* ===== MUSIC PLAYER ===== */
+#music-player{position:fixed;bottom:28px;right:28px;z-index:999;display:none}
+.music-btn{width:54px;height:54px;border-radius:50%;background:var(--primary-color,#5d7b6f);color:white;border:none;cursor:pointer;font-size:1.1rem;box-shadow:0 6px 20px rgba(93,123,111,.4);display:flex;align-items:center;justify-content:center;transition:all .3s}
+.music-btn:hover{transform:scale(1.1)}
+.music-btn i{animation:musicBounce 1s ease infinite alternate}
+@keyframes musicBounce{from{transform:scale(1)}to{transform:scale(1.2) rotate(5deg)}}
+
+/* ===== GUESTBOOK ===== */
+.guestbook{padding:80px 0;background:var(--bg-color,#f7f9f6)}
+.guestbook-container{display:grid;grid-template-columns:1fr 1fr;gap:50px;margin-top:50px;max-width:1100px;margin-left:auto;margin-right:auto;padding:0 40px}
+@media(max-width:768px){.guestbook-container{grid-template-columns:1fr;padding:0 20px}}
+.gb-form-card{background:white;padding:36px;border-radius:20px;box-shadow:0 10px 40px rgba(93,123,111,.06);border:1px solid rgba(93,123,111,.1)}
+.gb-form-title{font-family:'Great Vibes',cursive;font-size:2.4rem;color:var(--primary-color,#5d7b6f);margin-bottom:4px;font-weight:normal}
+.gb-form-sub{font-size:.88rem;color:#888;margin-bottom:22px}
+.gb-fg{margin-bottom:14px;position:relative}
+.gb-fg i{position:absolute;top:14px;left:14px;color:var(--accent-color,#c9a66b)}
+.gb-fg input,.gb-fg textarea{width:100%;padding:12px 14px 12px 40px;border:1px solid #e1e4e8;border-radius:10px;font-family:'Montserrat',sans-serif;font-size:.9rem;background:var(--bg-color,#f7f9f6);transition:all .3s;box-sizing:border-box;resize:none}
+.gb-fg input:focus,.gb-fg textarea:focus{outline:none;border-color:var(--primary-color,#5d7b6f);background:white;box-shadow:0 0 0 3px rgba(93,123,111,.1)}
+.emoji-row{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.emoji-btn{width:34px;height:34px;border:2px solid transparent;border-radius:8px;background:#f7f9f6;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.emoji-btn.sel,.emoji-btn:hover{border-color:var(--primary-color,#5d7b6f);background:white}
+.btn-gb-sub{width:100%;padding:13px;background:var(--primary-color,#5d7b6f);color:white;border:none;border-radius:10px;font-size:.9rem;font-weight:600;cursor:pointer;transition:all .3s;text-transform:uppercase;letter-spacing:2px}
+.btn-gb-sub:hover{background:var(--primary-dark,#3a4d45);transform:translateY(-2px)}
+.gb-entries{max-height:480px;overflow-y:auto;padding-right:4px}
+.gb-entries::-webkit-scrollbar{width:4px}
+.gb-entries::-webkit-scrollbar-thumb{background:var(--primary-color,#5d7b6f);border-radius:2px}
+.gb-entry{background:white;border-radius:14px;padding:18px 20px;margin-bottom:12px;border:1px solid rgba(93,123,111,.1);box-shadow:0 4px 15px rgba(0,0,0,.04);animation:slideR .4s ease}
+@keyframes slideR{from{transform:translateX(20px);opacity:0}to{transform:translateX(0);opacity:1}}
+.gb-eh{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.gb-emoji{font-size:1.4rem}
+.gb-name{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:600;color:#3a4d45}
+.gb-time{margin-left:auto;font-size:.72rem;color:#aaa}
+.gb-msg{font-size:.88rem;color:#555;line-height:1.6;font-style:italic}
+
+/* ===== DRESS CODE ===== */
+.dresscode{padding:80px 0;background:white}
+.dresscode-inner{display:flex;flex-direction:column;align-items:center;gap:28px;margin-top:46px}
+.dress-colors{display:flex;gap:18px}
+.dress-swatch{width:72px;height:72px;border-radius:50%;box-shadow:0 8px 20px rgba(0,0,0,.14)}
+.dress-note{max-width:580px;text-align:center;font-size:1rem;color:#666;line-height:1.8;font-family:'Cormorant Garamond',serif;font-style:italic}
+
+/* ===== MOBILE NAV ===== */
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid #e5e7eb;padding:10px 0;z-index:888}
+.mobile-nav-inner{display:flex;justify-content:space-around}
+.mnav-btn{display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;color:#9ca3af;font-size:.65rem;font-weight:500}
+.mnav-btn.active{color:var(--primary-color,#5d7b6f)}
+.mnav-btn i{font-size:1.1rem}
+@media(max-width:640px){.mobile-nav{display:block};body{padding-bottom:68px}}
+</style>
+</head>
+<body>
+
+<div id="music-player">
+  <button class="music-btn" id="music-toggle-btn" onclick="toggleMusic()">
+    <i class="fa-solid fa-music"></i>
+  </button>
+  <audio id="bg-audio" loop></audio>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="subtitle" id="hero-subtitle">Save the Date</p>
+    <h1 class="couple-names">
+      <span id="hero-groom">Chú Rể</span>
+      <br><span class="and">&</span><br>
+      <span id="hero-bride">Cô Dâu</span>
+    </h1>
+    <p class="wedding-date" id="hero-date"></p>
+    <a href="#invitation" class="btn-primary">Xem Lời Mời ↓</a>
+  </div>
+</section>
+
+<!-- INVITATION -->
+<section class="invitation" id="invitation">
+  <div class="floral-bg"></div>
+  <div class="container fade-in">
+    <div class="invitation-card">
+      <img src="https://cdn-icons-png.flaticon.com/512/3655/3655580.png" class="icon-ring" alt="rings" onerror="this.style.display='none'">
+      <h2 class="section-title">Trân trọng kính mời</h2>
+      <div class="invite-text">
+        <p id="inv-quote" style="font-weight:600;margin-bottom:8px"></p>
+        <p id="inv-msg"></p>
+      </div>
+      <div class="parents-info">
+        <div class="family">
+          <h4>Nhà Trai</h4>
+          <p id="gf">Ông: ...</p>
+          <p id="gm">Bà: ...</p>
+          <p id="g-address-display" style="font-size: 0.9rem; margin-top: 10px; display: none;"></p>
+          <a id="g-map-link" href="#" target="_blank" class="btn-secondary" style="display: none; padding: 6px 12px; font-size: 0.8rem; margin-top: 8px;">Chỉ Đường</a>
+        </div>
+        <div class="family">
+          <h4>Nhà Gái</h4>
+          <p id="bf">Ông: ...</p>
+          <p id="bm">Bà: ...</p>
+          <p id="b-address-display" style="font-size: 0.9rem; margin-top: 10px; display: none;"></p>
+          <a id="b-map-link" href="#" target="_blank" class="btn-secondary" style="display: none; padding: 6px 12px; font-size: 0.8rem; margin-top: 8px;">Chỉ Đường</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOVE STORY -->
+<section class="love-story fade-in" id="sec-story">
+  <div class="container">
+    <h2 class="section-title" id="story-title">Chuyện Tình Yêu</h2>
+    <div class="story-content">
+      <div class="story-image">
+        <img id="story-img" src="" alt="Ảnh cưới">
+        <div class="image-border"></div>
+      </div>
+      <div class="story-text">
+        <div id="story-ps"></div>
+        <span class="signature" id="story-sig"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COUNTDOWN -->
+<section class="countdown-section fade-in" id="sec-countdown">
+  <div class="container">
+    <h2 class="section-title text-white">Cùng đếm ngược nhé!</h2>
+    <div class="countdown-container" id="countdown">
+      <div class="time-box"><div class="glass-bg"></div><span id="days">00</span><p>Ngày</p></div>
+      <div class="time-box"><div class="glass-bg"></div><span id="hours">00</span><p>Giờ</p></div>
+      <div class="time-box"><div class="glass-bg"></div><span id="minutes">00</span><p>Phút</p></div>
+      <div class="time-box"><div class="glass-bg"></div><span id="seconds">00</span><p>Giây</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- EVENTS -->
+<section class="event-details fade-in" id="sec-events">
+  <div class="container">
+    <h2 class="section-title">Thông Tin Sự Kiện</h2>
+    <div class="event-cards" id="events-wrap"></div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery" id="sec-gallery">
+  <div class="container fade-in">
+    <h2 class="section-title">Khoảnh Khắc Đáng Nhớ</h2>
+    <div class="photo-grid" id="gallery-wrap"></div>
+  </div>
+</section>
+
+<!-- DRESS CODE -->
+<section class="dresscode fade-in" id="sec-dresscode" style="display:none">
+  <div class="container">
+    <h2 class="section-title" id="dc-title">Trang Phục Dự Tiệc</h2>
+    <div class="dresscode-inner">
+      <div class="dress-colors" id="dc-colors"></div>
+      <p class="dress-note" id="dc-note"></p>
+    </div>
+  </div>
+</section>
+
+<!-- BANKING -->
+<section class="banking fade-in" id="sec-banking">
+  <div class="container">
+    <h2 class="section-title">Gửi Lời Chúc</h2>
+    <p class="banking-desc">Sự hiện diện của bạn là món quà ý nghĩa nhất. Nếu không thể đến, bạn có thể gửi lời chúc qua:</p>
+    <div class="banking-cards">
+      <div class="bank-card">
+        <h3>Mừng Cưới Chú Rể</h3>
+        <img id="groom-qr" src="" class="qr-code" alt="QR" onerror="this.style.display='none'">
+        <p><strong id="groom-bank"></strong></p>
+        <p id="groom-acc" class="account-num"></p>
+        <p id="groom-name"></p>
+      </div>
+      <div class="bank-card">
+        <h3>Mừng Cưới Cô Dâu</h3>
+        <img id="bride-qr" src="" class="qr-code" alt="QR" onerror="this.style.display='none'">
+        <p><strong id="bride-bank"></strong></p>
+        <p id="bride-acc" class="account-num"></p>
+        <p id="bride-name"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RSVP -->
+<section class="rsvp" id="sec-rsvp">
+  <div class="container fade-in">
+    <div class="rsvp-box">
+      <h2 class="section-title">Xác Nhận Tham Dự</h2>
+      <form id="rsvp-form" class="rsvp-form">
+        <div class="form-group"><i class="fa-regular fa-user"></i><input type="text" id="rsvp-name" placeholder="Tên của bạn" required></div>
+        <div class="form-group"><i class="fa-solid fa-phone"></i><input type="tel" id="rsvp-phone" placeholder="Số điện thoại (tùy chọn)"></div>
+        <div class="form-group"><i class="fa-regular fa-calendar-check"></i>
+          <select id="rsvp-att" required>
+            <option value="" disabled selected>Bạn sẽ đến chứ?</option>
+            <option value="yes">Chắc chắn rồi, mình sẽ đến! 🎉</option>
+            <option value="no">Rất tiếc, mình bận mất rồi 😢</option>
+          </select>
+        </div>
+        <div class="form-group"><i class="fa-regular fa-comment"></i><textarea id="rsvp-msg" rows="3" placeholder="Lời chúc tới cô dâu chú rể..."></textarea></div>
+        <button type="submit" class="btn-primary btn-full">Gửi Xác Nhận</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- GUESTBOOK -->
+<section class="guestbook fade-in" id="sec-guestbook" style="display:none">
+  <div style="text-align:center;max-width:700px;margin:0 auto;padding:0 20px">
+    <h2 class="section-title">Sổ Lưu Bút</h2>
+  </div>
+  <div class="guestbook-container">
+    <div class="gb-form-card">
+      <div class="gb-form-title">Để Lại Lời Chúc</div>
+      <div class="gb-form-sub">Lời chúc của bạn sẽ được lưu giữ mãi mãi 💕</div>
+      <div class="gb-fg"><i class="fa-regular fa-user"></i><input type="text" id="gb-name" placeholder="Tên của bạn"></div>
+      <div class="gb-fg"><i class="fa-regular fa-comment-dots"></i><textarea id="gb-msg" rows="4" placeholder="Lời chúc của bạn..."></textarea></div>
+      <div class="emoji-row" id="emoji-row"></div>
+      <button class="btn-gb-sub" onclick="sendGuestbook()"><i class="fa-solid fa-paper-plane"></i> Gửi Lời Chúc</button>
+    </div>
+    <div>
+      <div class="gb-entries" id="gb-entries"><div style="text-align:center;padding:40px;color:#aaa;font-style:italic">Chưa có lời chúc nào. Hãy là người đầu tiên! 💌</div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <h2 class="footer-names" id="footer-names">Cô Dâu & Chú Rể</h2>
+  <p>Cảm ơn bạn đã là một phần trong câu chuyện của chúng tôi!</p>
+  <p class="credit">Made with ❤️ by ThiepCuoiViet</p>
+</footer>
+
+<!-- MOBILE NAV -->
+<nav class="mobile-nav">
+  <div class="mobile-nav-inner">
+    <a href="#home" class="mnav-btn active"><i class="fa-solid fa-house"></i>Trang Chủ</a>
+    <a href="#invitation" class="mnav-btn"><i class="fa-solid fa-envelope-open-text"></i>Lời Mời</a>
+    <a href="#sec-events" class="mnav-btn"><i class="fa-regular fa-calendar"></i>Sự Kiện</a>
+    <a href="#sec-rsvp" class="mnav-btn"><i class="fa-solid fa-check-circle"></i>RSVP</a>
+    <a href="#sec-gallery" class="mnav-btn"><i class="fa-regular fa-images"></i>Ảnh</a>
+  </div>
+</nav>
+
+<script>
+(function(){
+  const API = '/api';
+  const slug = location.pathname.split('/').pop() || 'demo';
+  const MUSIC_MAP = {
+    canon:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+    'a-thousand-years':'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
+    perfect:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',
+    'wedding-march':'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3'
+  };
+  let selEmoji='💕';
+  const EMOJIS=['💕','🌸','🥂','🎊','❤️','🌹','💍','🎉','✨','🌿','💐','🙏'];
+
+  // Init emoji
+  const emojiRow=document.getElementById('emoji-row');
+  if(emojiRow) EMOJIS.forEach(em=>{
+    const b=document.createElement('button');
+    b.type='button'; b.className='emoji-btn'+(em===selEmoji?' sel':'');
+    b.textContent=em;
+    b.onclick=()=>{selEmoji=em;document.querySelectorAll('.emoji-btn').forEach(x=>x.classList.remove('sel'));b.classList.add('sel')};
+    emojiRow.appendChild(b);
+  });
+
+  // Fetch data
+  fetch(`${API}/wedding-config/${slug}`)
+    .then(r=>r.ok?r.json():Promise.reject())
+    .then(d=>render(d))
+    .catch(()=>fetch(`${API}/wedding-config`).then(r=>r.json()).then(d=>render(d)).catch(()=>{}));
+
+  function render(d){
+    // Meta & OG
+    const gn=d.groom?.shortName||d.groom?.name||'Chú Rể';
+    const bn=d.bride?.shortName||d.bride?.name||'Cô Dâu';
+    document.getElementById('page-title').innerText=`Thiệp Mời | ${gn} & ${bn}`;
+    document.getElementById('page-desc').content=`Thiệp mời đám cưới ${d.groom?.name||''} & ${d.bride?.name||''}`;
+    document.getElementById('og-title').content=`${gn} & ${bn} — Thiệp Mời Đám Cưới`;
+    document.getElementById('og-desc').content=d.invitation?.message||'Trân trọng kính mời bạn đến dự đám cưới';
+    if(d.heroImage) document.getElementById('og-image').content=d.heroImage;
+
+    // Hero
+    if(d.heroImage) document.querySelector('.hero').style.backgroundImage=`url('${d.heroImage}')`;
+    document.getElementById('hero-groom').innerText=d.groom?.name||'Chú Rể';
+    document.getElementById('hero-bride').innerText=d.bride?.name||'Cô Dâu';
+    document.getElementById('hero-date').innerText=d.weddingDateText||'';
+    document.getElementById('footer-names').innerText=`${gn} & ${bn}`;
+    document.getElementById('story-sig').innerText=`${gn} & ${bn}`;
+
+    // Invitation
+    document.getElementById('inv-quote').innerText=d.invitation?.quote?`"${d.invitation.quote}"`:'';
+    document.getElementById('inv-msg').innerText=d.invitation?.message||'';
+    document.getElementById('gf').innerText=`Ông: ${d.groom?.father||''}`;
+    document.getElementById('gm').innerText=`Bà: ${d.groom?.mother||''}`;
+    if (d.groom?.address) {
+        document.getElementById('g-address-display').innerText = d.groom.address;
+        document.getElementById('g-address-display').style.display = 'block';
+    }
+    if (d.groom?.mapUrl) {
+        document.getElementById('g-map-link').href = d.groom.mapUrl;
+        document.getElementById('g-map-link').style.display = 'inline-block';
+    }
+
+    document.getElementById('bf').innerText=`Ông: ${d.bride?.father||''}`;
+    document.getElementById('bm').innerText=`Bà: ${d.bride?.mother||''}`;
+    if (d.bride?.address) {
+        document.getElementById('b-address-display').innerText = d.bride.address;
+        document.getElementById('b-address-display').style.display = 'block';
+    }
+    if (d.bride?.mapUrl) {
+        document.getElementById('b-map-link').href = d.bride.mapUrl;
+        document.getElementById('b-map-link').style.display = 'inline-block';
+    }
+
+    // Story
+    document.getElementById('story-title').innerText=d.loveStory?.title||'';
+    if(d.loveStory?.image) document.getElementById('story-img').src=d.loveStory.image;
+    const stPs=document.getElementById('story-ps');
+    (d.loveStory?.content||[]).forEach(p=>{const e=document.createElement('p');e.innerText=p;stPs.appendChild(e)});
+
+    // Events
+    const evW=document.getElementById('events-wrap');
+    (d.events||[]).forEach(ev=>{
+      evW.innerHTML+=`<div class="card"><div class="card-icon"><i class="fa-solid ${ev.icon||'fa-heart'}"></i></div>
+        <h3>${ev.type}</h3><div class="event-info">
+        <p><i class="fa-regular fa-clock"></i> ${ev.time||''} | ${ev.date||''}</p>
+        <p><i class="fa-solid fa-location-dot"></i> ${ev.locationName||''}</p>
+        <p>${ev.address||''}</p></div>
+        ${ev.mapUrl?`<a href="${ev.mapUrl}" target="_blank" class="btn-secondary">Chỉ Đường</a>`:''}
+      </div>`;
+    });
+
+    // Gallery
+    const gW=document.getElementById('gallery-wrap');
+    (d.gallery||[]).forEach(u=>{
+      const it=document.createElement('div');it.className='photo-item';
+      it.innerHTML=`<img src="${u}" alt="Gallery" loading="lazy">`;gW.appendChild(it);
+    });
+
+    // Banking
+    if(d.banking?.enabled){
+      if(d.banking.groom?.qrCode) document.getElementById('groom-qr').src=d.banking.groom.qrCode;
+      document.getElementById('groom-bank').innerText=d.banking.groom?.bankName||'';
+      document.getElementById('groom-acc').innerText=d.banking.groom?.accountNumber||'';
+      document.getElementById('groom-name').innerText=d.banking.groom?.accountName||'';
+      if(d.banking.bride?.qrCode) document.getElementById('bride-qr').src=d.banking.bride.qrCode;
+      document.getElementById('bride-bank').innerText=d.banking.bride?.bankName||'';
+      document.getElementById('bride-acc').innerText=d.banking.bride?.accountNumber||'';
+      document.getElementById('bride-name').innerText=d.banking.bride?.accountName||'';
+    }
+
+    // Sections
+    const sec=d.sections||{};
+    const map={story:sec.story!==false,countdown:sec.countdown!==false,events:sec.events!==false,
+      gallery:sec.gallery!==false,banking:d.banking?.enabled&&sec.banking!==false,
+      rsvp:sec.rsvp!==false,guestbook:sec.guestbook===true,dresscode:sec.dresscode===true};
+    Object.entries(map).forEach(([k,v])=>{
+      const el=document.getElementById('sec-'+k);
+      if(el) el.style.display=v?'':'none';
+    });
+
+    // Dresscode
+    if(sec.dresscode&&d.dresscode){
+      document.getElementById('dc-title').innerText=d.dresscode.title||'Trang Phục Dự Tiệc';
+      document.getElementById('dc-note').innerText=d.dresscode.note||'';
+      const cc=document.getElementById('dc-colors');
+      [d.dresscode.color1,d.dresscode.color2].filter(Boolean).forEach(c=>{
+        const sw=document.createElement('div');sw.className='dress-swatch';sw.style.background=c;cc.appendChild(sw);
+      });
+    }
+
+    // Music
+    if(d.music?.enabled){
+      const au=document.getElementById('bg-audio');
+      const url=d.music.customUrl||(MUSIC_MAP[d.music.track]||'');
+      if(url&&au){ au.src=url; document.getElementById('music-player').style.display='block';
+        document.addEventListener('click',()=>{if(au.paused)au.play().catch(()=>{})},{once:true}); }
+    }
+
+    // Guestbook load
+    if(sec.guestbook) loadGB();
+
+    // Countdown
+    if(d.weddingDate) startCountdown(d.weddingDate);
+    // Animations
+    initAnim();
+  }
+
+  // Music toggle
+  window.toggleMusic=function(){
+    const au=document.getElementById('bg-audio');
+    const btn=document.getElementById('music-toggle-btn');
+    if(au.paused){au.play();btn.innerHTML='<i class="fa-solid fa-pause"></i>';}
+    else{au.pause();btn.innerHTML='<i class="fa-solid fa-music"></i>';}
+  };
+
+  // RSVP
+  document.getElementById('rsvp-form')?.addEventListener('submit',e=>{
+    e.preventDefault();
+    const btn=e.target.querySelector('button[type="submit"]');
+    btn.innerText='Đang gửi...';btn.disabled=true;
+    fetch(`${API}/rsvp/${slug}`,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({name:document.getElementById('rsvp-name').value,phone:document.getElementById('rsvp-phone').value,
+        attendance:document.getElementById('rsvp-att').value,message:document.getElementById('rsvp-msg').value})})
+    .then(r=>r.json()).then(d=>{
+      if(d.success) document.getElementById('rsvp-form').innerHTML=`<div style="text-align:center;padding:40px">
+        <div style="font-size:3rem;margin-bottom:15px">🎉</div>
+        <h3 style="color:var(--primary-color,#5d7b6f);margin-bottom:10px">Cảm ơn bạn!</h3>
+        <p style="color:#666">Chúng tôi rất vui được đón tiếp bạn trong ngày trọng đại!</p></div>`;
+    }).catch(()=>alert('Lỗi kết nối!')).finally(()=>{btn.innerText='Gửi Xác Nhận';btn.disabled=false});
+  });
+
+  // Guestbook
+  function loadGB(){
+    fetch(`${API}/guestbook/${slug}`).then(r=>r.json()).then(entries=>{
+      const el=document.getElementById('gb-entries');
+      if(!entries.length){el.innerHTML='<div style="text-align:center;padding:40px;color:#aaa;font-style:italic">Chưa có lời chúc nào. Hãy là người đầu tiên! 💌</div>';return;}
+      el.innerHTML=entries.map(e=>`<div class="gb-entry"><div class="gb-eh"><span class="gb-emoji">${e.emoji||'💕'}</span>
+        <span class="gb-name">${e.name}</span><span class="gb-time">${new Date(e.createdAt).toLocaleDateString('vi-VN')}</span></div>
+        <div class="gb-msg">"${e.message}"</div></div>`).join('');
+    }).catch(()=>{});
+  }
+  window.sendGuestbook=function(){
+    const name=document.getElementById('gb-name').value.trim();
+    const msg=document.getElementById('gb-msg').value.trim();
+    if(!name||!msg){alert('Vui lòng nhập tên và lời chúc!');return;}
+    fetch(`${API}/guestbook/${slug}`,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({name,message:msg,emoji:selEmoji})})
+    .then(r=>r.json()).then(d=>{if(d.success){document.getElementById('gb-name').value='';
+      document.getElementById('gb-msg').value='';loadGB();}}).catch(()=>alert('Lỗi!'));
+  };
+
+  // Countdown
+  function startCountdown(iso){
+    const target=new Date(iso).getTime();
+    const tick=()=>{
+      const dist=target-Date.now();
+      if(dist<0){document.getElementById('countdown').innerHTML='<h3 style="color:white">💒 Đám cưới đã diễn ra!</h3>';return;}
+      const p=n=>String(Math.floor(n)).padStart(2,'0');
+      document.getElementById('days').innerText=p(dist/86400000);
+      document.getElementById('hours').innerText=p((dist%86400000)/3600000);
+      document.getElementById('minutes').innerText=p((dist%3600000)/60000);
+      document.getElementById('seconds').innerText=p((dist%60000)/1000);
+    };
+    setInterval(tick,1000);tick();
+  }
+
+  // Scroll animations
+  function initAnim(){
+    const obs=new IntersectionObserver(entries=>{
+      entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
+    },{threshold:.12,rootMargin:'0px 0px -50px 0px'});
+    document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — ThiepCuoiViet</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{--p:#5d7b6f;--pd:#3a4d45;--a:#c9a66b;--bg:#f8faf8;--white:#fff;--border:#e4e8e4;--text:#1a2e1a;--muted:#6b7280;--r:16px;--shadow:0 4px 24px rgba(0,0,0,.07)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* NAV */
+nav{background:white;border-bottom:1px solid var(--border);padding:0 5%;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.nav-logo{font-family:'Great Vibes',cursive;font-size:1.8rem;color:var(--p);text-decoration:none}
+.nav-right{display:flex;align-items:center;gap:20px}
+.user-name{font-weight:600;font-size:0.95rem;color:var(--text)}
+.btn-logout{background:none;border:none;color:var(--muted);cursor:pointer;font-family:'Outfit',sans-serif;font-size:0.9rem;font-weight:500;transition:color 0.2s}
+.btn-logout:hover{color:#dc2626}
+
+.main{max-width:1000px;margin:40px auto;padding:0 20px}
+
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:30px}
+.page-title{font-size:1.8rem;font-weight:700}
+.btn-create{background:linear-gradient(135deg,var(--p),var(--pd));color:white;padding:10px 20px;border-radius:50px;text-decoration:none;font-weight:600;font-size:0.95rem;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 15px rgba(93,123,111,0.2);transition:all 0.2s}
+.btn-create:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(93,123,111,0.3)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));gap:20px}
+
+.card{background:white;border:1px solid var(--border);border-radius:var(--r);padding:24px;box-shadow:var(--shadow);transition:transform 0.3s;position:relative}
+.card:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(93,123,111,0.15);border-color:var(--p)}
+.card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:15px;padding-bottom:15px;border-bottom:1px solid var(--border)}
+.card-title{font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:4px}
+.card-date{font-size:0.8rem;color:var(--muted)}
+.card-tpl{font-size:0.75rem;background:rgba(93,123,111,0.1);color:var(--p);padding:4px 10px;border-radius:50px;font-weight:600}
+.card-stats{display:flex;gap:15px;margin-bottom:20px}
+.stat{display:flex;align-items:center;gap:6px;font-size:0.85rem;color:var(--muted);font-weight:500}
+.stat i{color:var(--p)}
+
+.card-actions{display:flex;gap:10px}
+.btn-action{flex:1;text-align:center;padding:8px;border-radius:8px;text-decoration:none;font-size:0.85rem;font-weight:600;transition:all 0.2s;display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1.5px solid}
+.btn-edit{background:white;color:var(--p);border-color:var(--border)}
+.btn-edit:hover{border-color:var(--p)}
+.btn-share{background:var(--p);color:white;border-color:var(--p)}
+.btn-share:hover{background:var(--pd);border-color:var(--pd)}
+
+.empty-state{text-align:center;padding:60px 20px;background:white;border-radius:var(--r);border:1px dashed var(--border)}
+.empty-icon{font-size:3rem;color:var(--border);margin-bottom:15px}
+.empty-text{color:var(--muted);margin-bottom:20px}
+</style>
+</head>
+<body>
+
+<nav>
+    <a href="/" class="nav-logo">ThiepCuoiViet</a>
+    <div class="nav-right">
+        <span class="user-name" id="user-name">Đang tải...</span>
+        <button class="btn-logout" onclick="logout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Đăng xuất</button>
+    </div>
+</nav>
+
+<div class="main">
+    <div class="page-header">
+        <h1 class="page-title">Quản Lý Thiệp Cưới</h1>
+        <a href="/tao-thiep" class="btn-create"><i class="fa-solid fa-plus"></i> Tạo Thiệp Mới</a>
+    </div>
+
+    <div class="grid" id="invitations-grid">
+        <!-- Loader -->
+        <div style="grid-column: 1/-1; text-align:center; padding:50px; color:var(--p)">
+            <i class="fa-solid fa-circle-notch fa-spin fa-2x"></i>
+        </div>
+    </div>
+</div>
+
+<script>
+const token = localStorage.getItem('token');
+if (!token) window.location.href = '/login';
+
+document.addEventListener('DOMContentLoaded', () => {
+    fetchUser();
+    fetchInvitations();
+});
+
+function fetchUser() {
+    fetch('/api/auth/me', {
+        headers: { 'Authorization': `Bearer ${token}` }
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.error) throw new Error(data.error);
+        document.getElementById('user-name').textContent = data.fullName;
+    })
+    .catch(() => {
+        logout();
+    });
+}
+
+function fetchInvitations() {
+    fetch('/api/invitations', {
+        headers: { 'Authorization': `Bearer ${token}` }
+    })
+    .then(r => r.json())
+    .then(list => {
+        const grid = document.getElementById('invitations-grid');
+        if (!list || list.length === 0) {
+            grid.innerHTML = `
+                <div class="empty-state" style="grid-column: 1/-1">
+                    <div class="empty-icon"><i class="fa-regular fa-envelope-open"></i></div>
+                    <h3 style="margin-bottom:10px">Chưa có thiệp nào</h3>
+                    <p class="empty-text">Bạn chưa tạo thiệp cưới nào. Hãy tạo ngay một chiếc thiệp thật đẹp nhé!</p>
+                    <a href="/tao-thiep" class="btn-create"><i class="fa-solid fa-plus"></i> Tạo Thiệp Ngay</a>
+                </div>
+            `;
+            return;
+        }
+
+        grid.innerHTML = list.map(inv => `
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <div class="card-title">${inv.groomName} & ${inv.brideName}</div>
+                        <div class="card-date"><i class="fa-regular fa-calendar"></i> ${inv.weddingDateText || 'Chưa có ngày'}</div>
+                    </div>
+                    <div class="card-tpl">${formatTpl(inv.template)}</div>
+                </div>
+                <div class="card-stats">
+                    <div class="stat"><i class="fa-solid fa-eye"></i> ${inv.views || 0} lượt xem</div>
+                    <div class="stat" style="color:#d4af37"><i class="fa-solid fa-link"></i> /thiep/${inv.slug}</div>
+                </div>
+                <div class="card-actions">
+                    <a href="/admin?slug=${inv.slug}" class="btn-action btn-edit"><i class="fa-solid fa-pen"></i> Chỉnh Sửa</a>
+                    <a href="/thiep/${inv.slug}" target="_blank" class="btn-action btn-share"><i class="fa-solid fa-share-nodes"></i> Xem Thiệp</a>
+                </div>
+            </div>
+        `).join('');
+    })
+    .catch(e => console.error(e));
+}
+
+function formatTpl(tpl) {
+    if (tpl === 'boho-floral-green') return 'Boho Green';
+    if (tpl === 'luxury-gold') return 'Luxury Gold';
+    if (tpl === 'minimalist-white') return 'Minimalist';
+    if (tpl === 'romantic-pink') return 'Romantic Pink';
+    return tpl;
+}
+
+function logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.href = '/login';
+}
+</script>
+
+</body>
+</html>

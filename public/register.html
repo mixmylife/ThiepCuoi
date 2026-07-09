@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Đăng Ký — ThiepCuoiViet</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{--p:#5d7b6f;--pd:#3a4d45;--bg:#f8faf8;--white:#fff;--border:#e4e8e4;--text:#1a2e1a;--muted:#6b7280;--r:16px;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+
+.auth-container {
+    background: white;
+    width: 100%;
+    max-width: 440px;
+    border-radius: var(--r);
+    padding: 40px;
+    box-shadow: 0 10px 40px rgba(93,123,111,0.1);
+    border: 1px solid var(--border);
+}
+.logo {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.5rem;
+    color: var(--p);
+    text-align: center;
+    margin-bottom: 8px;
+    display: block;
+    text-decoration: none;
+}
+.subtitle {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-bottom: 30px;
+}
+.form-group {
+    margin-bottom: 20px;
+}
+.form-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #374151;
+}
+.form-control {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+    background: var(--bg);
+}
+.form-control:focus {
+    outline: none;
+    border-color: var(--p);
+    background: white;
+    box-shadow: 0 0 0 4px rgba(93,123,111,0.1);
+}
+.btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--p), var(--pd));
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 10px;
+}
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(93,123,111,0.3);
+}
+.btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+.footer-text {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+.footer-text a {
+    color: var(--p);
+    font-weight: 600;
+    text-decoration: none;
+}
+.footer-text a:hover {
+    text-decoration: underline;
+}
+.alert {
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+    display: none;
+}
+.alert.error {
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+    display: block;
+}
+</style>
+</head>
+<body>
+
+<div class="auth-container">
+    <a href="/" class="logo">ThiepCuoiViet</a>
+    <p class="subtitle">Tạo tài khoản để bắt đầu thiết kế thiệp</p>
+
+    <div id="alert-box" class="alert"></div>
+
+    <form id="register-form">
+        <div class="form-group">
+            <label>Họ và Tên</label>
+            <input type="text" id="fullName" class="form-control" placeholder="Nguyễn Văn A" required>
+        </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="email" class="form-control" placeholder="nhap.email@gmail.com" required>
+        </div>
+        <div class="form-group">
+            <label>Mật Khẩu</label>
+            <input type="password" id="password" class="form-control" placeholder="Ít nhất 6 ký tự" required minlength="6">
+        </div>
+        <button type="submit" class="btn" id="btn-submit">Tạo Tài Khoản</button>
+    </form>
+
+    <div class="footer-text">
+        Đã có tài khoản? <a href="/login">Đăng nhập</a>
+    </div>
+</div>
+
+<script>
+document.getElementById('register-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('btn-submit');
+    const alertBox = document.getElementById('alert-box');
+    const fullName = document.getElementById('fullName').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Đang xử lý...';
+    alertBox.style.display = 'none';
+    alertBox.className = 'alert';
+
+    try {
+        const res = await fetch('/api/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ fullName, email, password })
+        });
+        const data = await res.json();
+
+        if (data.success) {
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('user', JSON.stringify(data.user));
+            window.location.href = '/dashboard';
+        } else {
+            throw new Error(data.error || 'Đăng ký thất bại');
+        }
+    } catch (err) {
+        alertBox.textContent = err.message;
+        alertBox.className = 'alert error';
+        btn.disabled = false;
+        btn.textContent = 'Tạo Tài Khoản';
+    }
+});
+</script>
+
+</body>
+</html>

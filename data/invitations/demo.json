@@ -1,0 +1,109 @@
+{
+    "slug": "demo",
+    "template": "song-long-do",
+    "groom": {
+        "name": "Phùng Văn Huy",
+        "shortName": "Huy",
+        "father": "Phùng Văn Thành",
+        "mother": "Nguyễn Thị Lan",
+        "address": "",
+        "mapUrl": ""
+    },
+    "bride": {
+        "name": "Trương Thị Mỹ Duyên",
+        "shortName": "Duyên",
+        "father": "Trương Văn Nam",
+        "mother": "Lê Thị Hoa",
+        "address": "",
+        "mapUrl": ""
+    },
+    "weddingDate": "2026-09-20T10:30:00",
+    "weddingDateText": "20 . 09 . 2026",
+    "heroImage": "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2070",
+    "invitation": {
+        "quote": "Trăm năm tình viên mãn, bạc đầu nghĩa phu thê.",
+        "message": "Trân trọng kính mời bạn đến chung vui trong ngày trọng đại của chúng tôi. Sự hiện diện của bạn là niềm vinh hạnh và hạnh phúc nhất đối với hai gia đình."
+    },
+    "loveStory": {
+        "title": "Chuyện Tình Yêu Của Chúng Tôi",
+        "image": "https://images.unsplash.com/photo-1529543544282-ea669407fca3?q=80&w=800",
+        "content": [
+            "Chúng tôi gặp nhau trong một buổi chiều mưa tháng Ba năm 2021. Huy đứng trú mưa dưới mái hiên của quán cà phê nhỏ, còn Duyên tình cờ ghé vào cũng để tránh cơn mưa bất ngờ ấy.",
+            "Từ một buổi chiều tình cờ, chúng tôi đã cùng nhau trải qua bao mùa nắng mưa, cùng nhau xây đắp những ước mơ. Và hôm nay, chúng tôi tự hào được mời tất cả những người thân yêu đến chứng kiến ngày hạnh phúc nhất trong cuộc đời."
+        ]
+    },
+    "events": [
+        {
+            "type": "Lễ Vu Quy",
+            "icon": "fa-house-heart",
+            "time": "09:00 SA",
+            "date": "20 . 09 . 2026",
+            "locationName": "Nhà Gái",
+            "address": "123 Đường Hoa Đào, Quận 3, TP.HCM",
+            "mapUrl": "https://maps.google.com"
+        },
+        {
+            "type": "Tiệc Mừng Hạnh Phúc",
+            "icon": "fa-champagne-glasses",
+            "time": "11:30 SA",
+            "date": "20 . 09 . 2026",
+            "locationName": "Trống Đồng Palace",
+            "address": "65 Quán Sứ, Hoàn Kiếm, Hà Nội",
+            "mapUrl": "https://maps.google.com"
+        }
+    ],
+    "gallery": [
+        "https://images.unsplash.com/photo-1537633552985-df8429e8048b?q=80&w=600",
+        "https://images.unsplash.com/photo-1591604021695-0c69b7c05981?q=80&w=600",
+        "https://images.unsplash.com/photo-1606402179428-a57976d71fa4?q=80&w=600",
+        "https://images.unsplash.com/photo-1514222788835-3a1a1d5b32f8?q=80&w=600",
+        "https://images.unsplash.com/photo-1529543544282-ea669407fca3?q=80&w=600",
+        "https://images.unsplash.com/photo-1578730169862-aabb8be2c3cd?q=80&w=600"
+    ],
+    "banking": {
+        "enabled": true,
+        "groom": {
+            "bankName": "Techcombank",
+            "accountNumber": "19038512345678",
+            "accountName": "PHUNG VAN HUY",
+            "qrCode": ""
+        },
+        "bride": {
+            "bankName": "Vietcombank",
+            "accountNumber": "9876543210",
+            "accountName": "TRUONG THI MY DUYEN",
+            "qrCode": ""
+        }
+    },
+    "music": {
+        "enabled": true,
+        "track": "canon",
+        "customUrl": ""
+    },
+    "sections": {
+        "hero": true,
+        "invitation": true,
+        "story": true,
+        "countdown": true,
+        "events": true,
+        "gallery": true,
+        "banking": true,
+        "rsvp": true,
+        "guestbook": true,
+        "dresscode": false
+    },
+    "dresscode": {
+        "enabled": false,
+        "title": "",
+        "color1": "#5d7b6f",
+        "color2": "#c9a66b",
+        "note": ""
+    },
+    "stats": {
+        "views": 143,
+        "lastViewed": "2026-07-02T08:38:32.832Z"
+    },
+    "createdAt": "2026-06-24T00:00:00.000Z",
+    "updatedAt": "2026-06-30T03:35:08.228Z",
+    "userId": "1782312915006"
+}
