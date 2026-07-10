@@ -12,6 +12,7 @@
         href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link rel="stylesheet" href="/templates/song-long-do/style.css">
 </head>
 
@@ -231,8 +232,13 @@
             <div class="container">
                 <h2 class="section-title">Album Kỷ Niệm</h2>
                 <div class="decor-line"></div>
-                <div class="gallery-grid" id="gallery-wrap">
-                    <!-- JS điền -->
+                <div class="swiper gallery-swiper">
+                    <div class="swiper-wrapper" id="gallery-wrap">
+                        <!-- JS điền -->
+                    </div>
+                    <div class="swiper-pagination"></div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
                 </div>
             </div>
         </section>
@@ -572,9 +578,9 @@
                 }
                 for (let i = 1; i <= totalDays; i++) {
                     if (i === wDate) {
-                        htmlStr += `<div class="cal-day active"><i class="fa-solid fa-heart" style="position:absolute; font-size:2.2rem; top:50%; left:50%; transform:translate(-50%, -50%); color:var(--red); z-index:-1; opacity:1"></i><span style="position:relative; z-index:2; color:#fff">${i}</span></div>`;
+                        htmlStr += `<div class="cal-day active"><i class="fa-solid fa-heart heartbeat" style="position:absolute; font-size:2.2rem; top:50%; left:50%; transform:translate(-50%, -50%); color:var(--red); z-index:-1; opacity:1"></i><span style="position:relative; z-index:2; color:#fff">${i}</span></div>`;
                     } else if (i === 21 || i === 23) {
-                        htmlStr += `<div class="cal-day" style="position:relative; z-index:1;"><i class="fa-regular fa-heart" style="position:absolute; font-size:2.2rem; top:50%; left:50%; transform:translate(-50%, -50%); color:var(--red); z-index:-1; opacity:0.8"></i><span style="position:relative; z-index:2; color:var(--red); font-weight:bold;">${i}</span></div>`;
+                        htmlStr += `<div class="cal-day" style="position:relative; z-index:1;"><i class="fa-regular fa-heart heartbeat" style="position:absolute; font-size:2.2rem; top:50%; left:50%; transform:translate(-50%, -50%); color:var(--red); z-index:-1; opacity:0.8"></i><span style="position:relative; z-index:2; color:var(--red); font-weight:bold;">${i}</span></div>`;
                     } else {
                         htmlStr += `<div class="cal-day">${i}</div>`;
                     }
@@ -626,7 +632,29 @@
             // Album
             if (d.gallery && d.gallery.length) {
                 window.galleryImages = d.gallery;
-                document.getElementById('gallery-wrap').innerHTML = d.gallery.map((u, i) => `<div class="gallery-item" onclick="openLightbox(${i})"><img src="${u}" loading="lazy" decoding="async" alt="Album ${i + 1}"></div>`).join('');
+                document.getElementById('gallery-wrap').innerHTML = d.gallery.map((u, i) => `<div class="swiper-slide" onclick="openLightbox(${i})"><img src="${u}" loading="lazy" decoding="async" alt="Album ${i + 1}"></div>`).join('');
+                
+                setTimeout(() => {
+                    if (typeof Swiper !== 'undefined') {
+                        new Swiper('.gallery-swiper', {
+                            effect: 'coverflow',
+                            grabCursor: true,
+                            centeredSlides: true,
+                            slidesPerView: 'auto',
+                            loop: true,
+                            coverflowEffect: {
+                                rotate: 30,
+                                stretch: 0,
+                                depth: 150,
+                                modifier: 1.5,
+                                slideShadows: true,
+                            },
+                            pagination: { el: '.swiper-pagination', clickable: true },
+                            navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+                            autoplay: { delay: 3000, disableOnInteraction: false }
+                        });
+                    }
+                }, 100);
             } else {
                 document.getElementById('sec-gallery').style.display = 'none';
             }
@@ -1165,6 +1193,9 @@
         <a class="lb-prev" onclick="changeImage(-1)">&#10094;</a>
         <a class="lb-next" onclick="changeImage(1)">&#10095;</a>
     </div>
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 </body>
 
 </html>
