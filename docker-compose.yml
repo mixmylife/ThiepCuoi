@@ -9,6 +9,7 @@ services:
       - PORT=3000
       - JWT_SECRET=${JWT_SECRET}
       - HOME_INVITATION_SLUG=${HOME_INVITATION_SLUG:-huy-hihi-duyen}
+      - PUBLIC_SITE_URL=${PUBLIC_SITE_URL:-https://thiepcuoihd.click}
     volumes:
       - ./data:/app/data
       - ./uploads:/app/uploads

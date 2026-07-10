@@ -39,6 +39,7 @@ const app  = express();
 const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || 'thiepcuoiviet_super_secret_key_2026';
 const HOME_INVITATION_SLUG = process.env.HOME_INVITATION_SLUG || 'huy-hihi-duyen';
+const PUBLIC_SITE_URL = (process.env.PUBLIC_SITE_URL || 'https://thiepcuoihd.click').replace(/\/$/, '');
 
 // ==========================================
 // PATHS
@@ -230,7 +231,7 @@ function sendInvitationPage(slug, res) {
 
 function sendHomeSharePage(req, res) {
     const target = `/thiep/${HOME_INVITATION_SLUG}`;
-    const origin = `${req.protocol}://${req.get('host')}`;
+    const origin = PUBLIC_SITE_URL;
     res.send(`<!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -243,9 +244,14 @@ function sendHomeSharePage(req, res) {
     <meta property="og:type" content="website">
     <meta property="og:url" content="${origin}/">
     <meta property="og:image" content="${origin}/share-duyen-huy.jpg">
-    <meta name="twitter:card" content="summary">
+    <meta property="og:image:secure_url" content="${origin}/share-duyen-huy.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Thiệp cưới Duyên Huy">
     <meta name="twitter:description" content="Thiệp cưới Duyên Huy">
+    <meta name="twitter:image" content="${origin}/share-duyen-huy.jpg">
     <link rel="canonical" href="${origin}${target}">
     <link rel="icon" href="/favicon.png" type="image/png">
     <meta http-equiv="refresh" content="0;url=${target}">
