@@ -38,6 +38,7 @@ const sharp      = require('sharp');
 const app  = express();
 const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || 'thiepcuoiviet_super_secret_key_2026';
+const HOME_INVITATION_SLUG = process.env.HOME_INVITATION_SLUG || 'huy-hihi-duyen';
 
 // ==========================================
 // PATHS
@@ -212,6 +213,50 @@ function slugExists(slug) {
     return fs.existsSync(path.join(PATHS.invitations, `${slug}.json`));
 }
 
+function sendInvitationPage(slug, res) {
+    const template = getTemplate(slug);
+    const tplFile  = path.join(PATHS.templates, template, 'index.html');
+    const fallback = path.join(PATHS.templates, 'boho-floral-green', 'index.html');
+
+    const cfgFile = path.join(PATHS.invitations, `${slug}.json`);
+    if (fs.existsSync(cfgFile)) {
+        queueView(slug);
+    }
+
+    if (fs.existsSync(tplFile))  return res.sendFile(tplFile);
+    if (fs.existsSync(fallback)) return res.sendFile(fallback);
+    res.status(404).send('<h2 style="text-align:center;padding:80px;font-family:sans-serif">Thiệp không tồn tại</h2>');
+}
+
+function sendHomeSharePage(req, res) {
+    const target = `/thiep/${HOME_INVITATION_SLUG}`;
+    const origin = `${req.protocol}://${req.get('host')}`;
+    res.send(`<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thiệp cưới Duyên Huy</title>
+    <meta name="description" content="Thiệp cưới Duyên Huy">
+    <meta property="og:title" content="Thiệp cưới Duyên Huy">
+    <meta property="og:description" content="Thiệp cưới Duyên Huy">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="${origin}/">
+    <meta property="og:image" content="${origin}/share-duyen-huy.jpg">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Thiệp cưới Duyên Huy">
+    <meta name="twitter:description" content="Thiệp cưới Duyên Huy">
+    <link rel="canonical" href="${origin}${target}">
+    <link rel="icon" href="/favicon.png" type="image/png">
+    <meta http-equiv="refresh" content="0;url=${target}">
+</head>
+<body>
+    <script>window.location.replace(${JSON.stringify(target)});</script>
+    <p>Đang mở <a href="${target}">Thiệp cưới Duyên Huy</a>...</p>
+</body>
+</html>`);
+}
+
 // Middleware xác thực JWT
 function verifyToken(req, res, next) {
     const token = req.headers['authorization']?.split(' ')[1];
@@ -228,7 +273,7 @@ function verifyToken(req, res, next) {
 // ==========================================
 // WEB ROUTES
 // ==========================================
-app.get('/', (req, res) => res.sendFile(path.join(PATHS.public, 'landing.html')));
+app.get('/', sendHomeSharePage);
 app.get('/tao-thiep', (req, res) => res.sendFile(path.join(PATHS.public, 'tao-thiep.html')));
 app.get('/admin', (req, res) => res.sendFile(path.join(PATHS.public, 'admin.html')));
 app.get('/login', (req, res) => res.sendFile(path.join(PATHS.public, 'login.html')));
@@ -245,19 +290,7 @@ app.get('/preview/:template', (req, res) => {
 // Xem thiệp theo slug
 app.get('/thiep/:slug', (req, res) => {
     const slug     = req.params.slug;
-    const template = getTemplate(slug);
-    const tplFile  = path.join(PATHS.templates, template, 'index.html');
-    const fallback = path.join(PATHS.templates, 'boho-floral-green', 'index.html');
-
-    // Tăng view
-    const cfgFile = path.join(PATHS.invitations, `${slug}.json`);
-    if (fs.existsSync(cfgFile)) {
-        queueView(slug);
-    }
-
-    if (fs.existsSync(tplFile))  return res.sendFile(tplFile);
-    if (fs.existsSync(fallback)) return res.sendFile(fallback);
-    res.status(404).send('<h2 style="text-align:center;padding:80px;font-family:sans-serif">❌ Thiệp không tồn tại</h2>');
+    sendInvitationPage(slug, res);
 });
 
 // ==========================================

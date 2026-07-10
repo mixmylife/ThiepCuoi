@@ -8,6 +8,7 @@ services:
     environment:
       - PORT=3000
       - JWT_SECRET=${JWT_SECRET}
+      - HOME_INVITATION_SLUG=${HOME_INVITATION_SLUG:-huy-hihi-duyen}
     volumes:
       - ./data:/app/data
       - ./uploads:/app/uploads
