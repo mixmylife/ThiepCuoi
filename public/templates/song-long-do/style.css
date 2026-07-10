@@ -697,6 +697,13 @@ body {
     box-shadow: 0 10px 30px rgba(0,0,0,0.15);
     border: 3px solid var(--gold);
     cursor: pointer;
+    opacity: 0.4;
+    transition: opacity 0.5s ease, filter 0.5s ease;
+    filter: blur(3px);
+}
+.swiper-slide-active {
+    opacity: 1;
+    filter: blur(0);
 }
 .swiper-slide img {
     display: block;
