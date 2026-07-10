@@ -623,8 +623,11 @@
                 document.getElementById('story-box').innerHTML = `
                     ${d.loveStory.image ? `<img src="${d.loveStory.image}" alt="Story" loading="lazy" decoding="async">` : ''}
                     <h3>${d.loveStory.title}</h3>
-                    ${d.loveStory.content.map(p => `<p>${p}</p>`).join('')}
+                    <div id="story-paragraphs">
+                        ${d.loveStory.content.map((p, idx) => `<p id="story-p-${idx}" style="opacity: 1; transform: none;"></p>`).join('')}
+                    </div>
                 `;
+                window.storyTexts = d.loveStory.content;
             } else {
                 document.getElementById('sec-story').style.display = 'none';
             }
@@ -862,11 +865,32 @@
                 if (e.isIntersecting) {
                     setTimeout(() => {
                         e.target.classList.add('visible');
+                        
+                        if (e.target.id === 'sec-story' && window.storyTexts && !window.storyTyped) {
+                            window.storyTyped = true;
+                            let pIdx = 0;
+                            function typeWriter(text, i, el, cb) {
+                                if (i < text.length) {
+                                    el.innerHTML += text.charAt(i);
+                                    setTimeout(() => typeWriter(text, i + 1, el, cb), 25);
+                                } else {
+                                    setTimeout(cb, 600);
+                                }
+                            }
+                            function startNext() {
+                                if (pIdx < window.storyTexts.length) {
+                                    let el = document.getElementById(`story-p-${pIdx}`);
+                                    if(el) typeWriter(window.storyTexts[pIdx], 0, el, startNext);
+                                    pIdx++;
+                                }
+                            }
+                            startNext();
+                        }
                     }, idx * 100); // Staggered reveal
                     obs.unobserve(e.target);
                 }
             });
-        }, { threshold: 0.1 });
+        }, { threshold: 0.15 });
 
         // Cuộn Parallax
         window.addEventListener('scroll', () => {
